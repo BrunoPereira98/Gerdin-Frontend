@@ -1,0 +1,14 @@
+<div class="d-flex flex-column" [ariaReadOnly]="!!isReadOnly">
+  <mat-label class="font-color-label">
+    <strong>{{label}}</strong>
+  </mat-label>
+  <mat-form-field>
+    <mat-select
+      [placeholder]="placeholder"
+      (selectionChange)="inputModelChanges()"
+      [(ngModel)]="value">
+      <mat-option>{{placeholder}}</mat-option>
+      <mat-option *ngFor="let item of selectItens" [value]="item.value">{{item.label}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

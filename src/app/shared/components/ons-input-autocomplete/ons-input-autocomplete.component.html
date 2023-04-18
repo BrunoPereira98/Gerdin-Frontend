@@ -1,0 +1,15 @@
+<div class="d-flex flex-column">
+  <mat-label class="font-color-label">
+    <strong>{{label}}</strong>
+  </mat-label>
+  <mat-form-field>
+    <input type="text" [placeholder]="placeHolder" matInput [matAutocomplete]="auto" [formControl]="myControl"
+      (onKeyUp)="onKeyUp($event)" (keydown)="onKeyDown($event)" [(ngModel)]="value" [id]="id" [name]="name">
+
+    <mat-autocomplete panelWidth="auto" #auto="matAutocomplete" [displayWith]="onDisplayFn"
+      (optionSelected)="onSelectMetodo($event)" [disableRipple]="disabled">
+      <mat-option *ngFor="let item of filteredOptions | async" [value]="item">{{item.label}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>

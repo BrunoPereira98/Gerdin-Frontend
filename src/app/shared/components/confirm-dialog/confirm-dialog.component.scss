@@ -1,0 +1,15 @@
+.header,
+.dialog-message {
+  text-transform: lowercase;
+  text-align: center;
+}
+
+.header img {
+  width: 180px;
+  padding-bottom: 1rem;
+}
+
+.header::first-letter,
+.dialog-message::first-letter {
+  text-transform: uppercase;
+}

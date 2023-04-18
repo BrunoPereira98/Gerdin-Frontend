@@ -1,0 +1,17 @@
+<mat-card>
+  <mat-card-content>
+    <div class="container-fluid">
+      <div class="d-flex justify-content-between align-items-end">
+        <div class="row">
+          <ng-content>
+          </ng-content>
+        </div>
+        <div class="row">
+          <div class="d-flex align-items-end">
+            <button mat-raised-button color="accent" (click)="onSearch" [disabled]="disabled">{{labelButton}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

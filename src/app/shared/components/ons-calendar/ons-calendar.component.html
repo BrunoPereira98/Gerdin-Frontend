@@ -1,0 +1,11 @@
+<div class="d-flex flex-column">
+  <mat-label class="font-color-label">
+    <strong>{{label}}</strong>
+  </mat-label>
+  <mat-form-field>
+    <input [min]="minDate" [max]="maxDate" #input matInput [matDatepicker]="picker" placeholder="ex: 12/11/2011" readonly (dateChange)="onDateChange($event)">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker>
+    </mat-datepicker>
+  </mat-form-field>
+</div>
