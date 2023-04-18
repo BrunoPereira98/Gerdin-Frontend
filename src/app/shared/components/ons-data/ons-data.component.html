@@ -1,0 +1,22 @@
+
+<div class="p-2">
+  <mat-card [id]="identity" style="padding: 1rem 0px 8px 0px"><!--  -->
+    <div class="container-fluid d-flex justify-content-between align-items-start">
+      <div class="d-flex justify-content-start align-items-start">
+        <mat-card-header>
+          <mat-card-title>
+            <ng-content select="[header]"></ng-content>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-divider [vertical]="true"></mat-divider>
+        <ng-content select="[body]"></ng-content>
+      </div>
+      <ng-content select="[center]"></ng-content>
+      <div class="d-flex justify-content-start align-items-center">
+        <ng-content select="[footer]"></ng-content>
+        <mat-divider [vertical]="true"></mat-divider>
+        <ng-content select="[actions]"></ng-content>
+      </div>
+    </div>
+  </mat-card>
+</div>

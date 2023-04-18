@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="container-title">
+    {{data.type}}
+  </div>
+  <div>
+    <button mat-icon-button (click)="snackBarRef.dismiss()">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="container-message">
+  <p>{{data.message}}</p>
+  <div *ngIf="data.subMessage">
+    {{data.subMessage}}
+  </div>
+  <!-- <ng-container *ngIf="data.subMessage; then subTitle"></ng-container> -->
+</div>
+<div>
+  <mat-progress-bar id="progress-bar" mode="determinate" [value]="progress"></mat-progress-bar>
+</div>
+<ng-template #subTitle>
+  <br />{{data.subMessage}}
+</ng-template>

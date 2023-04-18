@@ -1,0 +1,12 @@
+<div class="header">
+  <img [src]="data.img" alt="imagem">
+</div>
+<div mat-dialog-content class="dialog-message">
+  <label>{{data.message}}</label>
+  <strong *ngIf="data.subMessage">{{data.subMessage}}</strong>
+</div>
+<div mat-dialog-actions align="center">
+  <button mat-raised-button (click)="cancel()" class="bg-balck m-2">{{data.cancelText}}</button>
+  <button mat-raised-button class="m-2" color="primary" (click)="confirm()"
+    cdkFocusInitial>{{data.confirmText}}</button>
+</div>
