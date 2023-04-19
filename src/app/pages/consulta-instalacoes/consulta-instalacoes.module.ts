@@ -4,6 +4,7 @@ import { ConsultaInstalacoesComponent } from './consulta-instalacoes.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { ConsultaInstalacoesRoutingModule } from './consulta-instalacoes-routing.module';
 
 
 
@@ -15,7 +16,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     CommonModule,
     FormsModule,
     SharedModule,
-    ConsultaInstalacoesComponent,
+    ConsultaInstalacoesRoutingModule,
     ReactiveFormsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

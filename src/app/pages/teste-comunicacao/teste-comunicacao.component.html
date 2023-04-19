@@ -1,0 +1,12 @@
+<div class="teste-cominicacao">
+  <h1>Teste de Comunicação</h1>
+
+  <p>{{ data | date: "dd/MM/yyyy HH:mm:ss"}}</p>
+
+  <div>
+    <p><span>Nome: </span><strong>{{user.nome}}</strong></p>
+    <p><span>Perfil: </span><strong>{{user.perfil}}</strong></p>
+    <p><span>Perfis: </span><strong>{{user.perfis.join(', ')}}</strong></p>
+    <p><span>Operações: </span><strong>{{user.operacoes.join(', ')}}</strong></p>
+  </div>
+</div>
