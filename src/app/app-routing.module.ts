@@ -10,10 +10,10 @@ const routes: Routes = [
   //     ),
   // },
   // {
-  //   path: 'consulta-regra',
+  //   path: 'consulta-instalacoes',
   //   loadChildren: () =>
-  //     import('./pages/consulta-regra/consulta-regra.module').then(
-  //       (m) => m.ConsultaRegraModule
+  //     import('./pages/consulta-instalacoes/consulta-instalacoes.module').then(
+  //       (m) => m.ConsultaInstalacoesModule
   //     ),
   // },
   // {
