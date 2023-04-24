@@ -19,6 +19,7 @@ import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_LEGACY_FORM_FIELD_DEFAULT_OPTIONS as MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/legacy-form-field';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
+import { MenuTabModule } from './components/menu-tab/menu-tab.module';
 // import { AlertComponent } from './components/alert/alert.component';
 // import { NgxLoadingModule } from './components/ngx-loading/ngx-loading.module';
 // import { OnsCalendarModule } from './components/ons-calendar/ons-calendar.module';
@@ -69,6 +70,7 @@ import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
     CommonModule,
     MatNativeDateModule,
     MomentDateModule,
+    MenuTabModule,
     // MaterialModule,
     // ConfirmDialogModule,
     StoreModule.forFeature('angularSetting', angularSettingReducer),
@@ -90,6 +92,7 @@ import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
     // }),
   ],
   exports: [
+    MenuTabModule,
     // NumberDirective,
     // MaterialModule,
     // ConfirmDialogModule,
