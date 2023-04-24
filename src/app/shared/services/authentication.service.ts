@@ -46,6 +46,10 @@ export class AuthenticationService {
       this.federationUrl = urlObj.toString();
     }
 
+    if (this.federationUrl === '') {
+      this.federationUrl = environment.federationUrl;
+    }
+
     return this.httpService
       .post<any>(
         this.federationUrl,
