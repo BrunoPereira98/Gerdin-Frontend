@@ -16,13 +16,13 @@ const routes: Routes = [
   //       (m) => m.ConsultaInstalacoesModule
   //     ),
   // },
-  // {
-  //   path: 'nova-regra',
-  //   loadChildren: () =>
-  //     import('./pages/nova-regra/nova-regra.module').then(
-  //       (m) => m.NovaRegraModule
-  //     ),
-  // },
+  {
+    path: 'calculo-restricoes',
+    loadChildren: () =>
+      import('./pages/calculo-restricoes/calculo-restricoes.module').then(
+        (m) => m.CalculoRestricoesModule
+      ),
+  },
   // {
   //   path: 'consulta-monitoramento',
   //   loadChildren: () =>

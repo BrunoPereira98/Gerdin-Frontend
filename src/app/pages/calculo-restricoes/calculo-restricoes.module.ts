@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CalculoRestricoesComponent } from './calculo-restricoes.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    CalculoRestricoesComponent
+  ],
   imports: [
     CommonModule
   ]
