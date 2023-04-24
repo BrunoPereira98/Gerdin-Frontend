@@ -2,27 +2,27 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
+  {
+    path: 'teste-comunicacao',
+    loadChildren: () =>
+      import('./pages/teste-comunicacao/teste-comunicacao.module').then(
+        (m) => m.TesteComunicacaoModule
+      ),
+  },
   // {
-  //   path: 'teste-comunicacao',
+  //   path: 'consulta-instalacoes',
   //   loadChildren: () =>
-  //     import('./pages/teste-comunicacao/teste-comunicacao.module').then(
-  //       (m) => m.TesteComunicacaoModule
+  //     import('./pages/consulta-instalacoes/consulta-instalacoes.module').then(
+  //       (m) => m.ConsultaInstalacoesModule
   //     ),
   // },
-  // {
-  //   path: 'consulta-regra',
-  //   loadChildren: () =>
-  //     import('./pages/consulta-regra/consulta-regra.module').then(
-  //       (m) => m.ConsultaRegraModule
-  //     ),
-  // },
-  // {
-  //   path: 'nova-regra',
-  //   loadChildren: () =>
-  //     import('./pages/nova-regra/nova-regra.module').then(
-  //       (m) => m.NovaRegraModule
-  //     ),
-  // },
+  {
+    path: 'calculo-restricoes',
+    loadChildren: () =>
+      import('./pages/calculo-restricoes/calculo-restricoes.module').then(
+        (m) => m.CalculoRestricoesModule
+      ),
+  },
   // {
   //   path: 'consulta-monitoramento',
   //   loadChildren: () =>
