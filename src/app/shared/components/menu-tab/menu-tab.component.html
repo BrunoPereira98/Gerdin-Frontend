@@ -1,1 +1,9 @@
-<p>menu-tab works!</p>
+<mat-tab-group mat-align-tabs="center"
+[style.display]="visualizarAbas()"
+  [selectedIndex]="activeLinkIndex"
+  (selectedTabChange)="onTabChanged($event)"
+>
+  <mat-tab *ngFor="let tab of tabLinks"
+    [label]="tab.label">
+  </mat-tab>
+</mat-tab-group>
