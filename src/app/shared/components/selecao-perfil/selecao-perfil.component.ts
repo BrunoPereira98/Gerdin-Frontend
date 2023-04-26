@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {SelecaoPerfilService} from './services/selecao-perfil.service';
+import { Component, OnInit } from '@angular/core';
+import { SelecaoPerfilService } from './services/selecao-perfil.service';
 import { UsuarioDto } from './models/UsuarioDto';
 import { OnsSelectModel } from '../../models/ons-select-model';
 
@@ -11,30 +10,21 @@ import { OnsSelectModel } from '../../models/ons-select-model';
 })
 export class SelecaoPerfilComponent implements OnInit {
 
-    perfil!: FormGroup;
+    perfil: string = '';
     usuario: UsuarioDto = new UsuarioDto();
     perfis: OnsSelectModel[] = [];
 
-    constructor(private formBuilder: FormBuilder,
-                private selecaoPerfilService: SelecaoPerfilService) {
+    constructor(private selecaoPerfilService: SelecaoPerfilService) {
 
     }
 
     ngOnInit() {
-        this.buildForm();
-    }
 
-    buildForm() {
-        this.perfil = this.formBuilder.group({
-            perfil: null
-        });
     }
 
     inicializar() {
-        this.buildForm();
-
-        if (localStorage.getItem('perfilSelecionado' + localStorage.getItem('nomeUsuario'))) {
-            this.perfil.controls['perfil'].setValue(localStorage.getItem('perfilSelecionado' + localStorage.getItem('nomeUsuario')));
+        if (this.obterPerfilSelecionado()) {
+            this.perfil = this.obterPerfilSelecionado();
         }
 
         this.selecaoPerfilService.obterDados().subscribe((res) => {
@@ -42,7 +32,7 @@ export class SelecaoPerfilComponent implements OnInit {
             this.usuario = res;
 
             if (!this.usuario) {
-                localStorage.removeItem('perfilSelecionado' + localStorage.getItem('nomeUsuario'));
+                localStorage.removeItem(this.obterNomeStoragePerfil());
                 localStorage.removeItem('nomeUsuario');
             } else {
                 this.usuario.EscopoOperacoes.forEach(escopo => {
@@ -50,17 +40,17 @@ export class SelecaoPerfilComponent implements OnInit {
                 });
 
                 if (localStorage.getItem('nomeUsuario') !== this.usuario.Nome) {
-                    localStorage.removeItem('perfilSelecionado' + localStorage.getItem('nomeUsuario'));
-                    this.perfil.controls['perfil'].setValue('');
+                    localStorage.removeItem(this.obterNomeStoragePerfil());
+                    this.perfil = '';
                 }
 
                 localStorage.setItem('nomeUsuario', this.usuario.Nome);
                 if (this.usuario.EscopoOperacoes.length === 1) {
-                    this.perfil.controls['perfil'].setValue(this.usuario.EscopoOperacoes[0]);
+                    this.perfil = this.usuario.EscopoOperacoes[0];
                     if (!localStorage.getItem('perfilSelecionado' + this.usuario.Nome)) {
                         this.confirmar();
                     }
-                } else if (!localStorage.getItem('perfilSelecionado' + localStorage.getItem('nomeUsuario'))
+                } else if (!this.obterPerfilSelecionado()
                     && this.usuario.EscopoOperacoes.length > 1) {
                     alert('Deve ser selecionado um perfil');
                 }
@@ -69,12 +59,23 @@ export class SelecaoPerfilComponent implements OnInit {
     }
 
     confirmar() {
-        localStorage.setItem('perfilSelecionado' + localStorage.getItem('nomeUsuario'), this.perfil.value.perfil);
+        localStorage.setItem(this.obterNomeStoragePerfil(), this.perfil);
         window.location.reload();
     }
 
     isVisualizarSelecao() {
         return !this.usuario ? 'block' : (this.usuario.EscopoOperacoes?.length > 1 ? 'block' : 'none');
+    }
+
+    obterPerfilSelecionado() {
+        const perfil = localStorage.getItem(this.obterNomeStoragePerfil());
+        return perfil !== null && perfil !== undefined ?
+            perfil :
+            '';
+    }
+
+    obterNomeStoragePerfil() {
+        return 'perfilSelecionado' + localStorage.getItem('nomeUsuario');
     }
 
 }

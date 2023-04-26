@@ -36,11 +36,13 @@ export class HttpInterceptorProvider implements HttpInterceptor {
         headers: req.headers
           .set('Authorization', 'Bearer ' + token.access_token)
           .set('Content-Type', 'application/json')
-          .set('Cache-Control', 'no-cache'),
+          .set('Cache-Control', 'no-cache')
+          .set('perfilSelecionado', this.obterPerfilSelecionado()),
       });
     } else {
       httpRequest = req.clone({
-        headers: req.headers.set('Content-Type', 'application/json'),
+        headers: req.headers.set('Content-Type', 'application/json')
+        .set('perfilSelecionado', this.obterPerfilSelecionado()),
       });
     }
     
@@ -89,4 +91,16 @@ export class HttpInterceptorProvider implements HttpInterceptor {
       }
     );
   }
+
+  private obterPerfilSelecionado() {
+    const perfil = localStorage.getItem(this.obterNomeStoragePerfil());
+    return perfil !== null && perfil !== undefined ?
+      perfil :
+      '';
+  }
+
+  private obterNomeStoragePerfil() {
+    return 'perfilSelecionado' + localStorage.getItem('nomeUsuario');
+  }
+
 }
