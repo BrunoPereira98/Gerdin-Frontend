@@ -20,16 +20,10 @@ import { MAT_LEGACY_FORM_FIELD_DEFAULT_OPTIONS as MAT_FORM_FIELD_DEFAULT_OPTIONS
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 import { MenuTabModule } from './components/menu-tab/menu-tab.module';
-// import { AlertComponent } from './components/alert/alert.component';
-// import { NgxLoadingModule } from './components/ngx-loading/ngx-loading.module';
-// import { OnsCalendarModule } from './components/ons-calendar/ons-calendar.module';
-// import { OnsInputAutocompleteModule } from './components/ons-input-autocomplete/ons-input-autocomplete.module';
-// import { OnsInputNumberModule } from './components/ons-input-number/ons-input-number.module';
-// import { OnsSelectModule } from './components/ons-select/ons-select.module';
-// import { NumberDirective } from './directive/number.directive';
-// import { MaterialModule } from './material-module/material.module';
-// import { MyCustonPaginatorIntl } from './models/my-custon-paginator-intl';
-// import { PermissaoPipe } from './pipes/permissao.pipe';
+import { StatusBarModule } from './components/status-bar/status-bar.module';
+import { SelecaoPerfilModule } from './components/selecao-perfil/selecao-perfil.module';
+import { VersaoSistemaModule } from './components/versao-sistema/versao-sistema.module';
+
 @NgModule({
   declarations: [
     // NumberDirective, AlertComponent, PermissaoPipe
@@ -71,40 +65,17 @@ import { MenuTabModule } from './components/menu-tab/menu-tab.module';
     MatNativeDateModule,
     MomentDateModule,
     MenuTabModule,
-    // MaterialModule,
-    // ConfirmDialogModule,
     StoreModule.forFeature('angularSetting', angularSettingReducer),
     EffectsModule.forFeature([AngularSettingEffect]),
-    // OnsInputModule,
-    // OnsInputNumberModule,
-    // OnsCalendarModule,
-    // OnsSelectModule,
-    // OnsFiltroPesquisaModule,
-    // OnsDataModule,
-    // OnsInputAutocompleteModule,
-    // NgxLoadingModule.forRoot({
-    //   animationType: ngxLoadingAnimationTypes.rectangleBounce,
-    //   backdropBackgroundColour: 'rgba(0,0,0,0.6)',
-    //   primaryColour: '#E06F36',
-    //   secondaryColour: '#E06F36',
-    //   tertiaryColour: '#E06F36',
-    //   fullScreenBackdrop: true,
-    // }),
+    StatusBarModule,
+    SelecaoPerfilModule,
+    VersaoSistemaModule,
   ],
   exports: [
     MenuTabModule,
-    // NumberDirective,
-    // MaterialModule,
-    // ConfirmDialogModule,
-    // OnsInputModule,
-    // OnsInputNumberModule,
-    // OnsCalendarModule,
-    // OnsSelectModule,
-    // OnsFiltroPesquisaModule,
-    // OnsDataModule,
-    // OnsInputAutocompleteModule,
-    // PermissaoPipe,
-    // NgxLoadingModule,
+    StatusBarModule,
+    SelecaoPerfilModule,
+    VersaoSistemaModule,
   ],
 })
 export class SharedModule {}

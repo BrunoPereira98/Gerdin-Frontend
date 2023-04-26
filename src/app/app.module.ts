@@ -21,7 +21,6 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    SharedModule,
     NgxSpinnerModule.forRoot(),
     StoreModule.forRoot({}),
     EffectsRootModule,
@@ -30,6 +29,7 @@ import { SharedModule } from './shared/shared.module';
       maxAge: 25,
       logOnly: environment.production,
     }),
+    SharedModule,
   ],
   exports: [NgxSpinnerModule],
   providers: [
