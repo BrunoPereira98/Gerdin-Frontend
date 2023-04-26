@@ -11,7 +11,6 @@ export class StatusBarComponent implements OnInit {
 
   @ViewChild(SelecaoPerfilComponent, {static: true}) selecaoPerfil: SelecaoPerfilComponent | undefined;
   @ViewChild(VersaoSistemaComponent, {static: true}) versaoSistema: VersaoSistemaComponent | undefined;
-  
 
   ngOnInit(): void {
     
@@ -21,4 +20,5 @@ export class StatusBarComponent implements OnInit {
     this.selecaoPerfil?.inicializar();
     this.versaoSistema?.inicializar();
   }
+  
 }

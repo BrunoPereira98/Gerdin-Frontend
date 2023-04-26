@@ -6,7 +6,6 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { NumberDirective } from '../../directive/number.directive';
 import { MenuTabComponent } from './menu-tab.component';
 
 @NgModule({
