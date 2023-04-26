@@ -1,9 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { AuthenticationService } from "./shared/services/authentication.service";
 import { AngularSettingsStoreService } from "./shared/storage/angular-settings-store.service";
 import { angularSettingApi } from './shared/store/angular-setting.action';
 import { angularSettingSelector } from './shared/store/angular-setting.selector';
+import { StatusBarComponent } from './shared/components/status-bar/status-bar.component';
 
 @Component({
   selector: "app-root",
@@ -11,7 +12,9 @@ import { angularSettingSelector } from './shared/store/angular-setting.selector'
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
-  title = "processador-regras-frontend";
+  title = "gerdin-frontend";
+
+  @ViewChild(StatusBarComponent, {static: true}) statuBar: StatusBarComponent | undefined;
 
   constructor(
     private readonly store: Store,
@@ -27,6 +30,10 @@ export class AppComponent implements OnInit {
       next: (result) => {
         this.angularSettingsStoreService.addStore(result);
         this.authenticationService.requestToken();
+
+        if (this.authenticationService.havePermission()) {
+          this.statuBar?.inicializar();
+        }
       },
       error: (err) => console.log(err),
       complete: () => console.log("complete"),

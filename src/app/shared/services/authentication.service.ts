@@ -7,6 +7,7 @@ import { TokenStoreService } from '../storage/token-store.service';
 import { angularSettingSelector } from '../store/angular-setting.selector';
 import { BaseService } from './base.service';
 import { UserTesteComunicacao } from '../models/UserTesteComunicacao';
+import { Observable } from 'rxjs';
 
 
 @Injectable()

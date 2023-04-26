@@ -1,0 +1,13 @@
+<div class="d-flex justify-content-between align-items-end" *ngIf="isVisualizarSelecao()">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-2 col-lg-2" >
+                <ons-select label="Perfil" [selectItens]="perfis" [(ngModel)]="perfil">
+                </ons-select>
+            </div>
+            <div class="col-12 col-md-2 col-lg-2 d-flex align-items-end">
+                <button mat-raised-button color="primary" (click)="confirmar()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
