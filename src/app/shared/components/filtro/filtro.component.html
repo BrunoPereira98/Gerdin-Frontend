@@ -1,0 +1,54 @@
+<div class="d-grid gap-6">
+    <div class="p-2">
+        <mat-card>
+            <mat-card-content>
+                <div class="d-flex justify-content-between align-items-end">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 col-md-3 col-lg-3">
+                                <ons-input-autocomplete-chip-list label="Conjunto/Usina:"
+                                    [filteredOptions]="valoresFiltros.Instalacoes">
+                                </ons-input-autocomplete-chip-list>
+                                <ons-input-autocomplete-chip-list label="Exceto:"
+                                    [filteredOptions]="valoresFiltros.Instalacoes">
+                                </ons-input-autocomplete-chip-list>
+                            </div>
+                            <div class="col-12 col-md-3 col-lg-3">
+                                <ons-input-autocomplete-chip-list label="Conexão:"
+                                    [filteredOptions]="valoresFiltros.PontosDeConexao">
+                                </ons-input-autocomplete-chip-list>
+                                <ons-input-autocomplete-chip-list label="Exceto:"
+                                    [filteredOptions]="valoresFiltros.PontosDeConexao">
+                                </ons-input-autocomplete-chip-list>
+                            </div>
+                            <!-- <div class="col-12 col-md-3 col-lg-3">
+                                <ons-input-autocomplete-chip-list label="Fluxo (SACI):"
+                                    [filteredOptions]="valoresFiltros.PontosDeConexao">
+                                </ons-input-autocomplete-chip-list>
+                                <ons-input-autocomplete-chip-list label="Exceto:"
+                                    [filteredOptions]="valoresFiltros.PontosDeConexao">
+                                </ons-input-autocomplete-chip-list>
+                            </div> -->
+                            <div class="col-12 col-md-3 col-lg-3">
+                                <ons-input-autocomplete-chip-list label="Condição:"
+                                    [filteredOptions]="valoresFiltros.CondicaoOperacao">
+                                </ons-input-autocomplete-chip-list>
+                                <ons-input-autocomplete-chip-list label="Fonte:"
+                                    [filteredOptions]="valoresFiltros.TiposDeInstalacoes">
+                                </ons-input-autocomplete-chip-list>
+                            </div>
+                            <div class="col-12 col-md-3 col-lg-3">
+                                <ons-input-autocomplete-chip-list label="Agente:"
+                                    [filteredOptions]="valoresFiltros.AgenteOperador">
+                                </ons-input-autocomplete-chip-list>
+                                <ons-input-autocomplete-chip-list label="Área:"
+                                    [filteredOptions]="valoresFiltros.AreasEletricas">
+                                </ons-input-autocomplete-chip-list>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
