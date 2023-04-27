@@ -23,6 +23,7 @@ import { MenuTabModule } from './components/menu-tab/menu-tab.module';
 import { StatusBarModule } from './components/status-bar/status-bar.module';
 import { SelecaoPerfilModule } from './components/selecao-perfil/selecao-perfil.module';
 import { VersaoSistemaModule } from './components/versao-sistema/versao-sistema.module';
+import { FiltroModule } from './components/filtro/filtro.module';
 
 @NgModule({
   declarations: [
@@ -70,12 +71,14 @@ import { VersaoSistemaModule } from './components/versao-sistema/versao-sistema.
     StatusBarModule,
     SelecaoPerfilModule,
     VersaoSistemaModule,
+    FiltroModule
   ],
   exports: [
     MenuTabModule,
     StatusBarModule,
     SelecaoPerfilModule,
     VersaoSistemaModule,
+    FiltroModule
   ],
 })
 export class SharedModule {}
