@@ -1,0 +1,42 @@
+<div class="d-flex flex-column">
+  <mat-label class="font-color-label">
+    <strong>{{label}}</strong>
+  </mat-label>
+  <mat-form-field>
+    <mat-chip-list #matChipList [multiple]="false">
+      <mat-chip *ngFor="let item of retornosFiltro" (removed)="removerItem(item)">
+        <span *ngIf="item.TipoInstalacao">
+          <img style="width: 15px;"
+            src="../../../assets/{{item?.TipoInstalacao?.Gif}}" />
+        </span>
+        <span>
+          {{item.Descricao}}
+        </span>
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input type="text" #matInput [formControl]="matControl" 
+        [matAutocomplete]="matAutoComplete" [matChipInputFor]="matChipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" />
+    </mat-chip-list>
+    <mat-autocomplete #matAutoComplete="matAutocomplete" (closed)="fecharAutocomplete()"
+      (optionSelected)="selecionarItem($event.option, 'I')">
+      <mat-option *ngFor="let item of matFilteredOptions | async" [value]="item">
+        <div>
+          <mat-checkbox [checked]="isItemSelecionado(item)"
+            (change)="selecionarItem(item, 'I')"
+            (click)="$event.stopPropagation()">
+            <span *ngIf="item.TipoInstalacao">
+              <img style="width: 15px;"
+                src="../../../assets/{{item?.tipoInstalacao?.Gif}}" />
+            </span>
+            <span>
+              {{item.Descricao}}
+            </span>
+          </mat-checkbox>
+        </div>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
