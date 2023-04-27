@@ -69,21 +69,23 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
   constructor() { }
 
   ngOnInit() {
-    if (this.filteredOptions) {
-      this.filteredOptions = this.padronizarItensFiltro(this.filteredOptions);
-      if (this.filteredOptions.sort()) {
-        this.matFilteredOptions =
-          this.preencherFiltroObjeto(this.filteredOptions);
-      }
-    }
+    // if (this.filteredOptions) {
+    //   this.filteredOptions = this.padronizarItensFiltro(this.filteredOptions);
+    //   if (this.filteredOptions.sort()) {
+    //     this.matFilteredOptions =
+    //       this.preencherFiltroObjeto(this.filteredOptions);
+    //   }
+    // }
   }
 
-  ngOnChanges() {
-    if (this.filteredOptions) {
-      this.filteredOptions = this.padronizarItensFiltro(this.filteredOptions);
-      if (this.filteredOptions.sort()) {
-        this.matFilteredOptions =
-          this.preencherFiltroObjeto(this.filteredOptions);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['filteredOptions'].currentValue !==  changes['filteredOptions'].previousValue ) {
+      if (this.filteredOptions) {
+        this.filteredOptions = this.padronizarItensFiltro(this.filteredOptions);
+        if (this.filteredOptions.sort()) {
+          this.matFilteredOptions =
+            this.preencherFiltroObjeto(this.filteredOptions);
+        }
       }
     }
   }
