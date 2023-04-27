@@ -6,6 +6,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { ConsultaInstalacoesRoutingModule } from './consulta-instalacoes-routing.module';
 import {OnsDataModule} from "../../shared/components/ons-data/ons-data.module";
+import {MaterialModule} from "../../shared/material-module/material.module";
 
 
 
@@ -20,6 +21,7 @@ import {OnsDataModule} from "../../shared/components/ons-data/ons-data.module";
     ConsultaInstalacoesRoutingModule,
     ReactiveFormsModule,
     OnsDataModule,
+    MaterialModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

@@ -2,6 +2,8 @@ import {Injectable} from "@angular/core";
 import {environment} from "../../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {BaseResult} from "../../../shared/models/BaseResult";
+import {InstalacaoModel} from "../models/InstalacaoModel";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ export class ConsultaInstalacoesService {
   constructor(private readonly httpClient: HttpClient) {
   }
 
-  public getInstalacoes(): Observable<any> {
-    return this.httpClient.get<any[]>(this.apiUrl + 'UsinaConjuntoUsina/ConsultarInstalacoes');
+  public getInstalacoes(): Observable<BaseResult<InstalacaoModel[]>> {
+    return this.httpClient.get<BaseResult<InstalacaoModel[]>>(this.apiUrl + 'UsinaConjuntoUsina/ConsultarInstalacoes');
   }
 }

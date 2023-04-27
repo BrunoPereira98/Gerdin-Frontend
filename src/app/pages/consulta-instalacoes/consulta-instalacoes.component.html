@@ -1,54 +1,54 @@
 <app-filtro #filtro [tipoFiltro]="'CI'"></app-filtro>
-<p>consulta-instalacoes works!</p>
+
 <div class="p-2">
-<!--  <ons-data *ngFor="let regra of page.content; let i = index" [identity]="i">-->
-<!--    <ng-container header>-->
-<!--      <h2 class="font-color-primary">{{regra?.idRegra}}</h2>-->
-<!--    </ng-container>-->
-<!--    <ng-container body class="d-block align-items-center">-->
-<!--      <table class="table-card">-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--          <th><strong class="font-color-label align-items-center">Objeto</strong></th>-->
-<!--          <th style="width: 8%;"><strong class="font-color-label align-items-center">Sistema</strong></th>-->
-<!--          <th><strong class="font-color-label align-items-center">Descrição da regra</strong></th>-->
-<!--          <th style="width: 12%;"><strong class="font-color-label align-items-center">Nº de blocos</strong></th>-->
-<!--          <th style="width: 7%;"><strong class="font-color-label align-items-center">Versão</strong></th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        <tr>-->
-<!--          <td>-->
-<!--            <div>{{regra.dscObjsistema}}</div>-->
-<!--          </td>-->
-<!--          <td>-->
-<!--            <div>{{regra.nomSistema}}</div>-->
-<!--          </td>-->
-<!--          <td>-->
-<!--            <div>{{regra.dscRegra}}</div>-->
-<!--          </td>-->
-<!--          <td>-->
-<!--            <div>0</div>-->
-<!--          </td>-->
-<!--          <td>-->
-<!--            <div>{{regra.verRegra}}</div>-->
-<!--          </td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--      </table>-->
-<!--    </ng-container>-->
-<!--    <ng-container footer>-->
-<!--      <div class="px-2">-->
-<!--        <button style="width: 90px;" mat-raised-button class="btnVirgente acao">Vigente</button>-->
-<!--      </div>-->
-<!--    </ng-container>-->
-<!--    <mg-container actions class="d-flex justify-content-start align-items-end">-->
-<!--      <button mat-icon-button aria-label="Example icon button with a home icon">-->
-<!--        <mat-icon color="accent">edit</mat-icon>-->
-<!--      </button>-->
-<!--      <button mat-icon-button aria-label="Example icon button with a menu icon">-->
-<!--        <mat-icon color="accent">settings_backup_restore</mat-icon>-->
-<!--      </button>-->
-<!--    </mg-container>-->
-<!--  </ons-data>-->
+  <mat-card>
+    <mat-card-content>
+      <ng-container class="d-block align-items-center">
+        <table class="table-card">
+          <thead>
+          <tr>
+            <th><strong class="font-color-label align-items-center">Fonte</strong></th>
+            <th><strong class="font-color-label align-items-center">Conjunto/Usina</strong></th>
+            <th><strong class="font-color-label align-items-center">Agente</strong></th>
+            <th><strong class="font-color-label align-items-center">Área</strong></th>
+            <th><strong class="font-color-label align-items-center">Sigla</strong></th>
+            <th><strong class="font-color-label align-items-center">Conexão</strong></th>
+            <th><strong class="font-color-label align-items-center">Potência</strong></th>
+            <th><strong class="font-color-label align-items-center">Condição</strong></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let instalacaoModel of instalacaoModelList ">
+            <td>
+              {{instalacaoModel.TipoInstalacao.Nome}}
+            </td>
+            <td>
+              {{instalacaoModel.NomeInstalacao}}
+            </td>
+            <td>
+              {{instalacaoModel.Agente}}
+            </td>
+            <td>
+              {{instalacaoModel.Area}}
+            </td>
+            <td>
+              {{instalacaoModel.SiglaConexao}}
+            </td>
+            <td>
+              {{instalacaoModel.PontoConexao}}
+            </td>
+            <td>
+              {{instalacaoModel.PotenciaInstalada}}
+            </td>
+            <td>
+              {{instalacaoModel.NomeCondicaoOperacao}}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
+
+
 </div>
