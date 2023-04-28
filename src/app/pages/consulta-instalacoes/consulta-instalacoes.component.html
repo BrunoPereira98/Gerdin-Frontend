@@ -1,27 +1,82 @@
 <app-filtro #filtro [tipoFiltro]="'CI'"></app-filtro>
 
-<div class="p-2" *ngIf="!loading">
-  <mat-card>
-    <mat-card-content>
-      <ng-container class="d-block align-items-center">
-        <table matSort mat-table class="table-card linhas demo-table" [dataSource]="linhas">
-          <ng-container matColumnDef="{{coluna.nome}}" *ngFor="let coluna of colunas ">
-            <th class="{{coluna.cHeader}}" mat-header-cell *matHeaderCellDef [mat-sort-header]="coluna.nordenar"
-                [disabled]="coluna.nordenar">
-              <span>{{coluna.descricao}}</span>
-            </th>
+<div class="d-grid gap-6">
+  <div class="p-2" *ngIf="!loading">
+    <mat-card>
+      <mat-card-content>
+        <ng-container class="d-block align-items-center">
+          <table matSort mat-table class="table-card linhas demo-table" [dataSource]="dataSource">
 
-            <td class="{{coluna.cLinha}}" mat-cell *matCellDef="let item">
-              <div>
-                {{ obterValorColuna(item, coluna.nome)}}
-              </div>
-            </td>
+            <ng-container matColumnDef="TipoInstalacao.Nome">
+              <th class="fonte order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong class="font-color-label align-items-center">Fonte</strong></th>
+              <td mat-cell *matCellDef="let element">
+                {{element.TipoInstalacao.Nome}}
+              </td>
+            </ng-container>
 
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true" class="fix-thead"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-      </ng-container>
-    </mat-card-content>
-  </mat-card>
+            <ng-container matColumnDef="NomeInstalacao">
+              <th class="fonte order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong class="font-color-label align-items-center">Conjunto/Usina</strong></th>
+              <td mat-cell *matCellDef="let element">
+                {{element.NomeInstalacao}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Agente">
+              <th class="fonte order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong class="font-color-label align-items-center">Agente</strong></th>
+              <td mat-cell *matCellDef="let element">
+                {{element.Agente}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Area">
+              <th class="fonte order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong class="font-color-label align-items-center">Área</strong></th>
+              <td mat-cell *matCellDef="let element">
+                {{element.Area}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Sigla">
+              <th class="fonte order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong class="font-color-label align-items-center">Sigla</strong></th>
+              <td mat-cell *matCellDef="let element">
+                {{element.SiglaConexao}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="PontoConexao">
+              <th class="fonte order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong class="font-color-label align-items-center">Conexão</strong></th>
+              <td mat-cell *matCellDef="let element">
+                {{element.PontoConexao}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="PotenciaInstalada">
+              <th class="fonte order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong class="font-color-label align-items-center">Potência</strong></th>
+              <td mat-cell *matCellDef="let element">
+                {{element.PotenciaInstalada}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="NomeCondicaoOperacao">
+              <th class="fonte order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong class="font-color-label align-items-center">Condição</strong></th>
+              <td mat-cell *matCellDef="let element">
+                {{element.NomeCondicaoOperacao}}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="fix-thead"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+        </ng-container>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
