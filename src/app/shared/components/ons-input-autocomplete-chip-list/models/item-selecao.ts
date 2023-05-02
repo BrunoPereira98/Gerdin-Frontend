@@ -1,6 +1,6 @@
 import { TipoInstalacao } from 'src/app/shared/models/tipo-instalacao';
 
-export class FiltroDto{
+export class ItemSelecao{
     Id: string;
     Descricao: string;
     tipoInstalacao: TipoInstalacao | undefined;

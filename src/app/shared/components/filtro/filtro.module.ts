@@ -8,10 +8,16 @@ import {
 } from '@angular/forms';
 import { FiltroComponent } from './filtro.component';
 import { OnsInputAutocompleteChipListModule } from '../ons-input-autocomplete-chip-list/ons-input-autocomplete-chip-list.module';
+import { OnsInputNumberModule } from '../ons-input-number/ons-input-number.module';
+import { OnsSelectModule } from '../ons-select/ons-select.module';
+import { OnsCalendarModule } from '../ons-calendar/ons-calendar.module';
 
 @NgModule({
   declarations: [FiltroComponent],
-  imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule, OnsInputAutocompleteChipListModule],
+  imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule, OnsInputAutocompleteChipListModule,
+    OnsInputNumberModule,
+    OnsSelectModule,
+    OnsCalendarModule],
   exports: [FiltroComponent],
   providers: [
     {
@@ -21,4 +27,4 @@ import { OnsInputAutocompleteChipListModule } from '../ons-input-autocomplete-ch
     },
   ],
 })
-export class FiltroModule {}
+export class FiltroModule { }

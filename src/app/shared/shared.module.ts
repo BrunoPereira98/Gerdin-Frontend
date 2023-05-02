@@ -2,11 +2,6 @@ import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-// import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.module';
-// import { ngxLoadingAnimationTypes } from './components/ngx-loading/ngx-loading-config';
-// import { OnsDataModule } from './components/ons-data/ons-data.module';
-// import { OnsFiltroPesquisaModule } from './components/ons-filtro-pesquisa/ons-filtro-pesquisa.module';
-// import { OnsInputModule } from './components/ons-input/ons-input.module';
 import { AngularSettingsService } from './services/angular-settings.service';
 import { AuthenticationService } from './services/authentication.service';
 import { AngularSettingsStoreService } from './storage/angular-settings-store.service';
@@ -24,6 +19,15 @@ import { StatusBarModule } from './components/status-bar/status-bar.module';
 import { SelecaoPerfilModule } from './components/selecao-perfil/selecao-perfil.module';
 import { VersaoSistemaModule } from './components/versao-sistema/versao-sistema.module';
 import { FiltroModule } from './components/filtro/filtro.module';
+import { OnsInputModule } from './components/ons-input/ons-input.module';
+import { OnsInputNumberModule } from './components/ons-input-number/ons-input-number.module';
+import { OnsCalendarModule } from './components/ons-calendar/ons-calendar.module';
+import { OnsSelectModule } from './components/ons-select/ons-select.module';
+import { OnsFiltroPesquisaModule } from './components/ons-filtro-pesquisa/ons-filtro-pesquisa.module';
+import { OnsDataModule } from './components/ons-data/ons-data.module';
+import { OnsInputAutocompleteModule } from './components/ons-input-autocomplete/ons-input-autocomplete.module';
+import { MaterialModule } from './material-module/material.module';
+import { OnsInputAutocompleteChipListModule } from './components/ons-input-autocomplete-chip-list/ons-input-autocomplete-chip-list.module';
 
 @NgModule({
   declarations: [
@@ -66,8 +70,18 @@ import { FiltroModule } from './components/filtro/filtro.module';
     MatNativeDateModule,
     MomentDateModule,
     MenuTabModule,
+    MaterialModule,
     StoreModule.forFeature('angularSetting', angularSettingReducer),
     EffectsModule.forFeature([AngularSettingEffect]),
+    OnsInputModule,
+    OnsInputNumberModule,
+    OnsCalendarModule,
+    OnsSelectModule,
+    OnsFiltroPesquisaModule,
+    OnsDataModule,
+    OnsInputAutocompleteModule,
+    OnsInputAutocompleteChipListModule,
+    OnsInputAutocompleteChipListModule,
     StatusBarModule,
     SelecaoPerfilModule,
     VersaoSistemaModule,
@@ -75,6 +89,14 @@ import { FiltroModule } from './components/filtro/filtro.module';
   ],
   exports: [
     MenuTabModule,
+    MaterialModule,
+    OnsInputModule,
+    OnsInputNumberModule,
+    OnsCalendarModule,
+    OnsSelectModule,
+    OnsFiltroPesquisaModule,
+    OnsDataModule,
+    OnsInputAutocompleteModule,
     StatusBarModule,
     SelecaoPerfilModule,
     VersaoSistemaModule,
