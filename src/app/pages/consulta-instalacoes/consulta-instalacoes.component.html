@@ -1,4 +1,4 @@
-<app-filtro #filtro [tipoFiltro]="'CI'"></app-filtro>
+<app-filtro #filtro (pesquisa)="pesquisar($event)" [tipoFiltro]="'CI'"></app-filtro>
 
 <div class="d-grid gap-6">
   <div class="p-2" *ngIf="!loading">

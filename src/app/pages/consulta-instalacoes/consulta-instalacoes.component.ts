@@ -3,6 +3,7 @@ import {ConsultaInstalacoesService} from "./services/consulta-instalacoes.servic
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort, Sort} from "@angular/material/sort";
 import {LiveAnnouncer} from "@angular/cdk/a11y";
+import {RetornoFiltro} from "../../shared/components/filtro/models/retorno-filtro";
 
 @Component({
   selector: 'app-consulta-instalacoes',
@@ -29,6 +30,14 @@ export class ConsultaInstalacoesComponent implements OnInit {
 
   private getInstalacoes() {
     this.consultaInstalacoesService.getInstalacoes().subscribe((item) => {
+      this.dataSource.data = item.content;
+      this.dataSource.sort = this.sort;
+      this.loading = false;
+    })
+  }
+
+  pesquisar(event: RetornoFiltro) {
+    this.consultaInstalacoesService.getInstalacoes(event).subscribe((item) => {
       this.dataSource.data = item.content;
       this.dataSource.sort = this.sort;
       this.loading = false;
