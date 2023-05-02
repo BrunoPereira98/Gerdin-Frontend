@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { VersaoDto } from './models/VersaoDto';
+import { VersaoDto } from './models/versao-dto';
 import { VersaoSistemaService } from './services/versao-sistema.service';
 
 @Component({

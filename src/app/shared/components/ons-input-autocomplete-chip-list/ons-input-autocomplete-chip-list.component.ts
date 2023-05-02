@@ -13,6 +13,7 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/f
 import { Observable, map, startWith } from 'rxjs';
 import { SelectItem } from '../../models/select-Item';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { ItemSelecao } from './models/item-selecao';
 import { FiltroDto } from '../filtro/dto/filtro-dto';
 
 const INPUT_AUTOCOMPLETE_FIEL_VALUER_ACCESSOR: any = {
@@ -47,13 +48,17 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
 
   public retornosFiltro: any[] = [];
 
-  matControl = new FormControl('');
+  @Input() matControl = new FormControl('');
 
   matFilteredOptions!: Observable<any[]>;
 
   @ViewChild('matInput', { static: true }) matInput!: ElementRef<HTMLInputElement>;
 
   @Input() filteredOptions: any[] = [];
+
+  @Input() multiselecao: boolean = true;
+
+  @Input() campoSalvar: string = '';
 
   get value() {
     return this.innerValue;
@@ -69,31 +74,48 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
   constructor() { }
 
   ngOnInit() {
-    // if (this.filteredOptions) {
-    //   this.filteredOptions = this.padronizarItensFiltro(this.filteredOptions);
-    //   if (this.filteredOptions.sort()) {
-    //     this.matFilteredOptions =
-    //       this.preencherFiltroObjeto(this.filteredOptions);
-    //   }
-    // }
+  }
+
+  carregarSalvos() {
+    if (this.campoSalvar
+        && sessionStorage.getItem(this.campoSalvar)) {
+          const valores = sessionStorage.getItem(this.campoSalvar);
+          this.retornosFiltro = JSON.parse(valores ? valores : '');
+          this.value = this.retornosFiltro;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.campoSalvar) {
+      sessionStorage.setItem(this.campoSalvar, JSON.stringify(this.retornosFiltro));
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['filteredOptions'].currentValue !==  changes['filteredOptions'].previousValue ) {
-      if (this.filteredOptions) {
-        this.filteredOptions = this.padronizarItensFiltro(this.filteredOptions);
-        if (this.filteredOptions.sort()) {
-          this.matFilteredOptions =
-            this.preencherFiltroObjeto(this.filteredOptions);
-        }
+      this.inicializarFiltros();
+    }
+  }
+
+  inicializarFiltros() {
+    if (this.filteredOptions) {
+      const opcoesPadronizadas = this.padronizarItens(this.filteredOptions);
+      if (opcoesPadronizadas.sort()) {
+        this.matFilteredOptions =
+          this.preencherFiltroObjeto(opcoesPadronizadas);
       }
     }
   }
 
-  preencherFiltroObjeto(opcoes: FiltroDto[]) {
+  preencherFiltroObjeto(opcoes: ItemSelecao[]) {
     return this.matControl.valueChanges.pipe(
       startWith(''),
-      map(value => (value === null ? '' : (value !== undefined ? value.toLowerCase() : ''))),
+      map(value => (
+        value === null ?
+          '' :
+          (value !== undefined ?
+            (value as unknown as ItemSelecao).Descricao?.toLowerCase() :
+            ''))),
       map(value => this._filtrarObjeto(opcoes, value || ''))
     );
   }
@@ -130,16 +152,18 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
     return item && item.label ? item.label : '';
   }
 
-  selecionarItem(item: any, campo: string) {
+  selecionarItem(item: any) {
     if (!this.isItemSelecionado(item)) {
       this.retornosFiltro.push(item);
+
+      if (!this.multiselecao) {
+        this.matFilteredOptions = new Observable<any[]>;
+      }
     } else {
       this.removerItem(item);
     }
-    
-    if (campo === 'FS') {
-      this.matFilteredOptions = new Observable<any[]>;
-    }
+
+    this.value = this.retornosFiltro;
 
     this.selectMetodo.emit(event);
   }
@@ -156,6 +180,10 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
     if (index >= 0) {
       this.retornosFiltro.splice(index, 1);
     }
+
+    if (!this.multiselecao) {
+      this.inicializarFiltros();
+    }
   }
 
   isItemSelecionado(item: any) {
@@ -166,21 +194,29 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
     }
   }
 
-  padronizarItensFiltro(filtroSelecionado: any) {
-    let filtros: FiltroDto[] = [];
+  padronizarItens(itemSelecionado: any) {
+    let itens: ItemSelecao[] = [];
 
-    if (filtroSelecionado) {
-      filtroSelecionado.forEach((item: any) => {
+    if (itemSelecionado) {
+      itemSelecionado.forEach((item: any) => {
         if (typeof item === 'string') {
-          item = new FiltroDto(item, item, undefined);
-        } else {
-          item = new FiltroDto(item.Id, item.Nome, item.TipoInstalacao);
+          item = new ItemSelecao(item, item, undefined);
+        } else if (item['Nome']) {
+          item = new ItemSelecao(item.Id.toString(), item.Nome, item.TipoInstalacao);
+        } else if (item['Descricao']) {
+          item = new ItemSelecao(item.Id.toString(), item.Descricao, undefined);
         }
-        filtros.push(item)
+        
+        itens.push(item)
       });
     }
 
-    return filtros;
+    return itens;
+  }
+
+  limpar() {
+    this.retornosFiltro = [];
+    this.value = this.retornosFiltro;
   }
 
 }

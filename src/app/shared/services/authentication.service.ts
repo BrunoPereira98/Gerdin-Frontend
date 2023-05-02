@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { TokenStoreService } from '../storage/token-store.service';
 import { angularSettingSelector } from '../store/angular-setting.selector';
 import { BaseService } from './base.service';
-import { UserTesteComunicacao } from '../models/UserTesteComunicacao';
+import { UserTesteComunicacao } from '../models/user-teste-comunicacao';
 import { Observable } from 'rxjs';
 
 

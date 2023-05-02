@@ -5,9 +5,9 @@
   <mat-form-field>
     <mat-chip-list #matChipList [multiple]="false">
       <mat-chip *ngFor="let item of retornosFiltro" (removed)="removerItem(item)">
-        <span *ngIf="item.TipoInstalacao">
+        <span *ngIf="item.tipoInstalacao">
           <img style="width: 15px;"
-            src="../../../assets/{{item?.TipoInstalacao?.Gif}}" />
+            src="../../../assets/{{item?.tipoInstalacao?.Gif}}" />
         </span>
         <span>
           {{item.Descricao}}
@@ -16,18 +16,18 @@
           <mat-icon>cancel</mat-icon>
         </button>
       </mat-chip>
-      <input type="text" #matInput [formControl]="matControl" 
+      <input type="text" #matInput [formControl]="matControl"
         [matAutocomplete]="matAutoComplete" [matChipInputFor]="matChipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes" />
     </mat-chip-list>
     <mat-autocomplete #matAutoComplete="matAutocomplete" (closed)="fecharAutocomplete()"
-      (optionSelected)="selecionarItem($event.option, 'I')">
+      (optionSelected)="selecionarItem($event.option.value)">
       <mat-option *ngFor="let item of matFilteredOptions | async" [value]="item">
-        <div>
+        <div *ngIf="multiselecao">
           <mat-checkbox [checked]="isItemSelecionado(item)"
-            (change)="selecionarItem(item, 'I')"
+            (change)="selecionarItem(item)"
             (click)="$event.stopPropagation()">
-            <span *ngIf="item.TipoInstalacao">
+            <span *ngIf="item.tipoInstalacao">
               <img style="width: 15px;"
                 src="../../../assets/{{item?.tipoInstalacao?.Gif}}" />
             </span>
@@ -36,6 +36,9 @@
             </span>
           </mat-checkbox>
         </div>
+        <span *ngIf="!multiselecao">
+          {{item.Descricao}}
+        </span>
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
