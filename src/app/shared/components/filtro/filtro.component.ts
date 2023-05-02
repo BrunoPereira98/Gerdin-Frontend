@@ -19,7 +19,7 @@ export class FiltroComponent implements OnInit {
 
   @Input() tipoFiltro: string = '';
 
-  filtro: RetornoFiltro = new RetornoFiltro();
+  retornoFiltro: RetornoFiltro = new RetornoFiltro();
 
   @Output() pesquisa = new EventEmitter<RetornoFiltro>();
 
@@ -44,9 +44,9 @@ export class FiltroComponent implements OnInit {
       filtro.limpar();
     });
 
-    this.filtro.sensibilidadeFiltro = undefined;
-    this.filtro.geracaoMinimaFiltro = undefined;
-    this.filtro.operadorMatematicoFiltro = OperadorMatematico.MAOI.Id.toString();
+    this.retornoFiltro.sensibilidadeFiltro = undefined;
+    this.retornoFiltro.geracaoMinimaFiltro = undefined;
+    this.retornoFiltro.operadorMatematicoFiltro = OperadorMatematico.MAOI.Id.toString();
 
     this.limparDatas();
   }
@@ -63,10 +63,10 @@ export class FiltroComponent implements OnInit {
     if (this.tipoFiltro === 'R') {
       const data = new Date();
       data.setHours(0, 0, 0, 0);
-      this.filtro.dataInicialFiltro = data;
+      this.retornoFiltro.dataInicialFiltro = data;
       const dataFinal = new Date();
       dataFinal.setHours(23, 59, 0, 0);
-      this.filtro.dataFinalFiltro = dataFinal;
+      this.retornoFiltro.dataFinalFiltro = dataFinal;
     }
   }
 
@@ -114,31 +114,31 @@ export class FiltroComponent implements OnInit {
 
   pesquisar(tipoPesquisa: string = 'S') {
     if (this.tipoFiltro === 'R') {
-      if (!this.filtro.dataInicialFiltro
-        || !this.filtro.dataFinalFiltro) {
+      if (!this.retornoFiltro.dataInicialFiltro
+        || !this.retornoFiltro.dataFinalFiltro) {
         alert('Devem ser preenchidas as datas!');
         return;
       }
 
-      if (new Date(this.filtro.dataInicialFiltro) > new Date(this.filtro.dataFinalFiltro)) {
+      if (new Date(this.retornoFiltro.dataInicialFiltro) > new Date(this.retornoFiltro.dataFinalFiltro)) {
         alert('Data inicial deve ser menor ou igual a data final!');
         return;
       }
     }
 
     sessionStorage.setItem('isPesquisou', tipoPesquisa);
-    console.log(this.filtro);
-    this.pesquisa.emit(this.filtro);
+    console.log(this.retornoFiltro);
+    this.pesquisa.emit(this.retornoFiltro);
   }
 
   onDataInicialChange() {
-    const dataFinal = this.filtro.dataInicialFiltro;
+    const dataFinal = this.retornoFiltro.dataInicialFiltro;
 
     if (dataFinal) {
       // dataFinal.setHours(23);
       // dataFinal.setMinutes(59);
       // dataFinal.setSeconds(59);
-      this.filtro.dataFinalFiltro = dataFinal;
+      this.retornoFiltro.dataFinalFiltro = dataFinal;
     }
   }
 
