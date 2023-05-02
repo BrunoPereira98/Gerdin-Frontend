@@ -1,15 +1,13 @@
-import { Time } from "@angular/common";
-import { createInjectableType } from "@angular/compiler";
-import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   MatLegacySnackBarRef as MatSnackBarRef,
   MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA,
-} from "@angular/material/legacy-snack-bar";
+} from '@angular/material/legacy-snack-bar';
 
 @Component({
-  selector: "app-alert",
-  templateUrl: "./alert.component.html",
-  styleUrls: ["./alert.component.scss"],
+  selector: 'app-alert',
+  templateUrl: './alert.component.html',
+  styleUrls: ['./alert.component.scss'],
 })
 export class AlertComponent implements OnInit {
   progress = 100;

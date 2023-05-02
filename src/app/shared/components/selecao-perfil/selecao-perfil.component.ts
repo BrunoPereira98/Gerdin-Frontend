@@ -19,10 +19,6 @@ export class SelecaoPerfilComponent implements OnInit {
     }
 
     ngOnInit() {
-
-    }
-
-    inicializar() {
         if (this.obterPerfilSelecionado()) {
             this.perfil = this.obterPerfilSelecionado();
         }

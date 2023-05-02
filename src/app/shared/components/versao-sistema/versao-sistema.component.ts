@@ -15,10 +15,6 @@ export class VersaoSistemaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
-  }
-
-  inicializar() {
     this.versaoSistemaService.obterVersaoSistema().subscribe((item) => {
       this.versao = item;
     });

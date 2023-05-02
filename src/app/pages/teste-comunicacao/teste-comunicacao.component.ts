@@ -1,8 +1,8 @@
+import { UserService } from './../../shared/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { map } from 'rxjs';
 import { User } from './models/user';
-import { UserService } from './services/user.service';
 import { testeComunicacaoApi } from './store/teste-comunicacao.actions';
 import { testeComunicacaoSelector } from './store/teste-comunicacao.selectors';
 

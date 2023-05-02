@@ -28,7 +28,8 @@ export class OnsInputNumberComponent implements OnInit, ControlValueAccessor {
   @Input() name: string = '';
   @Input() id: string = '';
   @Input() isReadOnly = false;
-  @Input() percentage = false;
+  @Input() isCasasDecimais = false;
+  @Input() separador = ',';
 
   @Output() inputModelChange = new EventEmitter<string>();
 
@@ -79,5 +80,4 @@ export class OnsInputNumberComponent implements OnInit, ControlValueAccessor {
       this.value = salvo;
     }
   }
-
 }

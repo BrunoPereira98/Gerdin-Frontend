@@ -2,18 +2,22 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Store } from '@ngrx/store';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { User } from '../models/user';
 import { TokenStoreService } from '../storage/token-store.service';
 import { angularSettingSelector } from '../store/angular-setting.selector';
 import { BaseService } from './base.service';
-import { UserTesteComunicacao } from '../models/user-teste-comunicacao';
-import { Observable } from 'rxjs';
-
 
 @Injectable()
 export class AuthenticationService {
   private popLoginUrl = '';
   private federationUrl = '';
+  private urlsOrigin: any;
+
+  private isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
 
   constructor(
     private httpService: HttpClient,
@@ -31,7 +35,37 @@ export class AuthenticationService {
     });
   }
 
-  requestToken() {
+  refreshToken(): Observable<any> {
+    const applicationName = this.baseService.applicationName ? this.baseService.applicationName : environment.applicationName;
+    const refreshToken = this.tokenStoreService.getStore().refresh_token;
+
+    if (
+      !environment.production &&
+      ![undefined, null, ''].includes(this.federationUrl)
+    ) {
+      this.urlsOrigin = new URL(this.federationUrl);
+      this.urlsOrigin.protocol = 'http';
+      this.federationUrl = this.urlsOrigin.toString();
+    }
+
+    if (this.federationUrl === '') {
+      this.federationUrl = environment.federationUrl;
+    }
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .set('Accept', 'application/json')
+      .set('origin', `${this.urlsOrigin.origin}`);
+
+    let body = new URLSearchParams();
+    body.set('grant_type', 'refresh_token');
+    body.set('client_id', applicationName);
+    body.set('refresh_token', refreshToken);
+
+    return this.httpService.post(this.federationUrl, body, { headers });
+  }
+
+  requestToken(): Promise<any> {
     const applicationName = this.baseService.applicationName ? this.baseService.applicationName : environment.applicationName;
     const h = new HttpHeaders().set(
       'Content-Type',
@@ -51,23 +85,27 @@ export class AuthenticationService {
       this.federationUrl = environment.federationUrl;
     }
 
-    return this.httpService
-      .post<any>(
-        this.federationUrl,
-        'grant_type=password&client_id=' + applicationName,
-        {
-          headers: h,
-          withCredentials: true,
-        }
-      )
-      .subscribe({
-        next: (res) => {
-          this.tokenStoreService.addStore(res);
-          this.havePermission();
-        },
-        error: (err) => console.log(err),
-        complete: () => console.log('complete'),
-      });
+    return new Promise((resolve, reject) => {
+      this.httpService
+        .post<any>(
+          this.federationUrl,
+          'grant_type=password&client_id=' + applicationName,
+          {
+            headers: h,
+            withCredentials: true,
+          }
+        )
+        .subscribe({
+          next: (res) => {
+            resolve(res);
+          },
+          error: (err) => {
+            console.log(err);
+            reject(err);
+          },
+          complete: () => console.log('complete requestToken'),
+        });
+    });
   }
 
   redirectToAuthPage() {
@@ -80,7 +118,7 @@ export class AuthenticationService {
     }
   }
 
-  havePermission(): UserTesteComunicacao | undefined {
+  havePermission(): User | undefined {
     const helper = new JwtHelperService();
     const accessToken = this.tokenStoreService.getStore().access_token;
 
@@ -90,7 +128,7 @@ export class AuthenticationService {
 
     const decodedToken = helper.decodeToken(accessToken);
 
-    const user: UserTesteComunicacao = {
+    const user: User = {
       escopoOperacoes:
         decodedToken[
           'http://schemas.xmlsoap.org/ws/2015/07/identity/claims/operation'
@@ -117,5 +155,9 @@ export class AuthenticationService {
     };
 
     return user;
+  }
+
+  estaLogado() {
+    return this.isAuthenticated$;
   }
 }

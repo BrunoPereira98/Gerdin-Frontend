@@ -1,10 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { switchMap } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { firstValueFrom, switchMap } from 'rxjs';
 import { AngularSettings } from '../models/angular-settings';
-import { JsonConfig } from '../models/json-config';
-import { BaseService } from './base.service';
+import { IJsonConfig } from '../models/json-config';
 
 @Injectable()
 export class AngularSettingsService {
@@ -12,10 +10,22 @@ export class AngularSettingsService {
 
   constructor(
     private readonly httpClient: HttpClient,
-  ) {}
+  ) {
+    this.obterApiUrl();
+  }
+
+  async obterApiUrl() {
+    let config = await firstValueFrom(this.httpClient.get<IJsonConfig>('assets/config.json'));
+    this.apiUrl = config.urlAPI;
+  }
+
+  getApiUrl(){
+    return this.apiUrl;
+}
 
   getConfigsPop() {
-    return this.httpClient.get<JsonConfig>('assets/config.json').pipe(
+    this.obterApiUrl();
+    return this.httpClient.get<IJsonConfig>('assets/config.json').pipe(
       switchMap((config) => {
         this.apiUrl = config.urlAPI;
         return this.httpClient.get<AngularSettings>(
