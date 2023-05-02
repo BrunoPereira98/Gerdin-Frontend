@@ -1,10 +1,13 @@
-import { Component, HostListener, Inject, OnInit } from "@angular/core";
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from "@angular/material/legacy-dialog";
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
 
 @Component({
-  selector: "app-confirm-dialog",
-  templateUrl: "./confirm-dialog.component.html",
-  styleUrls: ["./confirm-dialog.component.scss"],
+  selector: 'app-confirm-dialog',
+  templateUrl: './confirm-dialog.component.html',
+  styleUrls: ['./confirm-dialog.component.scss'],
 })
 export class ConfirmDialogComponent implements OnInit {
   constructor(
@@ -14,7 +17,7 @@ export class ConfirmDialogComponent implements OnInit {
       confirmText: string;
       message: string;
       subMessage?: string;
-      img: string;
+      icon: string;
     },
     private mdDialogRef: MatDialogRef<ConfirmDialogComponent>
   ) {}
@@ -30,7 +33,7 @@ export class ConfirmDialogComponent implements OnInit {
   public confirm() {
     this.close(true);
   }
-  @HostListener("keydown.esc")
+  @HostListener('keydown.esc')
   public onEsc() {
     this.close(false);
   }

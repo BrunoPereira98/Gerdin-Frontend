@@ -1,7 +1,7 @@
 export interface TesteComunicacao {
-    testeComunicacao: string;
+  testeComunicacao: string;
 }
 
 export const testeComunicacaoInitialState: TesteComunicacao = {
-    testeComunicacao: ''
-}
+  testeComunicacao: '',
+};

@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BaseService {
   get urlApi(): string {
-    return this.configService?.urlApi;
+    return environment.production ? this.configService?.urlApi : environment.apiUrl;
   }
 
   get urlApiBdt(): string {
@@ -16,6 +17,10 @@ export class BaseService {
 
   get applicationName(): string {
     return this.configService?.applicationName;
+  }
+
+  get logTela() {
+    return this.configService.logTela;
   }
 
   constructor(

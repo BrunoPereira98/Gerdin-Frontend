@@ -3,7 +3,7 @@ import {
   MatLegacyDialog as MatDialog,
   MatLegacyDialogRef as MatDialogRef,
 } from '@angular/material/legacy-dialog';
-import { map, Observable, take } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 import { ConfirmDialogComponent } from '../confirm-dialog.component';
 
 @Injectable({
@@ -14,18 +14,20 @@ export class ConfirmDialogService {
   dialogRef!: MatDialogRef<ConfirmDialogComponent>;
 
   public open(options: {
-    img: string;
+    icon: string;
     message: string;
     subMessage?: string;
     cancelText: string;
     confirmText: string;
+    width?: string;
+    height?: string;
   }) {
     this.dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '463px',
-      height: '400px',
+      width: options.width,
+      height: options.height,
       disableClose: true,
       data: {
-        img: options.img,
+        icon: options.icon,
         message: options.message,
         subMessage: options.subMessage,
         cancelText: options.cancelText,

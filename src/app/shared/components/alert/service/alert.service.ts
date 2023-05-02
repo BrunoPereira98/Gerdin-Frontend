@@ -22,9 +22,9 @@ export class AlertService {
     this.snackBar
       .openFromComponent(AlertComponent, {
         data: {
-          message: error.error?.Messages?.join(', ') ?? error.message,
+          message: this.mesagemErro(error),
           subMessage: subMessage,
-          type: 'Error '+ error.status + '!',
+          type: 'Error ' + error.status + '!',
         },
         duration: this.duration,
         horizontalPosition: this.horizontalPosition,
@@ -81,5 +81,23 @@ export class AlertService {
       verticalPosition: this.verticalPosition,
       panelClass: 'alert-info',
     });
+  }
+
+  private mesagemErro(error: HttpErrorResponse): string {
+    let msg;
+    if (error.status === 0) {
+      msg = 'Servidor inativo!';
+    } else if (error.status === 401 || error.status === 403) {
+      msg = 'Você não tem permissão para executar esta ação';
+    } else if (error.status === 404) {
+      msg =
+        'Erro ao processar serviço remoto. Tente novamente.\n' +
+          error.error?.Messages?.join(', ') ?? error.message;
+    } else if (error.status === 500) {
+      msg = error.error?.Messages?.join(', ') ?? error.message;
+    } else {
+      msg = error.error?.Messages?.join(', ') ?? error.message;
+    }
+    return msg;
   }
 }

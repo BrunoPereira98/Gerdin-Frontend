@@ -3,12 +3,12 @@
     <strong>{{label}}</strong>
   </mat-label>
   <mat-form-field>
-    <input type="text" [placeholder]="placeHolder" matInput [matAutocomplete]="auto" [formControl]="myControl"
-      (onKeyUp)="onKeyUp($event)" (keydown)="onKeyDown($event)" [(ngModel)]="value" [id]="id" [name]="name">
+    <input type="text" matInput [placeholder]="placeHolder" [matAutocomplete]="auto" [formControl]="myControl" [id]="id"
+      [name]="name" [(ngModel)]="value" (onKeyUp)="onKeyUp($event)" (keydown)="onKeyDown($event)" [readonly]="disabled" (focus)="onFocus($event)">
 
-    <mat-autocomplete panelWidth="auto" #auto="matAutocomplete" [displayWith]="onDisplayFn"
+    <mat-autocomplete panelWidth="auto" #auto="matAutocomplete" [displayWith]="onDisplayFn.bind(this)"
       (optionSelected)="onSelectMetodo($event)" [disableRipple]="disabled">
-      <mat-option *ngFor="let item of filteredOptions | async" [value]="item">{{item.label}}
+      <mat-option *ngFor="let item of filteredOptions | async" [value]="isSelectItem ? item.value : item">{{item[labelInput]}}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
