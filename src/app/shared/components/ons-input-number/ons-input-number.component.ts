@@ -28,10 +28,13 @@ export class OnsInputNumberComponent implements OnInit, ControlValueAccessor {
   @Input() name: string = '';
   @Input() id: string = '';
   @Input() isReadOnly = false;
+  @Input() percentage = false;
 
   @Output() inputModelChange = new EventEmitter<string>();
 
   private innerValue: any;
+
+  @Input() campoSalvar: string = '';
 
   get value() {
     return this.innerValue;
@@ -63,4 +66,18 @@ export class OnsInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy() {
+    if (this.campoSalvar) {
+      sessionStorage.setItem(this.campoSalvar, this.value ? this.value : '');
+    }
+  }
+
+  carregarSalvos() {
+    if (this.campoSalvar) {
+      const salvo = sessionStorage.getItem(this.campoSalvar) ? sessionStorage.getItem(this.campoSalvar) : '';
+      this.value = salvo;
+    }
+  }
+
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SelecaoPerfilService } from './services/selecao-perfil.service';
-import { UsuarioDto } from './models/UsuarioDto';
+import { UsuarioDto } from './models/usuario-dto';
 import { OnsSelectModel } from '../../models/ons-select-model';
 
 @Component({

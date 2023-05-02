@@ -1,4 +1,4 @@
-import { FiltroUsinaDto } from "./filtro-usina-dto";
+import { FiltroUsinaDto } from '../../../models/filtro-usina-dto';
 
 export interface FiltrosUsinaConjuntoUsinaDto {
     Instalacoes: FiltroUsinaDto[];
