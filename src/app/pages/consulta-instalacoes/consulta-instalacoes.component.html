@@ -5,7 +5,8 @@
     <mat-card>
       <mat-card-content>
         <ng-container class="d-block align-items-center">
-          <table matSort mat-table class="table-card linhas demo-table" [dataSource]="dataSource">
+          <table matSort mat-table class="table-card linhas demo-table" [dataSource]="dataSource"
+                 (matSortChange)="onSortChange($event)">
 
             <ng-container matColumnDef="TipoInstalacao.Nome">
               <th class="fonte order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
