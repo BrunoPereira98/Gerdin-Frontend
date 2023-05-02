@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { HttpInterceptorProvider } from './shared/providers/httpInterceptorProvider.provider';
 import { ConfigService } from './shared/services/config.service';
 import { SharedModule } from './shared/shared.module';
+import { InterceptorService } from './shared/providers/InterceptorService.povider';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,6 +39,9 @@ import { SharedModule } from './shared/shared.module';
       useClass: HttpInterceptorProvider,
       multi: true,
     },
+    { provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true },
     {
       provide: APP_INITIALIZER,
       multi: true,

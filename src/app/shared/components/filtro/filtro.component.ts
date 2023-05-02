@@ -131,10 +131,6 @@ export class FiltroComponent implements OnInit {
     this.pesquisa.emit(this.filtro);
   }
 
-  isFinalizadoPesquisa() {
-    return this.finalizadoPesquisa;
-  }
-
   onDataInicialChange() {
     const dataFinal = this.filtro.dataInicialFiltro;
 
@@ -160,6 +156,22 @@ export class FiltroComponent implements OnInit {
     });
 
     this.pesquisar('I');
+  }
+
+  atualizar (value: boolean) {
+    this.finalizado = value;
+}
+
+  atualizarPesquisa(value: boolean) {
+      this.finalizadoPesquisa = value;
+  }
+
+  isFinalizado() {
+    return this.finalizado;
+  }
+
+  isFinalizadoPesquisa() {
+      return this.finalizadoPesquisa;
   }
 
 }

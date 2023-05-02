@@ -1,7 +1,9 @@
 <div class="d-grid gap-6">
     <div class="p-2">
         <mat-card>
-            <mat-card-content>
+            <app-loading filterBy="Filtros" (atualizar)="atualizar($event)"></app-loading> 
+
+            <mat-card-content [style.visibility]="isFinalizado() ? 'visible' : 'hidden'">
                 <div class="d-flex justify-content-between align-items-end">
                     <div class="container-fluid">
                         <div class="row">
@@ -93,9 +95,9 @@
                 </div>
             </mat-card-content>
 
-            <div *ngIf="finalizadoPesquisa" class="pesquisar">
-                <!-- <app-loading [style.display]=" 'none'"filterBy="ConsultarDadosCalculoRestricao,ConsultarInstalacoes,ResumoExecucao,GraficoExecucao"
-                 (atualizar)="atualizarPesquisa($event)"></app-loading> -->
+            <div [style.visibility]="isFinalizado() ? 'visible' : 'hidden'">
+                <app-loading [style.display]=" 'none'"filterBy="ConsultarDadosCalculoRestricao,ConsultarInstalacoes,ResumoExecucao,GraficoExecucao"
+                 (atualizar)="atualizarPesquisa($event)"></app-loading>
 
                 <button class="button-loading" mat-raised-button (click)="pesquisar()" color="primary"
                     [ngClass]="{'in-loading': !isFinalizadoPesquisa()}" [disabled]="!isFinalizadoPesquisa()">
