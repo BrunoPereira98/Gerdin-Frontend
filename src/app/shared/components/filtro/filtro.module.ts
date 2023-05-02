@@ -11,13 +11,15 @@ import { OnsInputAutocompleteChipListModule } from '../ons-input-autocomplete-ch
 import { OnsInputNumberModule } from '../ons-input-number/ons-input-number.module';
 import { OnsSelectModule } from '../ons-select/ons-select.module';
 import { OnsCalendarModule } from '../ons-calendar/ons-calendar.module';
+import { LoadingModule } from '../loading/loading.module';
 
 @NgModule({
   declarations: [FiltroComponent],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule, OnsInputAutocompleteChipListModule,
     OnsInputNumberModule,
     OnsSelectModule,
-    OnsCalendarModule],
+    OnsCalendarModule,
+    LoadingModule],
   exports: [FiltroComponent],
   providers: [
     {
