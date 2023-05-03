@@ -121,7 +121,7 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
   }
 
   private _filtrarObjeto(opcoes: any[], item: string): string[] {
-    return opcoes.filter(opcao => opcao.Descricao.toLowerCase().includes(item.toLowerCase()));
+    return opcoes.filter(opcao => (opcao.Descricao ? opcao.Descricao : '').toLowerCase().includes(item.toLowerCase()));
   }
 
   onChangeCb: (_: any) => void = () => { };
