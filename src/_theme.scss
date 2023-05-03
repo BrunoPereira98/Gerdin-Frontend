@@ -51,8 +51,9 @@ td {
 td {
   max-width: 100px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  // text-overflow: ellisis;
+  // white-space: nowrap;
+  word-wrap: break-word;
 }
 
 .table-card {
@@ -446,7 +447,7 @@ mat-expansion-panel-header {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 .mat-header-cell {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
 }
 .mat-cell,
