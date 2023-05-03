@@ -8,6 +8,188 @@
 
                 <div [style.visibility]="isFinalizado() ? 'visible' : 'hidden'" class="resultados">
                     <small>*Todos os valores estão em MW</small>
+
+                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table linhas" matSort>
+                        <ng-container matColumnDef="TipoInstalacao.Nome">
+                            <th class="fonte order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Fonte</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div [matTooltip]="element.TipoInstalacao.Nome">
+                                    <img class="celulaIcone" style="width: 15px; margin-left: 5px;"
+                                        src="http://tst-git-086.ons.org.br/ONS.Gerdin.WebSite/assets/{{element.TipoInstalacao.Gif}}" />
+                                </div>
+                            </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="NomeInstalacao">
+                            <th class="instalacao" mat-header-cell *matHeaderCellDef mat-sort-header>Conjunto/Usina</th>
+                            <td class="instalacao" mat-cell *matCellDef="let element">{{element.NomeInstalacao}}</td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="Agente">
+                            <th class="agente" mat-header-cell *matHeaderCellDef mat-sort-header>Agente</th>
+                            <td class="agente" mat-cell *matCellDef="let element">{{element.Agente}}</td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="Area">
+                            <th class="area" mat-header-cell *matHeaderCellDef mat-sort-header>Área</th>
+                            <td class="area" mat-cell *matCellDef="let element">{{element.Area}}</td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="SiglaConexao">
+                            <th class="conexao order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Conexão</th>
+                            <td class="conexao" mat-cell *matCellDef="let element">
+                                <div matTooltip="{{element.PontoConexao}}">
+                                    {{element.SiglaConexao}}
+                                </div>
+                            </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="PotenciaInstalada">
+                            <th class="potencia order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                                <span>
+                                    <span>Potência<br></span>
+                                    <span style="color: black;">{{ obterTotalPotencial() }}<br></span>
+                                </span>
+                            </th>
+                            <td class="potencia" mat-cell *matCellDef="let element">{{element.PotenciaInstalada }}
+                            </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="GeracaoInstalacao.GeracaoAtual">
+                            <th class="geracao order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                                <span>
+                                    <span>Geração Atual<br></span>
+                                    <span style="color: black;">{{ obterTotalGeracaoAtual() }}<br></span>
+                                    <span>{{ this.dataAtualizacao | date : 'dd/MM/yyyy HH:mm:ss'}}<br></span>
+                                </span>
+                                <button mat-icon-button matTooltip="Atualiza a geração atual." [@rotatedState]='state'
+                                    (click)="atualizarManual();$event.stopPropagation();">
+                                    <span *ngIf="showSpinner">
+                                         <mat-spinner diameter="20"></mat-spinner>
+                                    </span>
+                                    <span *ngIf="!showSpinner">
+                                        <mat-icon>sync</mat-icon>
+                                     </span>
+                                </button>
+                                <br>
+                            </th>
+                            <td class="geracao" mat-cell *matCellDef="let element">
+                                <input type="number" step="1" [(ngModel)]="element.GeracaoInstalacao.GeracaoAtual"
+                                    [ngClass]="obterCorBordaEstado(element)"
+                                    [matTooltip]="element.ComandoOperacao?.EstadoDaUsina?.Descricao"
+                                    [matTooltipClass]="obterCorTooltipEstado(element)" (ngModelChange)="element.calcular()"
+                                    non-null-value [value]="element.GeracaoInstalacao.GeracaoAtual" maxLengthNumber="5"
+                                    [readonly]="inLoadingIndividual(element)">
+                            </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="Icones">
+                            <th class="icones" mat-header-cell *matHeaderCellDef></th>
+                            <td class="icones" mat-cell *matCellDef="let element">
+                                <div>
+                                    <mat-icon
+                                        [matTooltip]="element.GeracaoInstalacao.FlagsQualidade  + (element.GeracaoInstalacao.FlagsQualidade ? '. ' : '') + (formatarData(element.GeracaoInstalacao?.DataAtualizacao))"
+                                        class="icones-flag"
+                                        *ngIf="element.GeracaoInstalacao.FlagsQualidade && element.GeracaoInstalacao.FlagsQualidade.length > 0">
+                                        flag
+                                    </mat-icon>
+                                </div>
+                            </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="ComandoOperacao.LimiteAtual">
+                            <th class="limite order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                                <span>
+                                    <span>Limite Atual<br></span>
+                                    <span style="color: black;">{{ obterTotalLimiteAtual() }}<br></span>
+                                </span>
+                            </th>
+                            <td class="limite" mat-cell *matCellDef="let element">{{ element.ComandoOperacao?.LimiteAtual }}
+                            </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="NovoLimite">
+                            <th class="limite order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                                <span>
+                                    <span>Limite Novo<br></span>
+                                    <span style="color: black;">{{ obterTotalNovoLimite() }}<br></span>
+                                </span>
+                            </th>
+                            <td class="limite" mat-cell *matCellDef="let element">
+                                <input type="number" step="1" [(ngModel)]="element.NovoLimite"
+                                    (ngModelChange)="element.calcular();" [value]="element.NovoLimite" maxLengthNumber="5"
+                                    [readonly]="inLoadingIndividual(element)">
+                            </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="Fluxo.Valor">
+                            <th class="sensibilidade order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                                <span>
+                                    <span>Sensib. (%)<br></span>
+                                    <span>{{ formatarData(this.dataAtualizacaoFluxo, 'dd/MM/yyyy HH:mm:ss')}}<br></span>
+                                    <span>{{ obterFluxoFiltro() }}</span>
+                                </span>
+                            </th>
+                            <td class="sensibilidade" mat-cell *matCellDef="let element">
+                                <span>
+                                    {{element.Fluxo?.Valor}}
+                                </span>
+                            </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="ReducaoVerificada">
+                            <th class="reducao-verif order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                                <span>
+                                    <span>Redução Verif.<br></span>
+                                    <span style="color: black;">{{ obterTotalReducaoVerif() | number:'1.0-0' }}<br></span>
+                                </span>
+                            </th>
+                            <td class="reducao-verif" mat-cell *matCellDef="let element">
+                                {{element.ReducaoVerificada | number:'1.0-0'}}
+                            </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="ValorCalculado">
+                            <th class="operacao order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                                <span>
+                                    <span>Operação<br></span>
+                                    <span style="color: black;">{{ obterTotalValorCalculado() }}<br></span>
+                                </span>
+                            </th>
+                            <td class="operacao" mat-cell-cell *matCellDef="let element">{{ element.ValorCalculado }}
+                            </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="CondicaoOperacao">
+                            <th class="condicao order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Condição
+                            </th>
+                            <td class="condicao" mat-cell *matCellDef="let element">
+                                <span [matTooltip]="element.NomeCondicaoOperacao" matTooltipPosition="below"
+                                    matTooltipClass="alinhamento-tooltip-condicao">
+                                    {{element.CondicaoOperacao}}
+                                </span>
+                            </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="Motivo">
+                            <th class="motivo order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Motivo</th>
+                            <td class="motivo" mat-cell *matCellDef="let element">
+                                {{element.ComandoOperacao?.NomeMotivo}}
+                            </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="Opcao">
+                            <th class="opcao" mat-header-cell *matHeaderCellDef></th>
+                            <td class="opcao" mat-cell *matCellDef="let element" (click)="excluir(element)">
+                                <a>
+                                    <mat-icon matTooltip="Excluir linha selecionada." class="trash">delete</mat-icon>
+                                </a>
+                            </td>
+                        </ng-container>
+    
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" class="fix-thead"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
                 </div>
             </mat-card-content>
         </mat-card>

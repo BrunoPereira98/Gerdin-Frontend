@@ -1,3 +1,21 @@
 .resultados {
     padding-top: 10px !important;
 }
+
+.EstadoRuim {
+    border-color: #D10429;
+    border-width: 4px;
+}
+
+.EstadoAtencao {
+    border-color: #FBC90B;
+    border-width: 4px;
+}
+
+::ng-deep .TEstadoRuim {
+    background-color: #D10429;
+}
+
+::ng-deep .TEstadoAtencao {
+    background-color: #FBC90B;
+}
