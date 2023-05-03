@@ -86,10 +86,10 @@ export class CalculoRestricaoService {
             params = params.append('Valor', sensibilidade);
         }
 
-        // if (operadorMatematico !== ''
-        //     && operadorMatematico != null) {
-        //     params = params.append('Operador', operadorMatematico);
-        // }
+        if (operadorMatematico !== ''
+            && operadorMatematico != null) {
+            params = params.append('Operador', operadorMatematico);
+        }
 
         if (orderBy) {
             params = params.append('Sort', orderBy);
@@ -98,30 +98,26 @@ export class CalculoRestricaoService {
         return params;
     }
 
-    // public atualizarDadosSincronismo(instalacao: any[], instalacaoExcecao: string[], area: any[],
-    //                                  pontoConexao: any[], pontoConexaoExceto: string[], condicaoOperacao: any[],
-    //                                  tipoInstalacao: any[], agente: any[], motivo: any[], geracaoMinima: any,
-    //                                  fluxos: string[], sensibilidade: any, operadorMatematico: string, orderBy): Observable<CalculosRestricoesModel> {
-
-    //     let params = this.updateParametros(instalacao, instalacaoExcecao, area, pontoConexao,
-    //         pontoConexaoExceto, condicaoOperacao, tipoInstalacao, agente, motivo, geracaoMinima, fluxos, sensibilidade,
-    //         operadorMatematico, orderBy);
-
-    //     return this.http.get<CalculosRestricoesModel>(this.apiUrl + '/ComandoOperacao/AtualizarDadosIntegracao', {params: params})
-    //         .pipe(map(x => new CalculosRestricoesModel(x)));
-    // }
+    public atualizarDadosSincronismo(instalacao?: any[], instalacaoExcecao?: any[], area?: any[],
+        pontoConexao?: any[], pontoConexaoExceto?: any[], condicaoOperacao?: any[],
+        tipoInstalacao?: any[], agente?: any[], motivo?: any[], geracaoMinima?: any,
+        fluxos?: any[], sensibilidade?: any, operadorMatematico?: string, orderBy?: string): Observable<CalculosRestricoesModel> {
+        let params = this.updateParametros(instalacao, instalacaoExcecao, area, pontoConexao,
+            pontoConexaoExceto, condicaoOperacao, tipoInstalacao, agente, motivo, geracaoMinima, fluxos, sensibilidade,
+            operadorMatematico, orderBy);
+            return this.http.get<BaseResult<CalculoRestricaoTotalizadoresModel>>(`${this.baseService.urlApi}ComandoOperacao/AtualizarDadosIntegracao`,
+            { params: params });
+    }
 
     public obterDadosFiltrados(instalacao?: any[], instalacaoExcecao?: any[], area?: any[],
-                               pontoConexao?: any[], pontoConexaoExceto?: any[], condicaoOperacao?: any[],
-                               tipoInstalacao?: any[], agente?: any[], motivo?: any[], geracaoMinima?: any,
-                               fluxos?: any[], sensibilidade?: any, operadorMatematico?: string, orderBy?: string): Observable<CalculosRestricoesModel> {
+        pontoConexao?: any[], pontoConexaoExceto?: any[], condicaoOperacao?: any[],
+        tipoInstalacao?: any[], agente?: any[], motivo?: any[], geracaoMinima?: any,
+        fluxos?: any[], sensibilidade?: any, operadorMatematico?: string, orderBy?: string): Observable<CalculosRestricoesModel> {
         let params = this.updateParametros(instalacao, instalacaoExcecao, area, pontoConexao,
             pontoConexaoExceto, condicaoOperacao, tipoInstalacao, agente, motivo, geracaoMinima, fluxos, sensibilidade,
             operadorMatematico, orderBy);
         return this.http.get<BaseResult<CalculoRestricaoTotalizadoresModel>>(`${this.baseService.urlApi}ComandoOperacao/ConsultarDadosCalculoRestricao`,
-        {params: params});
-        // return this.http.get<CalculosRestricoesModel>( + 'ComandoOperacao/ConsultarDadosCalculoRestricao', {params: params})
-        //     .pipe(map(x => new CalculosRestricoesModel(x)));
+            { params: params });
     }
 
     // public calcularRestricao(valores: any): Observable<BaseResult<ValorCalculadoTotalizadoresModel>> {
