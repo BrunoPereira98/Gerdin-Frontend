@@ -5,12 +5,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { CalculoRestricoesRoutingModule } from './calculo-restricoes-routing.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     CalculoRestricoesComponent
   ],
   imports: [
+    CommonModule,
     MatCommonModule,
     FormsModule,
     SharedModule,
