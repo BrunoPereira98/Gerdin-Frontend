@@ -11,6 +11,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import { EstadoDaUsinaEnum } from 'src/app/shared/components/enums/estado-da-usina-enum';
 import { SelectionModel } from '@angular/cdk/collections';
 import {DatePipe, DecimalPipe, formatDate, registerLocaleData} from '@angular/common';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-calculo-restricoes',
@@ -66,6 +67,10 @@ export class CalculoRestricoesComponent {
 
   dataAtualizacaoFluxo!: Date;
 
+  public dados: any;
+
+  @ViewChild(MatSort, { static: true }) sort!: MatSort;
+
   constructor(
     private readonly service: CalculoRestricaoService,
     private readonly alert: AlertService
@@ -76,23 +81,23 @@ export class CalculoRestricoesComponent {
   private popularDataSource(res: CalculoRestricaoModel[]): Observable<boolean> {
     this.dataSource.data = res;
     // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sortingDataAccessor = (item, property) => {
-    //     switch (property) {
-    //         case 'TipoInstalacao.Nome':
-    //             return item.TipoInstalacao.Nome;
-    //         case 'GeracaoInstalacao.GeracaoAtual':
-    //             return item.GeracaoInstalacao ? item.GeracaoInstalacao.GeracaoAtual : null;
-    //         case 'ComandoOperacao.LimiteAtual':
-    //             return item.ComandoOperacao ? item.ComandoOperacao.LimiteAtual : null;
-    //         case 'Motivo':
-    //             return item.ComandoOperacao ? item.ComandoOperacao.Motivo : null;
-    //         case 'Fluxo.Valor':
-    //             return item.Fluxo ? item.Fluxo.Valor : null;
-    //         default:
-    //             return item[property];
-    //     }
-    // };
-    // this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (item: any, property) => {
+        switch (property) {
+            case 'TipoInstalacao.Nome':
+                return item.TipoInstalacao.Nome;
+            case 'GeracaoInstalacao.GeracaoAtual':
+                return item.GeracaoInstalacao ? item.GeracaoInstalacao.GeracaoAtual : null;
+            case 'ComandoOperacao.LimiteAtual':
+                return item.ComandoOperacao ? item.ComandoOperacao.LimiteAtual : null;
+            case 'Motivo':
+                return item.ComandoOperacao ? item.ComandoOperacao.Motivo : null;
+            case 'Fluxo.Valor':
+                return item.Fluxo ? item.Fluxo.Valor : null;
+            default:
+                return item[property];
+        }
+    };
+    this.dataSource.sort = this.sort;
 
     return of(true);
   }
@@ -110,9 +115,9 @@ export class CalculoRestricoesComponent {
             retornoFiltro.motivoFiltro, retornoFiltro.geracaoMinimaFiltro, retornoFiltro.fluxoSACIFiltro,
             retornoFiltro.sensibilidadeFiltro, retornoFiltro.operadorMatematicoFiltro, '-Fluxo.Valor').subscribe((res) => {
 
-            // if (this.atualizaData == false) {
-            //     this.atualizaData = true;
-            // }
+            if (this.atualizaData == false) {
+                this.atualizaData = true;
+            }
             this.preparaDadosDataGrid(res, false);
         });
     });
@@ -124,29 +129,34 @@ export class CalculoRestricoesComponent {
             this.alert.warn(alerta.ErrorMessage);
         });
     }
-    // this.dados = res.content?.Resultados;
+    this.dados = res.content?.Resultados;
     let maxDate = null;
 
-    // if (this.atualizaData) {
-    //     this.dataAtualizacao = res.content.DataDaUltimaAtualizacao;
-    //     this.atualizaData = false;
-    // }
+    if (this.atualizaData
+        && res.content) {
+        this.dataAtualizacao = res.content.DataDaUltimaAtualizacao;
+        this.atualizaData = false;
+    }
 
-    // if (this.dados) {
-    //     try {
-    //         maxDate = new Date(
-    //             Math.max(
-    //                 ...this.dados.map(i => {
-    //                     return new Date(i.Fluxo.UltimaCaptura);
-    //                 }),
-    //             ),
-    //         );
-    //     } catch (e) {
-    //         maxDate = null;
-    //     }
-    //     this.dataAtualizacaoFluxo = maxDate;
-    //     this.nmFluxo = this.filtro.fluxoSACIFiltro[0] ? '(' + this.filtro.fluxoSACIFiltro[0].value + ')' : '';
-    // }
+    if (this.dados) {
+        try {
+            maxDate = new Date(
+                Math.max(
+                    ...this.dados.map((ret: any) => {
+                        return new Date(ret.Fluxo.UltimaCaptura);
+                    }),
+                ),
+            );
+        } catch (e) {
+            maxDate = null;
+        }
+
+        if (maxDate) {
+          this.dataAtualizacaoFluxo = maxDate;
+        }
+        
+        this.nmFluxo = this.retornoFiltro.fluxoSACIFiltro?.length ? '(' + this.retornoFiltro.fluxoSACIFiltro[0].Descricao + ')' : '';
+    }
     if (res.content && res.content.Resultados) {
       this.popularDataSource(res.content.Resultados);
     }
@@ -253,7 +263,7 @@ export class CalculoRestricoesComponent {
   obterTotalNovoLimite() {
     if (this.dataSource) {
         return this.dataSource.data.map(i => i.NovoLimite).reduce((accumulator, obj) => {
-            return accumulator + (!isNaN(obj) ? obj : 0);
+            return accumulator + (obj && !isNaN(obj) ? Number(obj) : 0);
         }, 0);
     } else {
         return 0;
@@ -280,7 +290,7 @@ export class CalculoRestricoesComponent {
         return this.dataSource.data.map(x => x.ReducaoVerificada)
             .reduce((previusValue, currentValue) => {
                 return previusValue + (!isNaN(currentValue) ? + 
-                currentValue : 0);
+                 Number(currentValue) : 0);
             }, 0);
     } else {
         return 0;
@@ -290,7 +300,7 @@ export class CalculoRestricoesComponent {
   obterTotalValorCalculado() {
     if (this.dataSource) {
         return Math.round(this.dataSource.data.map(i => i.ValorCalculado).reduce((accumulator, obj) => {
-            return accumulator + (!isNaN(obj) ? obj : 0);
+            return accumulator + (obj && !isNaN(obj) ? Number(obj) : 0);
         }, 0));
     } else {
         return 0;
