@@ -105,7 +105,7 @@ export class CalculoRestricaoService {
         let params = this.updateParametros(instalacao, instalacaoExcecao, area, pontoConexao,
             pontoConexaoExceto, condicaoOperacao, tipoInstalacao, agente, motivo, geracaoMinima, fluxos, sensibilidade,
             operadorMatematico, orderBy);
-            return this.http.get<BaseResult<CalculoRestricaoTotalizadoresModel>>(`${this.baseService.urlApi}ComandoOperacao/AtualizarDadosIntegracao`,
+            return this.http.get<BaseResult<CalculoRestricaoTotalizadoresModel>>(`${this.baseService.urlApi}UsinaConjuntoUsin/AtualizarGeracao`,
             { params: params });
     }
 
@@ -116,7 +116,7 @@ export class CalculoRestricaoService {
         let params = this.updateParametros(instalacao, instalacaoExcecao, area, pontoConexao,
             pontoConexaoExceto, condicaoOperacao, tipoInstalacao, agente, motivo, geracaoMinima, fluxos, sensibilidade,
             operadorMatematico, orderBy);
-        return this.http.get<BaseResult<CalculoRestricaoTotalizadoresModel>>(`${this.baseService.urlApi}ComandoOperacao/ConsultarDadosCalculoRestricao`,
+        return this.http.get<BaseResult<CalculoRestricaoTotalizadoresModel>>(`${this.baseService.urlApi}CalculoRestricao/DadosTelaCalculoRestricao`,
             { params: params });
     }
 

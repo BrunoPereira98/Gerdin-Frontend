@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SelecaoPerfilService } from './services/selecao-perfil.service';
 import { UsuarioDto } from './models/usuario-dto';
 import { OnsSelectModel } from '../../models/ons-select-model';
+import { AuthenticationService } from '../../services/authentication.service';
+import { User } from 'src/app/pages/teste-comunicacao/models/user';
 
 @Component({
     selector: 'app-selecao-perfil',
@@ -13,8 +15,10 @@ export class SelecaoPerfilComponent implements OnInit {
     perfil: string = '';
     usuario: UsuarioDto = new UsuarioDto();
     perfis: OnsSelectModel[] = [];
+    perfisSelecao: string[] = [];
 
-    constructor(private selecaoPerfilService: SelecaoPerfilService) {
+    constructor(private selecaoPerfilService: SelecaoPerfilService,
+                private authenticationService: AuthenticationService) {
 
     }
 
@@ -25,35 +29,39 @@ export class SelecaoPerfilComponent implements OnInit {
             this.perfil = this.obterPerfilSelecionado();
         }
 
-        this.selecaoPerfilService.obterDados().subscribe((res) => {
+        const userSelect = this.authenticationService.havePermission()
 
-            this.usuario = res;
+        if (userSelect) {
+            this.selecaoPerfilService.obterPerfisSelecao().subscribe((res: any) => {
 
-            if (!this.usuario) {
-                localStorage.removeItem(this.obterNomeStoragePerfil());
-                localStorage.removeItem('nomeUsuario');
-            } else {
-                this.usuario.EscopoOperacoes.forEach(escopo => {
-                    this.perfis.push(new OnsSelectModel(escopo, escopo));
-                });
-
-                if (localStorage.getItem('nomeUsuario') !== this.usuario.Nome) {
+                this.perfisSelecao = res;
+    
+                if (!this.perfisSelecao) {
                     localStorage.removeItem(this.obterNomeStoragePerfil());
-                    this.perfil = '';
-                }
-
-                localStorage.setItem('nomeUsuario', this.usuario.Nome);
-                if (this.usuario.EscopoOperacoes.length === 1) {
-                    this.perfil = this.usuario.EscopoOperacoes[0];
-                    if (!localStorage.getItem('perfilSelecionado' + this.usuario.Nome)) {
-                        this.confirmar();
+                    localStorage.removeItem('nomeUsuario');
+                } else {
+                    this.perfisSelecao.forEach(perfil => {
+                        this.perfis.push(new OnsSelectModel(perfil, perfil));
+                    });
+    
+                    if (localStorage.getItem('nomeUsuario') !== userSelect.nome) {
+                        localStorage.removeItem(this.obterNomeStoragePerfil());
+                        this.perfil = '';
                     }
-                } else if (!this.obterPerfilSelecionado()
-                    && this.usuario.EscopoOperacoes.length > 1) {
-                    alert('Deve ser selecionado um perfil');
+    
+                    localStorage.setItem('nomeUsuario', userSelect.nome);
+                    if (this.perfisSelecao.length === 1) {
+                        this.perfil = this.perfisSelecao[0];
+                        if (!localStorage.getItem('perfilSelecionado' + userSelect.nome)) {
+                            this.confirmar();
+                        }
+                    } else if (!this.obterPerfilSelecionado()
+                        && this.perfisSelecao.length > 1) {
+                        alert('Deve ser selecionado um perfil');
+                    }
                 }
-            }
-        });
+            });
+        }        
     }
 
     confirmar() {
