@@ -205,6 +205,8 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
           item = new ItemSelecao(item.Id.toString(), item.Nome, item.TipoInstalacao);
         } else if (item['Descricao']) {
           item = new ItemSelecao(item.Id.toString(), item.Descricao, undefined);
+        } else if (item['Condicao']) {
+          item = new ItemSelecao(item.Codigo.toString(), item.Condicao, undefined);
         }
         
         itens.push(item)
