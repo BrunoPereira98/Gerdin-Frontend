@@ -1,5 +1,5 @@
 {
-  "urlAPI": "https://tst-ons01.amcom.com.br/ONS.Gerdin.Api.Web.Api/api/",
+  "urlAPI": "https://tst-ons01.amcom.com.br/ONS.Gerdin.Api/api/",
   "urlApiBdt": "http://10.66.5.73/ONS.ProcessadorRegras.IntegracaoBDT/api/integracao/",
   "applicationName": "Gerdin"
 }

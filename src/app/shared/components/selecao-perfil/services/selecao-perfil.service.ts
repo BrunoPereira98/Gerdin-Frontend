@@ -16,7 +16,7 @@ export class SelecaoPerfilService {
   constructor(private http: HttpClient,
     private baseService: BaseService) { }
 
-  public obterDados(): Observable<UsuarioDto> {
-    return this.http.get<UsuarioDto>(this.baseService.urlApi + 'AngularSettings/Usuario');
+  public obterPerfisSelecao(): Observable<UsuarioDto> {
+    return this.http.get<UsuarioDto>(this.baseService.urlApi + 'AngularSettings/Perfis/PerfisSelecao');
   }
 }
