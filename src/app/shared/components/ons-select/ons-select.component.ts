@@ -88,7 +88,7 @@ export class OnsSelectComponent implements OnInit, ControlValueAccessor {
   ngOnDestroy() {
     if (this.campoSalvar) {
       if (this.value) {
-        sessionStorage.setItem(this.campoSalvar, this.value ? JSON.parse(this.value) : '');
+        sessionStorage.setItem(this.campoSalvar, this.value ? JSON.stringify(this.value) : '');
       } else {
         sessionStorage.setItem(this.campoSalvar, JSON.stringify(OperadorMatematico.MAOI.Id.toString()));
       }
