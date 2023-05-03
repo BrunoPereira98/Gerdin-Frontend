@@ -28,6 +28,8 @@ import { OnsDataModule } from './components/ons-data/ons-data.module';
 import { OnsInputAutocompleteModule } from './components/ons-input-autocomplete/ons-input-autocomplete.module';
 import { MaterialModule } from './material-module/material.module';
 import { OnsInputAutocompleteChipListModule } from './components/ons-input-autocomplete-chip-list/ons-input-autocomplete-chip-list.module';
+import { LoadingModule } from './components/loading/loading.module';
+import { AlertModule } from './components/alert/alert.module';
 
 @NgModule({
   declarations: [
@@ -85,7 +87,9 @@ import { OnsInputAutocompleteChipListModule } from './components/ons-input-autoc
     StatusBarModule,
     SelecaoPerfilModule,
     VersaoSistemaModule,
-    FiltroModule
+    FiltroModule,
+    LoadingModule,
+    AlertModule
   ],
   exports: [
     MenuTabModule,
@@ -100,7 +104,9 @@ import { OnsInputAutocompleteChipListModule } from './components/ons-input-autoc
     StatusBarModule,
     SelecaoPerfilModule,
     VersaoSistemaModule,
-    FiltroModule
+    FiltroModule,
+    LoadingModule,
+    AlertModule
   ],
 })
 export class SharedModule {}

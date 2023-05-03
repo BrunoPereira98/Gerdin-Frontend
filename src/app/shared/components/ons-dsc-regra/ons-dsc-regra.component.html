@@ -1,0 +1,23 @@
+<h3 class="font-color-primary">Descrição da regra</h3>
+<div class="p-2">
+  <mat-divider></mat-divider>
+</div>
+<div class="p-2">
+  <mat-card class="descricao">
+    <mat-card-content>
+      <label style="color: #C2BDBD;">Objeto: <b class="texto-objeto">{{data?.dscObjsistema}}</b></label>
+      <div *ngFor="let bloco of data?.regraMontadas; let j = index">
+        <label class="cabecalho-texto mt-1">{{bloco?.condicional}}</label>
+        <div class="d-flex ms-3">
+          <div class="fator">{{bloco?.blocoformatado}}</div>
+        </div>
+      </div>
+      <label class="d-flex mt-1">
+        <div class="cabecalho-texto">{{labelVerdadeiro}}</div>
+        &nbsp;<div class="valor-bloco">{{valueVerdadeiro}}</div>
+        &nbsp;<div class="cabecalho-texto">{{labelFalso}}</div>
+        &nbsp;<div class="valor-bloco">{{valueFalso}}</div>
+      </label>
+    </mat-card-content>
+  </mat-card>
+</div>

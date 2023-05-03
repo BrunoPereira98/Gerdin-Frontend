@@ -18,7 +18,7 @@ export class FiltroService {
   ) { }
 
   obterFiltros(): Observable<BaseResult<FiltrosUsinaConjuntoUsinaDto>> {
-    return this.http.get<BaseResult<FiltrosUsinaConjuntoUsinaDto>>(`${this.baseService.urlApi}UsinaConjuntoUsina/Filtros`).pipe(retry(3));
+    return this.http.get<BaseResult<FiltrosUsinaConjuntoUsinaDto>>(`${this.baseService.urlApi}UsinaConjuntoUsina/Filtros`);
   }
 
   public obterFluxoSACI(): Observable<BaseResult<Fluxo[]>> {

@@ -9,17 +9,20 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, throwError } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, switchMap, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { AuthenticationService } from '../services/authentication.service';
 import { TokenStoreService } from '../storage/token-store.service';
 
 @Injectable()
 export class HttpInterceptorProvider implements HttpInterceptor {
   constructor(
     private router: Router,
-    private tokenStoreService: TokenStoreService
-  ) {
-  }
+    private tokenStoreService: TokenStoreService,
+    private readonly store: Store,
+    private readonly authenticationService: AuthenticationService
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -30,38 +33,46 @@ export class HttpInterceptorProvider implements HttpInterceptor {
     }
 
     const token = this.tokenStoreService.getStore();
-    let httpRequest: HttpRequest<any>;
-    if (token) {
-      httpRequest = req.clone({
-        headers: req.headers
-          .set('Authorization', 'Bearer ' + token.access_token)
-          .set('Content-Type', 'application/json')
-          .set('Cache-Control', 'no-cache')
-          .set('perfilSelecionado', this.obterPerfilSelecionado()),
-      });
-    } else {
-      httpRequest = req.clone({
-        headers: req.headers.set('Content-Type', 'application/json')
+    req = req.clone({
+      headers: req.headers
+        .set(
+          'Authorization',
+          token?.access_token ? 'Bearer ' + token?.access_token : ''
+        )
+        .set('Content-Type', 'application/json')
+        .set('Cache-Control', 'no-cache')
         .set('perfilSelecionado', this.obterPerfilSelecionado()),
-      });
-    }
-    
-    return next.handle(httpRequest).pipe(
-      catchError((err) => {
-        // if ([401].includes(err.status) && token) {
-        //   this.authService.logout().then(() => console.log('Usuário não autenticado.'));
-        // }
+    });
 
+    return next.handle(req).pipe(
+      catchError((err) => {
+        // if ([401, 403].includes(err.status) && token.refresh_token) {
+        //   return this.authenticationService.refreshToken().pipe(
+        //     switchMap((data) => {
+        //       if (this.tokenStoreService.getToken()) {
+        //         this.tokenStoreService.deletoToken();
+        //       }
+        //       this.tokenStoreService.addStore(data);
+        //       req = req.clone({
+        //         setHeaders: {
+        //           Authorization: `Bearer ${data.access_token}`,
+        //         },
+        //       });
+        //       return next.handle(req);
+        //     }),
+        //     catchError((error) => {
+        //       return throwError(error);
+        //     })
+        //   );
+        // }
+        // return next.handle(req);
         if ([401].includes(err.status) && token) {
           console.log('Usuário não autenticado.');
         }
-        
-        // if ([403].includes(err.status) && token) {
-        //   this.router.navigate(['/acesso-negado']).then(() => console.log('Error 403 .Redirecionado para acesso negado'));
-        // }
         return throwError(err);
       }),
-      map(response => this.handleResponse(response)));
+      map((response) => this.handleResponse(response))
+    );
   }
 
   private handleResponse(response: HttpEvent<any>) {
@@ -78,18 +89,16 @@ export class HttpInterceptorProvider implements HttpInterceptor {
     const responseError = {
       messages: body.messages,
       success: false,
-      statusCode: HttpStatusCode.BadRequest
-    }
+      statusCode: HttpStatusCode.BadRequest,
+    };
 
     throwError(responseError);
     const headers = new HttpHeaders({ ...httpResponse.headers });
-    return httpResponse.clone(
-      {
-        headers,
-        status: 400,
-        statusText: 'Bad Request'
-      }
-    );
+    return httpResponse.clone({
+      headers,
+      status: 400,
+      statusText: 'Bad Request',
+    });
   }
 
   private obterPerfilSelecionado() {
@@ -102,5 +111,5 @@ export class HttpInterceptorProvider implements HttpInterceptor {
   private obterNomeStoragePerfil() {
     return 'perfilSelecionado' + localStorage.getItem('nomeUsuario');
   }
-
+  
 }

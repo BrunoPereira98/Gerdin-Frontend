@@ -1,1 +1,15 @@
-<app-filtro #filtro [tipoFiltro]="'CR'"></app-filtro>
+<app-filtro #filtro (pesquisa)="pesquisar($event)" [tipoFiltro]="'CR'"></app-filtro>
+
+<div class="d-grid gap-6">
+    <div class="p-2">
+        <mat-card>
+            <mat-card-content style="min-height: 80px;">
+                <app-loading filterBy="ConsultarDadosCalculoRestricao" (atualizar)="atualizar($event)"></app-loading>
+
+                <div [style.visibility]="isFinalizado() ? 'visible' : 'hidden'" class="resultados">
+                    <small>*Todos os valores estão em MW</small>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

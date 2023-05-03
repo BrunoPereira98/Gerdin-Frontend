@@ -6,9 +6,10 @@
     <mat-select
       [placeholder]="placeholder"
       (selectionChange)="inputModelChanges()"
-      [(ngModel)]="value">
+      [(ngModel)]="value"
+      [disabled]="disabled">
       <mat-option *ngIf="placeholder">{{placeholder}}</mat-option>
-      <mat-option *ngFor="let item of selectItens" [value]="item.value">{{item.label}}</mat-option>
+      <mat-option *ngFor="let item of selectItens" [value]="labelObject && valueObject ? item[valueObject] : item.value">{{labelObject ? item[labelObject] : item.label}}</mat-option>
     </mat-select>
   </mat-form-field>
 </div>

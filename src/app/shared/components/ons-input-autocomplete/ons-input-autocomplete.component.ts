@@ -5,9 +5,12 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { Observable } from 'rxjs';
-import { SelectItem } from '../../models/select-Item';
 
 const INPUT_AUTOCOMPLETE_FIEL_VALUER_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -23,17 +26,22 @@ const INPUT_AUTOCOMPLETE_FIEL_VALUER_ACCESSOR: any = {
 })
 export class OnsInputAutocompleteComponent implements ControlValueAccessor {
   @Input() placeHolder!: string;
-  @Input() myControl: any;
+  @Input() myControl: FormControl = new FormControl();
   @Input() label!: string;
-  @Input() filteredOptions!: Observable<SelectItem[]>;
+  @Input() labelInput!: string;
+  @Input() filteredOptions!: Observable<any>;
   @Input() isReadOnly = false;
   @Input() name!: string;
   @Input() id!: any;
-  @Input() disabled = true;
+  @Input() disabled = false;
+  @Input() displayWith: any;
+  @Input() isSelectItem = false;
 
   @Output() keyUp = new EventEmitter();
   @Output() keyDown = new EventEmitter();
   @Output() selectMetodo = new EventEmitter();
+  @Output() selecDisplayFn = new EventEmitter();
+  @Output() focus = new EventEmitter();
 
   private innerValue: any;
 
@@ -74,11 +82,19 @@ export class OnsInputAutocompleteComponent implements ControlValueAccessor {
     this.keyDown.emit(event);
   }
 
-  onDisplayFn(item: SelectItem | null): string {
-    return item && item.label ? item.label : '';
+  onDisplayFn(item: any): string {
+    return item && this.isSelectItem
+      ? item
+      : item && this.labelInput
+      ? item[this.labelInput]
+      : '';
   }
 
   onSelectMetodo(event: any) {
     this.selectMetodo.emit(event);
+  }
+
+  onFocus(event: any) {
+    this.focus.emit(event);
   }
 }

@@ -3,19 +3,20 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 import { UsuarioDto } from '../models/usuario-dto';
+import { BaseService } from 'src/app/shared/services/base.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SelecaoPerfilService {
-  apiUrl = environment.apiUrl;
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private baseService: BaseService) { }
 
   public obterDados(): Observable<UsuarioDto> {
-    return this.http.get<UsuarioDto>(this.apiUrl + 'AngularSettings/Usuario');
+    return this.http.get<UsuarioDto>(this.baseService.urlApi + 'AngularSettings/Usuario');
   }
 }

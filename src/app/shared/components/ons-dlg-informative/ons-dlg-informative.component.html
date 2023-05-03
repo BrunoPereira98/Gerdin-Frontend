@@ -1,0 +1,11 @@
+<div class="modal-confirmacao">
+  <mat-icon [ngClass]="'icone-' + data.icon">{{data.icon}}</mat-icon>
+  <div class="texto-info">
+    <label>{{data.message}}</label>
+    <strong *ngIf="data.subMessage">{{data.subMessage}}</strong>
+  </div>
+
+  <div class="btns-actions">
+    <button mat-raised-button (click)="confirm()" color="primary">{{data.confirmText}}</button>
+  </div>
+</div>

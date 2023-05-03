@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfirmDialogComponent } from './confirm-dialog.component';
+import { OnsDscRegraComponent } from './ons-dsc-regra.component';
 
-describe('ConfirmDialogComponent', () => {
-  let component: ConfirmDialogComponent;
-  let fixture: ComponentFixture<ConfirmDialogComponent>;
+describe('OnsDscRegraComponent', () => {
+  let component: OnsDscRegraComponent;
+  let fixture: ComponentFixture<OnsDscRegraComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConfirmDialogComponent ]
+      declarations: [ OnsDscRegraComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ConfirmDialogComponent);
+    fixture = TestBed.createComponent(OnsDscRegraComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

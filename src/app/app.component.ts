@@ -5,6 +5,7 @@ import { AngularSettingsStoreService } from "./shared/storage/angular-settings-s
 import { angularSettingApi } from './shared/store/angular-setting.action';
 import { angularSettingSelector } from './shared/store/angular-setting.selector';
 import { StatusBarComponent } from './shared/components/status-bar/status-bar.component';
+import { TokenStoreService } from './shared/storage/token-store.service';
 
 @Component({
   selector: "app-root",
@@ -19,24 +20,45 @@ export class AppComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly angularSettingsStoreService: AngularSettingsStoreService,
-    private readonly authenticationService: AuthenticationService
+    private readonly authenticationService: AuthenticationService,
+    private readonly tokenStoreService: TokenStoreService
   ) {}
 
   angularSetting$ = this.store.select(angularSettingSelector);
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.store.dispatch(angularSettingApi());
     this.angularSetting$.subscribe({
-      next: (result) => {
-        this.angularSettingsStoreService.addStore(result);
-        this.authenticationService.requestToken();
+      next: async (result) => {
+        // this.angularSettingsStoreService.addStore(result);
+        // this.authenticationService.requestToken();
 
-        if (this.authenticationService.havePermission()) {
-          this.statuBar?.inicializar();
+        // if (this.authenticationService.havePermission()) {
+        //   this.statuBar?.inicializar();
+        // }
+
+        if (result.federationUrl != '' && result.popLoginUrl != '') {
+          this.angularSettingsStoreService.addStore(result);
+          const token = await this.authenticationService.requestToken();
+
+          if (this.tokenStoreService.getToken()) {
+            this.tokenStoreService.deletoToken();
+          }
+          this.tokenStoreService.addStore(token);
+          this.authenticationService.havePermission();
         }
       },
       error: (err) => console.log(err),
       complete: () => console.log("complete"),
     });
   }
+
+  settingsResult() {}
+
+  verificarAutenticacao() {
+    this.authenticationService.estaLogado().subscribe((logado) => {
+      // VERIFICA SE O LOGIN JÁ FOI REALIZADO E INFORMA HOME
+    });
+  }
+
 }

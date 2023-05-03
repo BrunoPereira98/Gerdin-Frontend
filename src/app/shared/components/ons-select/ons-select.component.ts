@@ -6,7 +6,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { OperadorMatematico } from '../filtro/models/pperador-matematico';
 
 const SELECT_VALUER_ACCESSOR: any = {
@@ -37,9 +37,12 @@ export class OnsSelectComponent implements OnInit, ControlValueAccessor {
 
   @Input() label: string = '';
   @Input() placeholder: string = '';
+  @Input() labelObject: string = '';
+  @Input() valueObject: any;
   @Input() selectItens: any[] = [];
   @Input() inputModel!: any;
   @Input() isReadOnly = false;
+  @Input() disabled = false;
 
   @Output() selecionarItem = new EventEmitter();
 
@@ -85,7 +88,7 @@ export class OnsSelectComponent implements OnInit, ControlValueAccessor {
   ngOnDestroy() {
     if (this.campoSalvar) {
       if (this.value) {
-        sessionStorage.setItem(this.campoSalvar, this.value ? JSON.stringify(this.value) : '');
+        sessionStorage.setItem(this.campoSalvar, this.value ? JSON.parse(this.value) : '');
       } else {
         sessionStorage.setItem(this.campoSalvar, JSON.stringify(OperadorMatematico.MAOI.Id.toString()));
       }
