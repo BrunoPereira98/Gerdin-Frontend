@@ -36,8 +36,12 @@ export class ConsultaInstalacoesComponent implements OnInit {
     })
   }
 
-  pesquisar(event: RetornoFiltro) {
-    this.consultaInstalacoesService.getInstalacoes(event).subscribe((item) => {
+  pesquisar(retornoFiltro: RetornoFiltro) {
+    this.consultaInstalacoesService.getInstalacoes(retornoFiltro.instalacaoFiltro, retornoFiltro.instalacaoExcecaoFiltro,
+      retornoFiltro.areaFiltro, retornoFiltro.pontoConexaoFiltro, retornoFiltro.pontoConexaoExcecaoFiltro,
+      retornoFiltro.condicaoOperacaoFiltro, retornoFiltro.tipoInstalacaoFiltro, retornoFiltro.agenteFiltro,
+      retornoFiltro.motivoFiltro, retornoFiltro.geracaoMinimaFiltro, retornoFiltro.fluxoSACIFiltro,
+      retornoFiltro.sensibilidadeFiltro, retornoFiltro.operadorMatematicoFiltro).subscribe((item) => {
       this.dataSource.data = item.content;
       this.dataSource.sort = this.sort;
       this.loading = false;
