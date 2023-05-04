@@ -12,6 +12,7 @@ import { DatePipe, DecimalPipe, formatDate, registerLocaleData } from '@angular/
 import { MatSort } from '@angular/material/sort';
 import { CalculoRestricaoDto } from './models/calculo-restricao-dto';
 import { BaseResult } from 'src/app/shared/models/base-result';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-calculo-restricoes',
@@ -72,8 +73,11 @@ export class CalculoRestricoesComponent {
 
   constructor(
     private readonly service: CalculoRestricaoService,
-    private readonly alert: AlertService
-  ) { }
+    private readonly alert: AlertService,
+    private readonly dateAdapter: DateAdapter<Date>
+  ) { 
+    this.dateAdapter.setLocale('pt-br');
+  }
 
   private popularDataSource(res: CalculoRestricaoDto[]): Observable<boolean> {
     this.dataSource.data = res;
