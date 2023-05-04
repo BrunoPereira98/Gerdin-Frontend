@@ -4,12 +4,13 @@ $width-icon-order: 18px;
     padding-top: 10px !important;
 }
 
-.EstadoRuim {
+::ng-deep .EstadoRuim {
     border-color: #D10429;
     border-width: 4px;
 }
+    
 
-.EstadoAtencao {
+::ng-deep .EstadoAtencao {
     border-color: #FBC90B;
     border-width: 4px;
 }

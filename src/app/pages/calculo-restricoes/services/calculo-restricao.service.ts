@@ -1,30 +1,29 @@
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/internal/Observable';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
 import { BaseService } from 'src/app/shared/services/base.service';
-import { CalculosRestricoesModel } from '../models/calculos-restricoes-model';
 import { BaseResult } from 'src/app/shared/models/base-result';
-import { CalculoRestricaoTotalizadoresModel } from '../models/calculo-restricao-totalizadores-model';
+// import { CalculoRestricaoTotalizadoresModel } from '../models/calculo-restricao-totalizadores-model';
+import { CalculoRestricaoDto } from '../models/calculo-restricao-dto';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CalculoRestricaoService {
+
+    httpOptions = {
+        headers: new HttpHeaders({'Content-Type': 'application/json'}),
+    };
+
     constructor(
         private readonly http: HttpClient,
         private baseService: BaseService
-      ) { }
-    
-
-    // public obterDados(): Observable<CalculosRestricoesModel> {
-    //     return this.http.get<CalculosRestricoesModel>(this.apiUrl + '/ComandoOperacao/ConsultarDadosCalculoRestricao')
-    //         .pipe(map(x => new CalculosRestricoesModel(x)));
-    // }
+    ) { }
 
     public updateParametros(instalacoes?: any[], instalacaoExcecao?: any[], area?: any[],
-                            pontoConexao?: any[], pontoConexaoExceto?: any[], condicaoOperacao?: any[],
-                            tipoInstalacao?: any[], agente?: any[], motivo?: any[], geracaoMinima?: any,
-                            fluxos?: any[], sensibilidade?: any, operadorMatematico?: string, orderBy?: string) {
+        pontoConexao?: any[], pontoConexaoExceto?: any[], condicaoOperacao?: any[],
+        tipoInstalacao?: any[], agente?: any[], motivo?: any[], geracaoMinima?: any,
+        fluxos?: any[], sensibilidade?: any, operadorMatematico?: string, orderBy?: string) {
         let params = new HttpParams();
         if (instalacoes && instalacoes.length > 0) {
             for (const instalacao of instalacoes) {
@@ -98,43 +97,38 @@ export class CalculoRestricaoService {
         return params;
     }
 
-    public atualizarDadosSincronismo(instalacao?: any[], instalacaoExcecao?: any[], area?: any[],
+    public atualizarGeracao(instalacao?: any[], instalacaoExcecao?: any[], area?: any[],
         pontoConexao?: any[], pontoConexaoExceto?: any[], condicaoOperacao?: any[],
         tipoInstalacao?: any[], agente?: any[], motivo?: any[], geracaoMinima?: any,
-        fluxos?: any[], sensibilidade?: any, operadorMatematico?: string, orderBy?: string): Observable<CalculosRestricoesModel> {
+        fluxos?: any[], sensibilidade?: any, operadorMatematico?: string): Observable<any> {
         let params = this.updateParametros(instalacao, instalacaoExcecao, area, pontoConexao,
             pontoConexaoExceto, condicaoOperacao, tipoInstalacao, agente, motivo, geracaoMinima, fluxos, sensibilidade,
-            operadorMatematico, orderBy);
-            return this.http.get<BaseResult<CalculoRestricaoTotalizadoresModel>>(`${this.baseService.urlApi}UsinaConjuntoUsin/AtualizarGeracao`,
-            { params: params });
+            operadorMatematico, undefined);
+        return this.http.post<BaseResult<any>>(`${this.baseService.urlApi}UsinaConjuntoUsina/AtualizarGeracao`,
+            params, this.httpOptions);
+    }
+
+    public atualizarFluxos(instalacao?: any[], instalacaoExcecao?: any[], area?: any[],
+        pontoConexao?: any[], pontoConexaoExceto?: any[], condicaoOperacao?: any[],
+        tipoInstalacao?: any[], agente?: any[], motivo?: any[], geracaoMinima?: any,
+        fluxos?: any[], sensibilidade?: any, operadorMatematico?: string): Observable<any> {
+        let params = this.updateParametros(instalacao, instalacaoExcecao, area, pontoConexao,
+            pontoConexaoExceto, condicaoOperacao, tipoInstalacao, agente, motivo, geracaoMinima, fluxos, sensibilidade,
+            operadorMatematico, undefined);
+        return this.http.post<BaseResult<any>>(`${this.baseService.urlApi}FluxoSaci/AtualizarFluxos`,
+            params, this.httpOptions);
     }
 
     public obterDadosFiltrados(instalacao?: any[], instalacaoExcecao?: any[], area?: any[],
         pontoConexao?: any[], pontoConexaoExceto?: any[], condicaoOperacao?: any[],
         tipoInstalacao?: any[], agente?: any[], motivo?: any[], geracaoMinima?: any,
-        fluxos?: any[], sensibilidade?: any, operadorMatematico?: string, orderBy?: string): Observable<CalculosRestricoesModel> {
+        fluxos?: any[], sensibilidade?: any, operadorMatematico?: string, orderBy?: string)
+        : Observable<BaseResult<CalculoRestricaoDto[]>> {
         let params = this.updateParametros(instalacao, instalacaoExcecao, area, pontoConexao,
             pontoConexaoExceto, condicaoOperacao, tipoInstalacao, agente, motivo, geracaoMinima, fluxos, sensibilidade,
             operadorMatematico, orderBy);
-        return this.http.get<BaseResult<CalculoRestricaoTotalizadoresModel>>(`${this.baseService.urlApi}CalculoRestricao/DadosTelaCalculoRestricao`,
+        return this.http.get<BaseResult<CalculoRestricaoDto[]>>(`${this.baseService.urlApi}CalculoRestricao/DadosTelaCalculoRestricao`,
             { params: params });
     }
 
-    // public calcularRestricao(valores: any): Observable<BaseResult<ValorCalculadoTotalizadoresModel>> {
-    //     return this.http.post<BaseResult<ValorCalculadoTotalizadoresModel>>(
-    //         this.apiUrl + '/ComandoOperacao/CalcularRestricoes', valores, this.httpOptions);
-    // }
-
-    // public incluirRestricao(valores: any): Observable<BaseResult<CalculoRestricaoInclusaoRetorno>> {
-    //     return this.http.post<BaseResult<CalculoRestricaoInclusaoRetorno>>(this.apiUrl + '/ComandoOperacao/CalcularRestricoes/Inclusao',
-    //         valores, this.httpOptions);
-    // }
-
-    // public consultarMotivoRestricao(): Observable<BaseResult<TipoMotivorestricao[]>> {
-    //     return this.http.get<BaseResult<TipoMotivorestricao[]>>(this.apiUrl + '/TipoMotivorestricao/All');
-    // }
-
-    // public calcularRestricaoPerformance(valores: any): Observable<any> {
-    //     return this.http.post<any>(this.apiUrl + '/ComandoOperacao/CalcularRestricoesPerformance', valores, this.httpOptions);
-    // }
 }

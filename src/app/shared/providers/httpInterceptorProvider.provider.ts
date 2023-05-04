@@ -28,7 +28,7 @@ export class HttpInterceptorProvider implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (req.url.includes('/oauth2/token') || req.url.includes('/angularsettings')) {
+    if (req.url.includes('/oauth2/token') || req.url.includes('/angularsettings/get')) {
       return next.handle(req);
     }
 
