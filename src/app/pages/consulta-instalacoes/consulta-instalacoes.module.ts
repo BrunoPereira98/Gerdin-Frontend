@@ -1,13 +1,11 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ConsultaInstalacoesComponent } from './consulta-instalacoes.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { ConsultaInstalacoesRoutingModule } from './consulta-instalacoes-routing.module';
-import {OnsDataModule} from "../../shared/components/ons-data/ons-data.module";
-import {MaterialModule} from "../../shared/material-module/material.module";
-
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ConsultaInstalacoesComponent} from './consulta-instalacoes.component';
+import {FormsModule} from '@angular/forms';
+import {SharedModule} from 'src/app/shared/shared.module';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
+import {ConsultaInstalacoesRoutingModule} from './consulta-instalacoes-routing.module';
+import {MatCommonModule} from "@angular/material/core";
 
 
 @NgModule({
@@ -16,19 +14,18 @@ import {MaterialModule} from "../../shared/material-module/material.module";
   ],
   imports: [
     CommonModule,
+    MatCommonModule,
     FormsModule,
     SharedModule,
-    ConsultaInstalacoesRoutingModule,
-    ReactiveFormsModule,
-    OnsDataModule,
-    MaterialModule
+    ConsultaInstalacoesRoutingModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { floatLabel: 'always', appearance: 'outline' },
+      useValue: {floatLabel: 'always', appearance: 'outline'},
     },
   ],
 })
-export class ConsultaInstalacoesModule { }
+export class ConsultaInstalacoesModule {
+}
