@@ -15,5 +15,10 @@ export class StatusBarComponent implements OnInit {
   ngOnInit(): void {
     
   }
+
+  inicializar() {
+    this.selecaoPerfil?.inicializar();
+    this.versaoSistema?.inicializar();
+  }
   
 }

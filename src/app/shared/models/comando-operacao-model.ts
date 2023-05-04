@@ -1,5 +1,5 @@
 import { StatusGERDINEnum } from '../components/enums/status-gerdin-enum';
-import { Sinapse } from './Sinapse';
+import { Sinapse } from './sinapse';
 
 export class ComandoOperacaoModel {
     Id!: number;

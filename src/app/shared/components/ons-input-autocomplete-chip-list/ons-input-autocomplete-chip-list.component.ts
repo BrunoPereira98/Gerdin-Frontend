@@ -121,7 +121,7 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
   }
 
   private _filtrarObjeto(opcoes: any[], item: string): string[] {
-    return opcoes.filter(opcao => opcao.Descricao.toLowerCase().includes(item.toLowerCase()));
+    return opcoes.filter(opcao => (opcao.Descricao ? opcao.Descricao : '').toLowerCase().includes(item.toLowerCase()));
   }
 
   onChangeCb: (_: any) => void = () => { };
@@ -205,6 +205,8 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
           item = new ItemSelecao(item.Id.toString(), item.Nome, item.TipoInstalacao);
         } else if (item['Descricao']) {
           item = new ItemSelecao(item.Id.toString(), item.Descricao, undefined);
+        } else if (item['Condicao']) {
+          item = new ItemSelecao(item.Codigo.toString(), item.Condicao, undefined);
         }
         
         itens.push(item)

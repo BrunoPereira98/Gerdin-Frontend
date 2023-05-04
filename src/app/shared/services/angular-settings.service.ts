@@ -29,7 +29,7 @@ export class AngularSettingsService {
       switchMap((config) => {
         this.apiUrl = config.urlAPI;
         return this.httpClient.get<AngularSettings>(
-          `${this.apiUrl}AngularSettings`
+          `${this.apiUrl}AngularSettings/Get`
         );
       })
     );

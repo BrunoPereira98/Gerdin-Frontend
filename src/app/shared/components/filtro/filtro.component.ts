@@ -77,24 +77,6 @@ export class FiltroComponent implements OnInit {
       this.operadoresMatematicos.push(new OnsSelectModel(OperadorMatematico.MAOI.Id.toString(), OperadorMatematico.MAOI.Description.toString()));
       this.operadoresMatematicos.push(new OnsSelectModel(OperadorMatematico.MEOI.Id.toString(), OperadorMatematico.MEOI.Description.toString()));
 
-      if (this.tipoFiltro === 'CR') {
-        this.obterFluxoSACI();
-      } else {
-        this.inicializarFiltros();
-      }
-    });
-  }
-
-  obterFluxoSACI() {
-    this.filtroService.obterFluxoSACI().subscribe(res => {
-      this.valoresFiltros.fluxoSACI = res.content;
-      this.obterMotivoRestricao();
-    });
-  }
-
-  obterMotivoRestricao() {
-    this.filtroService.obterMotivoRestricao().subscribe(res => {
-      this.valoresFiltros.motivos = res.content;
       this.inicializarFiltros();
     });
   }

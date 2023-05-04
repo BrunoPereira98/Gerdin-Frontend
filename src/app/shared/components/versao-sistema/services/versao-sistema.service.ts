@@ -17,7 +17,7 @@ export class VersaoSistemaService {
     private baseService: BaseService) { }
 
   public obterVersaoSistema(): Observable<VersaoDto>{
-    return this.http.get<VersaoDto>(this.baseService.urlApi + 'AngularSettings/VersaoSistema');
+    return this.http.get<VersaoDto>(this.baseService.urlApi + 'AngularSettings/VersaoSistema/VersaoSistema');
   }
 
 }

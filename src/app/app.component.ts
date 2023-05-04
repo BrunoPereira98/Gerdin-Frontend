@@ -45,7 +45,9 @@ export class AppComponent implements OnInit {
             this.tokenStoreService.deletoToken();
           }
           this.tokenStoreService.addStore(token);
-          this.authenticationService.havePermission();
+          if (this.authenticationService.havePermission()) {
+            this.statuBar?.inicializar();
+          }
         }
       },
       error: (err) => console.log(err),

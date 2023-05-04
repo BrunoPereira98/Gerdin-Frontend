@@ -11,31 +11,31 @@
                                 <ons-input-autocomplete-chip-list label="Conjunto/Usina:"
                                     [(ngModel)]="retornoFiltro.instalacaoFiltro" #instalacaoFiltro
                                     [campoSalvar]="'instalacaoFiltro'"
-                                    [filteredOptions]="valoresFiltros.Instalacoes">
+                                    [filteredOptions]="valoresFiltros.UsinaConjuntoUsinas">
                                 </ons-input-autocomplete-chip-list>
                                 <ons-input-autocomplete-chip-list label="Exceto:" #instalacaoExcecaoFiltro
                                     [(ngModel)]="retornoFiltro.instalacaoExcecaoFiltro"
                                     [campoSalvar]="'instalacaoExcecaoFiltro'"
-                                    [filteredOptions]="valoresFiltros.Instalacoes">
+                                    [filteredOptions]="valoresFiltros.UsinaConjuntoUsinas">
                                 </ons-input-autocomplete-chip-list>
                             </div>
                             <div class="col-12 col-md-3 col-lg-3" [ngClass]="getOculta('T')">
                                 <ons-input-autocomplete-chip-list label="Conexão:" #pontoConexaoFiltro
                                     [(ngModel)]="retornoFiltro.pontoConexaoFiltro"
                                     [campoSalvar]="'pontoConexaoFiltro'"
-                                    [filteredOptions]="valoresFiltros.PontosDeConexao">
+                                    [filteredOptions]="valoresFiltros.Conexoes">
                                 </ons-input-autocomplete-chip-list>
                                 <ons-input-autocomplete-chip-list label="Exceto:" #pontoConexaoExcecaoFiltro
                                     [(ngModel)]="retornoFiltro.pontoConexaoExcecaoFiltro"
                                     [campoSalvar]="'pontoConexaoExcecaoFiltro'"
-                                    [filteredOptions]="valoresFiltros.PontosDeConexao">
+                                    [filteredOptions]="valoresFiltros.Conexoes">
                                 </ons-input-autocomplete-chip-list>
                             </div>
                             <div class="col-12 col-md-3 col-lg-3" [ngClass]="getOculta('CR')">
                                 <ons-input-autocomplete-chip-list label="Fluxo (SACI):" [multiselecao]="false"
                                     #fluxoSACIFiltro [(ngModel)]="retornoFiltro.fluxoSACIFiltro"
                                     [campoSalvar]="'fluxoSACIFiltro'"
-                                    [filteredOptions]="valoresFiltros.fluxoSACI">
+                                    [filteredOptions]="valoresFiltros.Fluxos">
                                 </ons-input-autocomplete-chip-list>
                                 <div style="width: 27%; display: inline-block">
                                     <ons-select [selectItens]="operadoresMatematicos" label="Opção"
@@ -59,26 +59,26 @@
                                 <ons-input-autocomplete-chip-list label="Fonte:" #tipoInstalacaoFiltro
                                     [(ngModel)]="retornoFiltro.tipoInstalacaoFiltro"
                                     [campoSalvar]="'tipoInstalacaoFiltro'"
-                                    [filteredOptions]="valoresFiltros.TiposDeInstalacoes">
+                                    [filteredOptions]="valoresFiltros.TiposDeFontes">
                                 </ons-input-autocomplete-chip-list>
                             </div>
                             <div class="col-12 col-md-3 col-lg-3" [ngClass]="getOculta('T')">
                                 <ons-input-autocomplete-chip-list label="Agente:" #agenteFiltro
                                     [(ngModel)]="retornoFiltro.agenteFiltro"
                                     [campoSalvar]="'agenteFiltro'"
-                                    [filteredOptions]="valoresFiltros.AgenteOperador">
+                                    [filteredOptions]="valoresFiltros.Agentes">
                                 </ons-input-autocomplete-chip-list>
                                 <ons-input-autocomplete-chip-list label="Área:" #areaFiltro
                                     [(ngModel)]="retornoFiltro.areaFiltro"
                                     [campoSalvar]="'areaFiltro'"
-                                    [filteredOptions]="valoresFiltros.AreasEletricas">
+                                    [filteredOptions]="valoresFiltros.Areas">
                                 </ons-input-autocomplete-chip-list>
                             </div>
                             <div class="col-12 col-md-3 col-lg-3" [ngClass]="getOculta('CR')">
                                 <ons-input-autocomplete-chip-list label="Motivo:" #motivoFiltro
                                     [(ngModel)]="retornoFiltro.motivoFiltro"
                                     [campoSalvar]="'motivoFiltro'"
-                                    [filteredOptions]="valoresFiltros.motivos">
+                                    [filteredOptions]="valoresFiltros.MotivoRestricao">
                                 </ons-input-autocomplete-chip-list>
                                 <ons-input-number label="Geração mínima:" name="geracaoMinimaFiltro"
                                     [campoSalvar]="'geracaoMinimaFiltro'"
