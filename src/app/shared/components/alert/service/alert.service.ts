@@ -12,7 +12,7 @@ import { AlertComponent } from '../alert.component';
   providedIn: 'root',
 })
 export class AlertService {
-  private horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   private verticalPosition: MatSnackBarVerticalPosition = 'top';
   private duration: number = 5000;
 

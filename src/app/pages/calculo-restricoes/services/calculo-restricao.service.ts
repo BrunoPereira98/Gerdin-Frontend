@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { BaseService } from 'src/app/shared/services/base.service';
 import { BaseResult } from 'src/app/shared/models/base-result';
-// import { CalculoRestricaoTotalizadoresModel } from '../models/calculo-restricao-totalizadores-model';
 import { CalculoRestricaoDto } from '../models/calculo-restricao-dto';
 
 @Injectable({
@@ -12,7 +11,7 @@ import { CalculoRestricaoDto } from '../models/calculo-restricao-dto';
 export class CalculoRestricaoService {
 
     httpOptions = {
-        headers: new HttpHeaders({'Content-Type': 'application/json'}),
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
 
     constructor(
