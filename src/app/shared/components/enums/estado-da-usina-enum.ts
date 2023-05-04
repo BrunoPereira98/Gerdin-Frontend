@@ -1,4 +1,5 @@
 export enum EstadoDaUsinaEnum {
-    RUIM = 'Ruim',
-    ATENCAO = 'Atenção'
+    OK = 1,
+    ATENCAO = 2,
+    RUIM = 3
 }

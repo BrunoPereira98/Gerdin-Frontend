@@ -1,8 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { CalculoRestricaoModel } from './models/calculo-restricao-model';
 import { Observable, of } from 'rxjs';
-import { CalculosRestricoesModel } from './models/calculos-restricoes-model';
 import { AlertService } from 'src/app/shared/components/alert/service/alert.service';
 import { CalculoRestricaoService } from './services/calculo-restricao.service';
 import { FiltroComponent } from 'src/app/shared/components/filtro/filtro.component';
@@ -12,6 +10,8 @@ import { EstadoDaUsinaEnum } from 'src/app/shared/components/enums/estado-da-usi
 import { SelectionModel } from '@angular/cdk/collections';
 import {DatePipe, DecimalPipe, formatDate, registerLocaleData} from '@angular/common';
 import { MatSort } from '@angular/material/sort';
+import { CalculoRestricaoDto } from './models/calculo-restricao-dto';
+import { BaseResult } from 'src/app/shared/models/base-result';
 
 @Component({
   selector: 'app-calculo-restricoes',
@@ -30,22 +30,22 @@ export class CalculoRestricoesComponent {
 
   @ViewChild(FiltroComponent, {static: true}) filtro!: FiltroComponent;
 
-  displayedColumns: string[] = ['TipoInstalacao.Nome',
-        'NomeInstalacao',
-        'Agente',
-        'Area',
-        'SiglaConexao',
-        'PotenciaInstalada',
-        'GeracaoInstalacao.GeracaoAtual',
+  displayedColumns: string[] = ['UsinaConjuntoUsina.Fonte.Nome',
+        'UsinaConjuntoUsina.Nome',
+        'UsinaConjuntoUsina.Agente',
+        'UsinaConjuntoUsina.Area',
+        'UsinaConjuntoUsina.Conexao.Nome',
+        'UsinaConjuntoUsina.PotenciaInstalada',
+        'UsinaConjuntoUsina.GeracaoAtual.Geracao',
         'Icones',
         'ComandoOperacao.LimiteAtual',
         'NovoLimite',
-        'Fluxo.Valor',
+        'UsinaConjuntoUsina.FluxoSaci.Valor',
         'ReducaoVerificada',
         'ValorCalculado',
-        'CondicaoOperacao',
+        'UsinaConjuntoUsina.CondicaoOperacao.Nome',
         // 'Fluxo.Description',
-        'Motivo',
+        'ComandoOperacao.MotivoRestricao',
         'Opcao'];
 
   dataAtualizacao!: Date;
@@ -57,7 +57,7 @@ export class CalculoRestricoesComponent {
   atualizaData: boolean = false;
   showSpinner: boolean = false;
 
-  dataSource: MatTableDataSource<CalculoRestricaoModel> = new MatTableDataSource<CalculoRestricaoModel>([]);
+  dataSource: MatTableDataSource<CalculoRestricaoDto> = new MatTableDataSource<CalculoRestricaoDto>([]);
 
   retornoFiltro!: RetornoFiltro;
 
@@ -78,21 +78,33 @@ export class CalculoRestricoesComponent {
 
   
 
-  private popularDataSource(res: CalculoRestricaoModel[]): Observable<boolean> {
+  private popularDataSource(res: CalculoRestricaoDto[]): Observable<boolean> {
     this.dataSource.data = res;
     // this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (item: any, property) => {
         switch (property) {
-            case 'TipoInstalacao.Nome':
-                return item.TipoInstalacao.Nome;
-            case 'GeracaoInstalacao.GeracaoAtual':
-                return item.GeracaoInstalacao ? item.GeracaoInstalacao.GeracaoAtual : null;
+            case 'UsinaConjuntoUsina.Fonte.Nome':
+                return item.UsinaConjuntoUsina.Fonte.Nome;
+            case 'UsinaConjuntoUsina.Nome':
+                return item.UsinaConjuntoUsina.Nome;
+            case 'UsinaConjuntoUsina.Agente':
+                return item.UsinaConjuntoUsina.Agente;
+            case 'UsinaConjuntoUsina.Area':
+              return item.UsinaConjuntoUsina.Area;
+            case 'UsinaConjuntoUsina.Conexao.Nome':
+              return item.UsinaConjuntoUsina.Conexao.Nome;
+            case 'UsinaConjuntoUsina.PotenciaInstalada':
+              return item.UsinaConjuntoUsina.PotenciaInstalada;
+            case 'UsinaConjuntoUsina.GeracaoAtual.Geracao':
+                return item.GeracaoInstalacao ? item.UsinaConjuntoUsina.GeracaoAtual.Geracao : null;
             case 'ComandoOperacao.LimiteAtual':
                 return item.ComandoOperacao ? item.ComandoOperacao.LimiteAtual : null;
-            case 'Motivo':
-                return item.ComandoOperacao ? item.ComandoOperacao.Motivo : null;
-            case 'Fluxo.Valor':
-                return item.Fluxo ? item.Fluxo.Valor : null;
+            case 'UsinaConjuntoUsina.CondicaoOperacao.Nome':
+              return item.UsinaConjuntoUsina.CondicaoOperacao.Nome;
+            case 'ComandoOperacao.MotivoRestricao':
+                return item.ComandoOperacao ? item.ComandoOperacao.MotivoRestricao : null;
+            case 'UsinaConjuntoUsina.FluxoSaci.Valor':
+                return item.Fluxo ? item.UsinaConjuntoUsina.FluxoSaci.Valor : null;
             default:
                 return item[property];
         }
@@ -123,42 +135,43 @@ export class CalculoRestricoesComponent {
     });
   }
 
-  private preparaDadosDataGrid(res: CalculosRestricoesModel, sincronismo: boolean) {
+  private preparaDadosDataGrid(res: BaseResult<CalculoRestricaoDto[]>, sincronismo: boolean) {
     if (!sincronismo && res.warnings && res.warnings.length > 0) {
-        res.warnings.forEach(alerta => {
+        res.warnings.forEach((alerta: any) => {
             this.alert.warn(alerta.ErrorMessage);
         });
     }
-    this.dados = res.content?.Resultados;
-    let maxDate = null;
+    this.dados = res.content;
+    let dataFluxo = null;
+    let dataGeracao = new Date();
+    let dataGeracaoRecente = dataGeracao;
 
-    if (this.atualizaData
-        && res.content) {
-        this.dataAtualizacao = res.content.DataDaUltimaAtualizacao;
+    if (res.content) {
+      res.content.forEach(reg => {
+        if (reg.UsinaConjuntoUsina?.GeracaoAtual) {
+          dataGeracao = new Date(reg.UsinaConjuntoUsina?.GeracaoAtual.UltimaCaptura);
+
+          if (dataGeracao > dataGeracaoRecente) {
+            dataGeracaoRecente = dataGeracao;
+          }
+        }
+
+        if (reg.UsinaConjuntoUsina?.FluxoSaci) {
+          dataFluxo = new Date(reg.UsinaConjuntoUsina?.FluxoSaci.UltimaCaptura);
+
+          if (dataFluxo > this.dataAtualizacaoFluxo ) {
+            this.dataAtualizacaoFluxo  = dataFluxo;
+          }
+        }
+      });
+
+      if (this.atualizaData) {
+        this.dataAtualizacao = dataGeracaoRecente;
         this.atualizaData = false;
-    }
+      }
 
-    if (this.dados) {
-        try {
-            maxDate = new Date(
-                Math.max(
-                    ...this.dados.map((ret: any) => {
-                        return new Date(ret.Fluxo.UltimaCaptura);
-                    }),
-                ),
-            );
-        } catch (e) {
-            maxDate = null;
-        }
-
-        if (maxDate) {
-          this.dataAtualizacaoFluxo = maxDate;
-        }
-        
-        this.nmFluxo = this.retornoFiltro.fluxoSACIFiltro?.length ? '(' + this.retornoFiltro.fluxoSACIFiltro[0].Descricao + ')' : '';
-    }
-    if (res.content && res.content.Resultados) {
-      this.popularDataSource(res.content.Resultados);
+      this.nmFluxo = this.retornoFiltro.fluxoSACIFiltro?.length ? '(' + this.retornoFiltro.fluxoSACIFiltro[0].Descricao + ')' : '';
+      this.popularDataSource(res.content);
     }
   }
 
@@ -172,23 +185,27 @@ export class CalculoRestricoesComponent {
   }
 
   obterTotalPotencial() {
+    let soma = 0;
+
     if (this.dataSource) {
-        return Math.round(this.dataSource.data.map(i => i.PotenciaInstalada).reduce((accumulator, obj) => {
-            return accumulator + obj;
-        }, 0));
-    } else {
-        return 0;
+      this.dataSource.data.forEach(item => {
+        soma += Math.round(item.UsinaConjuntoUsina?.PotenciaInstalada ? item.UsinaConjuntoUsina?.PotenciaInstalada : 0);
+      });
     }
+
+    return soma;
   }
 
   obterTotalGeracaoAtual() {
+    let soma = 0;
+
     if (this.dataSource) {
-        return Math.round(this.dataSource.data.map(i => i.GeracaoInstalacao.GeracaoAtual).reduce((accumulator, obj) => {
-            return accumulator + obj;
-        }, 0));
-    } else {
-        return 0;
+      this.dataSource.data.forEach(item => {
+        soma += Math.round(item.UsinaConjuntoUsina?.GeracaoAtual.Geracao ? item.UsinaConjuntoUsina?.GeracaoAtual.Geracao : 0);
+      });
     }
+
+    return soma;
   }
 
   atualizarManual() {
@@ -198,22 +215,45 @@ export class CalculoRestricoesComponent {
   private atualizarDadosSincronismo() {
     this.showSpinner = true;
     this.atualizaData = true;
-    this.service.atualizarDadosSincronismo(this.retornoFiltro.instalacaoFiltro, this.retornoFiltro.instalacaoExcecaoFiltro,
+    this.service.atualizarGeracao(this.retornoFiltro.instalacaoFiltro, this.retornoFiltro.instalacaoExcecaoFiltro,
       this.retornoFiltro.areaFiltro, this.retornoFiltro.pontoConexaoFiltro, this.retornoFiltro.pontoConexaoExcecaoFiltro,
       this.retornoFiltro.condicaoOperacaoFiltro, this.retornoFiltro.tipoInstalacaoFiltro, this.retornoFiltro.agenteFiltro,
       this.retornoFiltro.motivoFiltro, this.retornoFiltro.geracaoMinimaFiltro, this.retornoFiltro.fluxoSACIFiltro,
-      this.retornoFiltro.sensibilidadeFiltro, this.retornoFiltro.operadorMatematicoFiltro, '-Fluxo.Valor').subscribe((res) => {
-        this.showSpinner = false;
-        this.preparaDadosDataGrid(res, true);
+      this.retornoFiltro.sensibilidadeFiltro, this.retornoFiltro.operadorMatematicoFiltro).subscribe((res) => {
+
+        this.service.atualizarFluxos(this.retornoFiltro.instalacaoFiltro, this.retornoFiltro.instalacaoExcecaoFiltro,
+          this.retornoFiltro.areaFiltro, this.retornoFiltro.pontoConexaoFiltro, this.retornoFiltro.pontoConexaoExcecaoFiltro,
+          this.retornoFiltro.condicaoOperacaoFiltro, this.retornoFiltro.tipoInstalacaoFiltro, this.retornoFiltro.agenteFiltro,
+          this.retornoFiltro.motivoFiltro, this.retornoFiltro.geracaoMinimaFiltro, this.retornoFiltro.fluxoSACIFiltro,
+          this.retornoFiltro.sensibilidadeFiltro, this.retornoFiltro.operadorMatematicoFiltro).subscribe((res) => {
+
+            this.service.obterDadosFiltrados(this.retornoFiltro.instalacaoFiltro, this.retornoFiltro.instalacaoExcecaoFiltro,
+              this.retornoFiltro.areaFiltro, this.retornoFiltro.pontoConexaoFiltro, this.retornoFiltro.pontoConexaoExcecaoFiltro,
+              this.retornoFiltro.condicaoOperacaoFiltro, this.retornoFiltro.tipoInstalacaoFiltro, this.retornoFiltro.agenteFiltro,
+              this.retornoFiltro.motivoFiltro, this.retornoFiltro.geracaoMinimaFiltro, this.retornoFiltro.fluxoSACIFiltro,
+              this.retornoFiltro.sensibilidadeFiltro, this.retornoFiltro.operadorMatematicoFiltro, '-Fluxo.Valor').subscribe((res) => {
+              this.preparaDadosDataGrid(res, false);
+              this.showSpinner = false;
+          }, (error: any) => {
+            this.alert.error(error, 'Falha ao obter os registros atualizados');
+            this.showSpinner = false;
+          });
+        }, (error: any) => {
+          this.alert.error(error, 'Falha ao atualizar fluxos');
+          this.showSpinner = false;
+        });
+    }, (error: any) => {
+      this.alert.error(error, 'Falha ao atualizar gerações');
+      this.showSpinner = false;
     });
   }
 
-  obterCorBordaEstado(element: CalculoRestricaoModel) {
+  obterCorBordaEstado(element: CalculoRestricaoDto) {
     if (!element.ComandoOperacao
-        || !element.ComandoOperacao.EstadoDaUsina) {
+        || !element.ComandoOperacao.CondicaoOperacao) {
         return 'EstadoPadrao';
     }
-    switch (element.ComandoOperacao.EstadoDaUsina) {
+    switch (element.ComandoOperacao.CondicaoOperacao.Id) {
         case EstadoDaUsinaEnum.RUIM:
             return 'EstadoRuim';
         case EstadoDaUsinaEnum.ATENCAO:
@@ -223,12 +263,12 @@ export class CalculoRestricoesComponent {
     }
   }
 
-  obterCorTooltipEstado(element: CalculoRestricaoModel) {
+  obterCorTooltipEstado(element: CalculoRestricaoDto) {
     if (!element.ComandoOperacao
-        || !element.ComandoOperacao.EstadoDaUsina) {
+        || !element.ComandoOperacao.CondicaoOperacao) {
         return 'TEstadoPadrao';
     }
-    switch (element.ComandoOperacao.EstadoDaUsina) {
+    switch (element.ComandoOperacao.CondicaoOperacao.Id) {
         case EstadoDaUsinaEnum.RUIM:
             return 'TEstadoRuim';
         case EstadoDaUsinaEnum.ATENCAO:
@@ -238,8 +278,8 @@ export class CalculoRestricoesComponent {
     }
   }
 
-  inLoadingIndividual(item: CalculoRestricaoModel): boolean {
-    return this._inLoadingIndividualSelection.isSelected(item ? item.IdUsinaConjuntoUsina : 0);
+  inLoadingIndividual(item: CalculoRestricaoDto): boolean {
+    return this._inLoadingIndividualSelection.isSelected(item && item.UsinaConjuntoUsina ? item.UsinaConjuntoUsina?.Id : 0);
   }
 
   private itemId(item: { IdUsinaConjuntoUsina: number }) {
@@ -247,27 +287,27 @@ export class CalculoRestricoesComponent {
   }
 
   obterTotalLimiteAtual() {
+    let soma = 0;
+
     if (this.dataSource) {
-        let total = 0;
-        this.dataSource.data.forEach(item => {
-            if (item.ComandoOperacao) {
-                total += Math.round(item.ComandoOperacao.LimiteAtual);
-            }
-        });
-        return total;
-    } else {
-        return 0;
+      this.dataSource.data.forEach(item => {
+        soma += Math.round(item.ComandoOperacao?.LimiteAtual ? item.ComandoOperacao?.LimiteAtual : 0);
+      });
     }
+
+    return soma;
   }
 
   obterTotalNovoLimite() {
+    let soma = 0;
+
     if (this.dataSource) {
-        return this.dataSource.data.map(i => i.NovoLimite).reduce((accumulator, obj) => {
-            return accumulator + (obj && !isNaN(obj) ? Number(obj) : 0);
-        }, 0);
-    } else {
-        return 0;
+      this.dataSource.data.forEach(item => {
+        soma += Math.round(item.NovoLimite ? item.NovoLimite : 0);
+      });
     }
+
+    return soma;
   }
 
   obterFluxoFiltro() {
@@ -286,28 +326,30 @@ export class CalculoRestricoesComponent {
   }
 
   obterTotalReducaoVerif() {
+    let soma = 0;
+
     if (this.dataSource) {
-        return this.dataSource.data.map(x => x.ReducaoVerificada)
-            .reduce((previusValue, currentValue) => {
-                return previusValue + (!isNaN(currentValue) ? + 
-                 Number(currentValue) : 0);
-            }, 0);
-    } else {
-        return 0;
+      this.dataSource.data.forEach(item => {
+        soma += Math.round(item.ReducaoVerificada ? item.ReducaoVerificada : 0);
+      });
     }
+
+    return soma;
   }
 
   obterTotalValorCalculado() {
+    let soma = 0;
+
     if (this.dataSource) {
-        return Math.round(this.dataSource.data.map(i => i.ValorCalculado).reduce((accumulator, obj) => {
-            return accumulator + (obj && !isNaN(obj) ? Number(obj) : 0);
-        }, 0));
-    } else {
-        return 0;
+      this.dataSource.data.forEach(item => {
+        soma += Math.round(item.ValorCalculado ? item.ValorCalculado : 0);
+      });
     }
+
+    return soma;
   }
 
-  excluir(element: CalculoRestricaoModel) {
+  excluir(element: CalculoRestricaoDto) {
     this.alert.info('Linha Excluída com Sucesso', 'Excusão de linhas');
     const array = this.dataSource.data;
     const index = this.dataSource.data.findIndex(d => d === element);
