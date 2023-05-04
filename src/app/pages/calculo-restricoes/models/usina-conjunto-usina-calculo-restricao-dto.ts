@@ -1,8 +1,8 @@
 import { FonteDto } from 'src/app/shared/models/fonte-dto';
 import { CondicaoOperacaoCalculoRestricaoDto } from './condicao-operacao-calculo-restricao-dto';
-import { ConexaoDto } from './conexao-dto';
+import { ConexaoDto } from '../../../shared/models/conexao-dto';
 import { FluxoSaciCalculoRestricaoDto } from './fluxo-saci-calculo-restricao-dto';
-import { GeracaoAtualDto } from './geracao-atual-dto';
+import { GeracaoAtualDto } from '../../../shared/models/geracao-atual-dto';
 
 export interface UsinaConjuntoUsinaCalculoRestricaoDto {
     Id: number;

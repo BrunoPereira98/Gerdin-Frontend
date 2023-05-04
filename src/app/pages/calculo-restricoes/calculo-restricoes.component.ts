@@ -5,10 +5,10 @@ import { AlertService } from 'src/app/shared/components/alert/service/alert.serv
 import { CalculoRestricaoService } from './services/calculo-restricao.service';
 import { FiltroComponent } from 'src/app/shared/components/filtro/filtro.component';
 import { RetornoFiltro } from 'src/app/shared/components/filtro/models/retorno-filtro';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { EstadoDaUsinaEnum } from 'src/app/shared/components/enums/estado-da-usina-enum';
 import { SelectionModel } from '@angular/cdk/collections';
-import {DatePipe, DecimalPipe, formatDate, registerLocaleData} from '@angular/common';
+import { DatePipe, DecimalPipe, formatDate, registerLocaleData } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
 import { CalculoRestricaoDto } from './models/calculo-restricao-dto';
 import { BaseResult } from 'src/app/shared/models/base-result';
@@ -19,34 +19,33 @@ import { BaseResult } from 'src/app/shared/models/base-result';
   styleUrls: ['./calculo-restricoes.component.scss'],
   animations: [
     trigger('rotatedState', [
-        state('default', style({transform: 'rotate(0)'})),
-        state('rotated', style({transform: 'rotate(360deg)'})),
-        transition('rotated => default', animate('1000ms ease-out')),
-        transition('default => rotated', animate('1000ms ease-in'))
+      state('default', style({ transform: 'rotate(0)' })),
+      state('rotated', style({ transform: 'rotate(360deg)' })),
+      transition('rotated => default', animate('1000ms ease-out')),
+      transition('default => rotated', animate('1000ms ease-in'))
     ])
-]
+  ]
 })
 export class CalculoRestricoesComponent {
 
-  @ViewChild(FiltroComponent, {static: true}) filtro!: FiltroComponent;
+  @ViewChild(FiltroComponent, { static: true }) filtro!: FiltroComponent;
 
   displayedColumns: string[] = ['UsinaConjuntoUsina.Fonte.Nome',
-        'UsinaConjuntoUsina.Nome',
-        'UsinaConjuntoUsina.Agente',
-        'UsinaConjuntoUsina.Area',
-        'UsinaConjuntoUsina.Conexao.Nome',
-        'UsinaConjuntoUsina.PotenciaInstalada',
-        'UsinaConjuntoUsina.GeracaoAtual.Geracao',
-        'Icones',
-        'ComandoOperacao.LimiteAtual',
-        'NovoLimite',
-        'UsinaConjuntoUsina.FluxoSaci.Valor',
-        'ReducaoVerificada',
-        'ValorCalculado',
-        'UsinaConjuntoUsina.CondicaoOperacao.Nome',
-        // 'Fluxo.Description',
-        'ComandoOperacao.MotivoRestricao',
-        'Opcao'];
+    'UsinaConjuntoUsina.Nome',
+    'UsinaConjuntoUsina.Agente',
+    'UsinaConjuntoUsina.Area',
+    'UsinaConjuntoUsina.Conexao.Nome',
+    'UsinaConjuntoUsina.PotenciaInstalada',
+    'UsinaConjuntoUsina.GeracaoAtual.Geracao',
+    'Icones',
+    'ComandoOperacao.LimiteAtual',
+    'NovoLimite',
+    'UsinaConjuntoUsina.FluxoSaci.Valor',
+    'ReducaoVerificada',
+    'ValorCalculado',
+    'UsinaConjuntoUsina.CondicaoOperacao.Nome',
+    'ComandoOperacao.MotivoRestricao',
+    'Opcao'];
 
   dataAtualizacao!: Date;
 
@@ -74,40 +73,37 @@ export class CalculoRestricoesComponent {
   constructor(
     private readonly service: CalculoRestricaoService,
     private readonly alert: AlertService
-  ) {}
-
-  
+  ) { }
 
   private popularDataSource(res: CalculoRestricaoDto[]): Observable<boolean> {
     this.dataSource.data = res;
-    // this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (item: any, property) => {
-        switch (property) {
-            case 'UsinaConjuntoUsina.Fonte.Nome':
-                return item.UsinaConjuntoUsina.Fonte.Nome;
-            case 'UsinaConjuntoUsina.Nome':
-                return item.UsinaConjuntoUsina.Nome;
-            case 'UsinaConjuntoUsina.Agente':
-                return item.UsinaConjuntoUsina.Agente;
-            case 'UsinaConjuntoUsina.Area':
-              return item.UsinaConjuntoUsina.Area;
-            case 'UsinaConjuntoUsina.Conexao.Nome':
-              return item.UsinaConjuntoUsina.Conexao.Nome;
-            case 'UsinaConjuntoUsina.PotenciaInstalada':
-              return item.UsinaConjuntoUsina.PotenciaInstalada;
-            case 'UsinaConjuntoUsina.GeracaoAtual.Geracao':
-                return item.GeracaoInstalacao ? item.UsinaConjuntoUsina.GeracaoAtual.Geracao : null;
-            case 'ComandoOperacao.LimiteAtual':
-                return item.ComandoOperacao ? item.ComandoOperacao.LimiteAtual : null;
-            case 'UsinaConjuntoUsina.CondicaoOperacao.Nome':
-              return item.UsinaConjuntoUsina.CondicaoOperacao.Nome;
-            case 'ComandoOperacao.MotivoRestricao':
-                return item.ComandoOperacao ? item.ComandoOperacao.MotivoRestricao : null;
-            case 'UsinaConjuntoUsina.FluxoSaci.Valor':
-                return item.Fluxo ? item.UsinaConjuntoUsina.FluxoSaci.Valor : null;
-            default:
-                return item[property];
-        }
+      switch (property) {
+        case 'UsinaConjuntoUsina.Fonte.Nome':
+          return item.UsinaConjuntoUsina.Fonte.Nome;
+        case 'UsinaConjuntoUsina.Nome':
+          return item.UsinaConjuntoUsina.Nome;
+        case 'UsinaConjuntoUsina.Agente':
+          return item.UsinaConjuntoUsina.Agente;
+        case 'UsinaConjuntoUsina.Area':
+          return item.UsinaConjuntoUsina.Area;
+        case 'UsinaConjuntoUsina.Conexao.Nome':
+          return item.UsinaConjuntoUsina.Conexao.Nome;
+        case 'UsinaConjuntoUsina.PotenciaInstalada':
+          return item.UsinaConjuntoUsina.PotenciaInstalada;
+        case 'UsinaConjuntoUsina.GeracaoAtual.Geracao':
+          return item.GeracaoInstalacao ? item.UsinaConjuntoUsina.GeracaoAtual.Geracao : null;
+        case 'ComandoOperacao.LimiteAtual':
+          return item.ComandoOperacao ? item.ComandoOperacao.LimiteAtual : null;
+        case 'UsinaConjuntoUsina.CondicaoOperacao.Nome':
+          return item.UsinaConjuntoUsina.CondicaoOperacao.Nome;
+        case 'ComandoOperacao.MotivoRestricao':
+          return item.ComandoOperacao ? item.ComandoOperacao.MotivoRestricao : null;
+        case 'UsinaConjuntoUsina.FluxoSaci.Valor':
+          return item.Fluxo ? item.UsinaConjuntoUsina.FluxoSaci.Valor : null;
+        default:
+          return item[property];
+      }
     };
     this.dataSource.sort = this.sort;
 
@@ -118,28 +114,28 @@ export class CalculoRestricoesComponent {
     this.retornoFiltro = retornoFiltro;
     const vazio: any[] = [];
     this.popularDataSource(vazio).subscribe((item) => {
-        // this.Motivo.setValue(null);
-        // this.orderBy = ['-Fluxo.Valor'];
+      // this.Motivo.setValue(null);
+      // this.orderBy = ['-Fluxo.Valor'];
 
-        this.service.obterDadosFiltrados(retornoFiltro.instalacaoFiltro, retornoFiltro.instalacaoExcecaoFiltro,
-            retornoFiltro.areaFiltro, retornoFiltro.pontoConexaoFiltro, retornoFiltro.pontoConexaoExcecaoFiltro,
-            retornoFiltro.condicaoOperacaoFiltro, retornoFiltro.tipoInstalacaoFiltro, retornoFiltro.agenteFiltro,
-            retornoFiltro.motivoFiltro, retornoFiltro.geracaoMinimaFiltro, retornoFiltro.fluxoSACIFiltro,
-            retornoFiltro.sensibilidadeFiltro, retornoFiltro.operadorMatematicoFiltro, '-Fluxo.Valor').subscribe((res) => {
+      this.service.obterDadosFiltrados(retornoFiltro.instalacaoFiltro, retornoFiltro.instalacaoExcecaoFiltro,
+        retornoFiltro.areaFiltro, retornoFiltro.pontoConexaoFiltro, retornoFiltro.pontoConexaoExcecaoFiltro,
+        retornoFiltro.condicaoOperacaoFiltro, retornoFiltro.tipoInstalacaoFiltro, retornoFiltro.agenteFiltro,
+        retornoFiltro.motivoFiltro, retornoFiltro.geracaoMinimaFiltro, retornoFiltro.fluxoSACIFiltro,
+        retornoFiltro.sensibilidadeFiltro, retornoFiltro.operadorMatematicoFiltro, '-Fluxo.Valor').subscribe((res) => {
 
-            if (this.atualizaData == false) {
-                this.atualizaData = true;
-            }
-            this.preparaDadosDataGrid(res, false);
+          if (this.atualizaData == false) {
+            this.atualizaData = true;
+          }
+          this.preparaDadosDataGrid(res, false);
         });
     });
   }
 
   private preparaDadosDataGrid(res: BaseResult<CalculoRestricaoDto[]>, sincronismo: boolean) {
     if (!sincronismo && res.warnings && res.warnings.length > 0) {
-        res.warnings.forEach((alerta: any) => {
-            this.alert.warn(alerta.ErrorMessage);
-        });
+      res.warnings.forEach((alerta: any) => {
+        this.alert.warn(alerta.ErrorMessage);
+      });
     }
     this.dados = res.content;
     let dataFluxo = null;
@@ -159,8 +155,8 @@ export class CalculoRestricoesComponent {
         if (reg.UsinaConjuntoUsina?.FluxoSaci) {
           dataFluxo = new Date(reg.UsinaConjuntoUsina?.FluxoSaci.UltimaCaptura);
 
-          if (dataFluxo > this.dataAtualizacaoFluxo ) {
-            this.dataAtualizacaoFluxo  = dataFluxo;
+          if (dataFluxo > this.dataAtualizacaoFluxo) {
+            this.dataAtualizacaoFluxo = dataFluxo;
           }
         }
       });
@@ -181,7 +177,7 @@ export class CalculoRestricoesComponent {
 
   isFinalizado() {
     return this.finalizado
-        && 'N' !== sessionStorage.getItem('isPesquisou');
+      && 'N' !== sessionStorage.getItem('isPesquisou');
   }
 
   obterTotalPotencial() {
@@ -232,49 +228,50 @@ export class CalculoRestricoesComponent {
               this.retornoFiltro.condicaoOperacaoFiltro, this.retornoFiltro.tipoInstalacaoFiltro, this.retornoFiltro.agenteFiltro,
               this.retornoFiltro.motivoFiltro, this.retornoFiltro.geracaoMinimaFiltro, this.retornoFiltro.fluxoSACIFiltro,
               this.retornoFiltro.sensibilidadeFiltro, this.retornoFiltro.operadorMatematicoFiltro, '-Fluxo.Valor').subscribe((res) => {
-              this.preparaDadosDataGrid(res, false);
-              this.showSpinner = false;
+                this.preparaDadosDataGrid(res, false);
+                this.alert.success('Atualização concluida com sucesso');
+                this.showSpinner = false;
+              }, (error: any) => {
+                this.alert.error(error, 'Falha ao obter os registros atualizados');
+                this.showSpinner = false;
+              });
           }, (error: any) => {
-            this.alert.error(error, 'Falha ao obter os registros atualizados');
+            this.alert.error(error, 'Falha ao atualizar fluxos');
             this.showSpinner = false;
           });
-        }, (error: any) => {
-          this.alert.error(error, 'Falha ao atualizar fluxos');
-          this.showSpinner = false;
-        });
-    }, (error: any) => {
-      this.alert.error(error, 'Falha ao atualizar gerações');
-      this.showSpinner = false;
-    });
+      }, (error: any) => {
+        this.alert.error(error, 'Falha ao atualizar gerações');
+        this.showSpinner = false;
+      });
   }
 
   obterCorBordaEstado(element: CalculoRestricaoDto) {
     if (!element.ComandoOperacao
-        || !element.ComandoOperacao.CondicaoOperacao) {
-        return 'EstadoPadrao';
+      || !element.ComandoOperacao.CondicaoOperacao) {
+      return 'EstadoPadrao';
     }
     switch (element.ComandoOperacao.CondicaoOperacao.Id) {
-        case EstadoDaUsinaEnum.RUIM:
-            return 'EstadoRuim';
-        case EstadoDaUsinaEnum.ATENCAO:
-            return 'EstadoAtencao';
-        default:
-            return 'EstadoPadrao';
+      case EstadoDaUsinaEnum.RUIM:
+        return 'EstadoRuim';
+      case EstadoDaUsinaEnum.ATENCAO:
+        return 'EstadoAtencao';
+      default:
+        return 'EstadoPadrao';
     }
   }
 
   obterCorTooltipEstado(element: CalculoRestricaoDto) {
     if (!element.ComandoOperacao
-        || !element.ComandoOperacao.CondicaoOperacao) {
-        return 'TEstadoPadrao';
+      || !element.ComandoOperacao.CondicaoOperacao) {
+      return 'TEstadoPadrao';
     }
     switch (element.ComandoOperacao.CondicaoOperacao.Id) {
-        case EstadoDaUsinaEnum.RUIM:
-            return 'TEstadoRuim';
-        case EstadoDaUsinaEnum.ATENCAO:
-            return 'TEstadoAtencao';
-        default:
-            return 'TEstadoPadrao';
+      case EstadoDaUsinaEnum.RUIM:
+        return 'TEstadoRuim';
+      case EstadoDaUsinaEnum.ATENCAO:
+        return 'TEstadoAtencao';
+      default:
+        return 'TEstadoPadrao';
     }
   }
 
@@ -316,11 +313,11 @@ export class CalculoRestricoesComponent {
 
   formatarData(data: Date, formato: string = 'dd/MM/yyyy HH:mm') {
     if (data) {
-        try {
-            return formatDate(data, formato, 'pt-BR');
-        } catch (error) {
-            return '';
-        }
+      try {
+        return formatDate(data, formato, 'pt-BR');
+      } catch (error) {
+        return '';
+      }
     }
     return '';
   }
@@ -350,7 +347,7 @@ export class CalculoRestricoesComponent {
   }
 
   excluir(element: CalculoRestricaoDto) {
-    this.alert.info('Linha Excluída com Sucesso', 'Excusão de linhas');
+    this.alert.success('Linha Excluída com Sucesso', 'Excusão de linhas');
     const array = this.dataSource.data;
     const index = this.dataSource.data.findIndex(d => d === element);
     array.splice(index, 1);
