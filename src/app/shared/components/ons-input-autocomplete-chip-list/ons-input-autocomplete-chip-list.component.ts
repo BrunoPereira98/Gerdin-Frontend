@@ -60,6 +60,8 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
 
   @Input() campoSalvar: string = '';
 
+  filtradoVazio = false;
+
   get value() {
     return this.innerValue;
   }
@@ -110,18 +112,22 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
   preencherFiltroObjeto(opcoes: ItemSelecao[]) {
     return this.matControl.valueChanges.pipe(
       startWith(''),
-      map(value => (
-        value === null ?
-          '' :
-          (value !== undefined ?
-            (value as unknown as ItemSelecao).Descricao?.toLowerCase() :
-            ''))),
+      map(value => (value === null ? '' : (value !== undefined ? value.toLowerCase() : ''))),
+      // map(value => (
+      //   value === null ?
+      //     '' :
+      //     (value !== undefined ?
+      //       (value as unknown as ItemSelecao).Descricao?.toLowerCase() :
+      //       ''))),
       map(value => this._filtrarObjeto(opcoes, value || ''))
     );
   }
 
   private _filtrarObjeto(opcoes: any[], item: string): string[] {
-    return opcoes.filter(opcao => (opcao.Descricao ? opcao.Descricao : '').toLowerCase().includes(item.toLowerCase()));
+    const filtrado = opcoes.filter(opcao => opcao.Descricao.toLowerCase().includes(item.toLowerCase()));
+    this.filtradoVazio = !filtrado;
+    return filtrado;
+    // return opcoes.filter(opcao => (opcao.Descricao ? opcao.Descricao : '').toLowerCase().includes(item.toLowerCase()));
   }
 
   onChangeCb: (_: any) => void = () => { };
@@ -164,11 +170,19 @@ export class OnsInputAutocompleteChipListComponent implements ControlValueAccess
     }
 
     this.value = this.retornosFiltro;
+    this.filtradoVazio = true;
 
     this.selectMetodo.emit(event);
   }
 
   fecharAutocomplete() {
+    if (this.filtradoVazio) {
+      this.limparCampo();
+      this.filtradoVazio = false;
+    }
+  }
+
+  limparCampo() {
     this.matControl.setValue('');
     this.matInput.nativeElement.value = '';
     sessionStorage.setItem('isPesquisou', 'I');
