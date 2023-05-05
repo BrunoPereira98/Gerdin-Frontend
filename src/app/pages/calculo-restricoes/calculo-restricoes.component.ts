@@ -12,6 +12,7 @@ import { DatePipe, DecimalPipe, formatDate, registerLocaleData } from '@angular/
 import { MatSort } from '@angular/material/sort';
 import { CalculoRestricaoDto } from './models/calculo-restricao-dto';
 import { BaseResult } from 'src/app/shared/models/base-result';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-calculo-restricoes',
@@ -66,14 +67,17 @@ export class CalculoRestricoesComponent {
 
   dataAtualizacaoFluxo!: Date;
 
-  public dados: any;
+  public dados: CalculoRestricaoDto[] = [];
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
   constructor(
     private readonly service: CalculoRestricaoService,
-    private readonly alert: AlertService
-  ) { }
+    private readonly alert: AlertService,
+    private readonly dateAdapter: DateAdapter<Date>
+  ) { 
+    this.dateAdapter.setLocale('pt-br');
+  }
 
   private popularDataSource(res: CalculoRestricaoDto[]): Observable<boolean> {
     this.dataSource.data = res;
@@ -115,13 +119,12 @@ export class CalculoRestricoesComponent {
     const vazio: any[] = [];
     this.popularDataSource(vazio).subscribe((item) => {
       // this.Motivo.setValue(null);
-      // this.orderBy = ['-Fluxo.Valor'];
 
       this.service.obterDadosFiltrados(retornoFiltro.instalacaoFiltro, retornoFiltro.instalacaoExcecaoFiltro,
         retornoFiltro.areaFiltro, retornoFiltro.pontoConexaoFiltro, retornoFiltro.pontoConexaoExcecaoFiltro,
         retornoFiltro.condicaoOperacaoFiltro, retornoFiltro.tipoInstalacaoFiltro, retornoFiltro.agenteFiltro,
         retornoFiltro.motivoFiltro, retornoFiltro.geracaoMinimaFiltro, retornoFiltro.fluxoSACIFiltro,
-        retornoFiltro.sensibilidadeFiltro, retornoFiltro.operadorMatematicoFiltro, '-Fluxo.Valor').subscribe((res) => {
+        retornoFiltro.sensibilidadeFiltro, retornoFiltro.operadorMatematicoFiltro, '').subscribe((res) => {
 
           if (this.atualizaData == false) {
             this.atualizaData = true;
@@ -137,13 +140,17 @@ export class CalculoRestricoesComponent {
         this.alert.warn(alerta.ErrorMessage);
       });
     }
-    this.dados = res.content;
-    let dataFluxo = null;
-    let dataGeracao = new Date();
-    let dataGeracaoRecente = dataGeracao;
 
     if (res.content) {
-      res.content.forEach(reg => {
+      res.content.forEach(item => {
+        this.dados.push(new CalculoRestricaoDto(item));
+      });
+
+      let dataFluxo = null;
+      let dataGeracao = new Date();
+      let dataGeracaoRecente = dataGeracao;
+
+      this.dados.forEach(reg => {
         if (reg.UsinaConjuntoUsina?.GeracaoAtual) {
           dataGeracao = new Date(reg.UsinaConjuntoUsina?.GeracaoAtual.UltimaCaptura);
 
@@ -167,7 +174,7 @@ export class CalculoRestricoesComponent {
       }
 
       this.nmFluxo = this.retornoFiltro.fluxoSACIFiltro?.length ? '(' + this.retornoFiltro.fluxoSACIFiltro[0].Descricao + ')' : '';
-      this.popularDataSource(res.content);
+      this.popularDataSource(this.dados);
     }
   }
 
@@ -227,7 +234,7 @@ export class CalculoRestricoesComponent {
               this.retornoFiltro.areaFiltro, this.retornoFiltro.pontoConexaoFiltro, this.retornoFiltro.pontoConexaoExcecaoFiltro,
               this.retornoFiltro.condicaoOperacaoFiltro, this.retornoFiltro.tipoInstalacaoFiltro, this.retornoFiltro.agenteFiltro,
               this.retornoFiltro.motivoFiltro, this.retornoFiltro.geracaoMinimaFiltro, this.retornoFiltro.fluxoSACIFiltro,
-              this.retornoFiltro.sensibilidadeFiltro, this.retornoFiltro.operadorMatematicoFiltro, '-Fluxo.Valor').subscribe((res) => {
+              this.retornoFiltro.sensibilidadeFiltro, this.retornoFiltro.operadorMatematicoFiltro, '').subscribe((res) => {
                 this.preparaDadosDataGrid(res, false);
                 this.alert.success('Atualização concluida com sucesso');
                 this.showSpinner = false;
@@ -277,10 +284,6 @@ export class CalculoRestricoesComponent {
 
   inLoadingIndividual(item: CalculoRestricaoDto): boolean {
     return this._inLoadingIndividualSelection.isSelected(item && item.UsinaConjuntoUsina ? item.UsinaConjuntoUsina?.Id : 0);
-  }
-
-  private itemId(item: { IdUsinaConjuntoUsina: number }) {
-    return item ? item.IdUsinaConjuntoUsina : void 0;
   }
 
   obterTotalLimiteAtual() {

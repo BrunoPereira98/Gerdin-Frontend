@@ -30,7 +30,6 @@ export class OnsInputNumberComponent implements OnInit, ControlValueAccessor {
   @Input() isReadOnly = false;
   @Input() isCasasDecimais = false;
   @Input() separador = ',';
-  @Input() classeInput: string = '';
 
   @Output() inputModelChange = new EventEmitter<string>();
 
