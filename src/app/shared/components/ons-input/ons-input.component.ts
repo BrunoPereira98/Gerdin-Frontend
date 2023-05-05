@@ -38,6 +38,7 @@ export class OnsInputComponent implements OnInit, ControlValueAccessor {
   @Input() name: string = '';
   @Input() id: string = '';
   @Input() isReadOnly = false;
+  @Input() placeholder: string = '';
 
   @Output() inputModelChange = new EventEmitter<string>();
 

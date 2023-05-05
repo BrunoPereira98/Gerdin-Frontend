@@ -13,6 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { CalculoRestricaoDto } from './models/calculo-restricao-dto';
 import { BaseResult } from 'src/app/shared/models/base-result';
 import { DateAdapter } from '@angular/material/core';
+import { PerfilEnum } from 'src/app/shared/components/enums/perfil-enum';
 
 @Component({
   selector: 'app-calculo-restricoes',
@@ -116,7 +117,7 @@ export class CalculoRestricoesComponent {
 
   pesquisar(retornoFiltro: RetornoFiltro) {
     this.retornoFiltro = retornoFiltro;
-    const vazio: any[] = [];
+    const vazio: CalculoRestricaoDto[] = [];
     this.popularDataSource(vazio).subscribe((item) => {
       // this.Motivo.setValue(null);
 
@@ -142,6 +143,7 @@ export class CalculoRestricoesComponent {
     }
 
     if (res.content) {
+      this.dados = [];
       res.content.forEach(item => {
         this.dados.push(new CalculoRestricaoDto(item));
       });

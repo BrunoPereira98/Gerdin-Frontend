@@ -2,17 +2,17 @@ export interface BaseResult<T> {
     content : T;
     warnings : Warning[];
     errors: Errors[];
-    messages: ValidationFailureValidationFailure
+    messages: ValidationFailure
 }
 
-export interface ValidationFailureValidationFailure {
-    propertyName: string;
-    errorMessage: string;
-    attemptedValue: any;
-    customState: any;
-    severity: number;
-    errorCode: string;
-    formattedMessagePlaceholderValues: any;
+export interface ValidationFailure {
+    PropertyName: string;
+    ErrorMessage: string;
+    AttemptedValue: any;
+    CustomState: any;
+    Severity: number;
+    ErrorCode: string;
+    FormattedMessagePlaceholderValues: any;
 }
 
 export interface Warning {
