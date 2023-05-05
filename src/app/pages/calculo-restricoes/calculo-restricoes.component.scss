@@ -5,21 +5,24 @@ $width-icon-order: 18px;
 }
 
 ::ng-deep .EstadoRuim {
-    border-color: #D10429;
-    border-width: 4px;
-}
-    
+    .mat-form-field-appearance-outline .mat-form-field-outline {
+        color: #D10429;
+        border-width: 4px;
+    }
+} 
 
 ::ng-deep .EstadoAtencao {
-    border-color: #FBC90B;
-    border-width: 4px;
+    .mat-form-field-appearance-outline .mat-form-field-outline {
+        border-color: #FBC90B !important;
+        border-width: 4px !important;
+    }
 }
 
-.TEstadoRuim {
+::ng-deep .TEstadoRuim {
     background-color: #D10429;
 }
 
-.TEstadoAtencao {
+::ng-deep .TEstadoAtencao {
     background-color: #FBC90B;
 }
 
@@ -60,94 +63,61 @@ $width-icon-order: 18px;
 }
 
 .fonte {
-    // width: 5%;
+    width: 4%;
     text-align: center;
 }
 
 .instalacao {
-    // width: 12%;
     text-align: left;
 }
 
 .agente {
-    // width: 10%;
     text-align: left;
 }
 
 .area {
-    // width: 15%;
     text-align: left;
 }
 
 .conexao {
-    // width: 5%;
     text-align: center;
 }
 
 .potencia {
-    // width: 5%;
     text-align: center;
-}
-
-.geracao {
-    // @include column-size-fixed(130px, center);
-
-    // ons-input-number {
-    //     width: 60%;
-    //     text-align: right;
-    //     margin-left: 20%;
-    // }
 }
 
 .limite {
-    // width: 6%;
     text-align: center;
-
-    // ons-input-number {
-    //     width: 40%;
-    //     text-align: right;
-    // }
 }
 
 .coluna-centro-limite {
     text-align: center;
     padding-right: 45px;
-
-    // ons-input-number {
-    //     width: 58%;
-    //     text-align: right;
-    //     padding-left: 10px;
-    // }
 }
 
 .sensibilidade {
-    // width: 5%;
     text-align: center;
 }
 
 .operacao {
-    // width: 5%;
     text-align: center;
 }
 
 .condicao {
-    // width: 5%;
     text-align: center;
 }
 
 .motivo {
-    // width: 70px !important;
     text-align: center;
 }
 
 .reducao-verif {
-    // width: 70px !important;
     text-align: center;
 }
 
 .opcao {
-    width: 50px !important;
-    min-width: 50px;
+    width: 3%;
     text-align: center;
 }
 
@@ -175,33 +145,10 @@ $width-icon-order: 18px;
     .icones-flag {
         font-size: 14px;
         width: 14px;
-        margin-top: 5px;
-    }
-}
-
-.coluna-icones {
-    padding-left: 20px;
-}
-
-.icons {
-    position: relative;
-    top: 5px;
-    right: 70px;
-    display: inline-flex;
-    padding-left: 10px;
-}
-
-.auto-width {
-    .mat-form-field {
-        width: auto !important;
-    }
-
-    .mat-select-value {
-        max-width: 100%;
-        width: auto;
+        padding-top: 50%;
     }
 }
 
 ons-input-number {
-    width: 70%;
+    width: 70%;   
 }
