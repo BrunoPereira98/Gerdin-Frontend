@@ -94,7 +94,7 @@
                                     [matTooltip]="element.ComandoOperacao?.CondicaoOperacao?.Descricao"
                                     [matTooltipClass]="obterCorTooltipEstado(element)"
                                     (keyup)="element.calcular()" non-null-value
-                                    [value]="element.UsinaConjuntoUsina.GeracaoAtual.Geracao" maxLengthNumber="5"
+                                    [value]="element.UsinaConjuntoUsina.GeracaoAtual.Geracao" [maxLength]="5"
                                     [readonly]="inLoadingIndividual(element)"></ons-input-number>
                             </td>
                         </ng-container>
@@ -134,7 +134,7 @@
                             </th>
                             <td class="limite" mat-cell *matCellDef="let element">
                                 <ons-input-number step="1" [(ngModel)]="element.NovoLimite" [value]="element.NovoLimite"
-                                    maxLengthNumber="5" (keyup)="element.calcular()"
+                                    [maxLength]="5" (keyup)="element.calcular()"
                                     [readonly]="inLoadingIndividual(element)"></ons-input-number>
                             </td>
                         </ng-container>

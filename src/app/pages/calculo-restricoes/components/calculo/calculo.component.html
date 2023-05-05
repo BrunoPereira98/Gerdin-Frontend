@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-md-3 col-lg-1">
-                <ons-input-number label="Restrição Total" name="ValorDaRestricao" id="ValorDaRestricao"
+                <ons-input-number label="Restrição Total" name="ValorDaRestricao" id="ValorDaRestricao" [maxLength]="6"
                     [readonly]="isAnyInLoadingIndividual()" [(ngModel)]="ValorDaRestricao"></ons-input-number>
             </div>
             <div class="col-12 col-md-3 col-lg-5 botoes">

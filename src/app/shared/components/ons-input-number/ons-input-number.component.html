@@ -4,6 +4,7 @@
   </mat-label>
   <mat-form-field appearance="outline" [ngClass]="typeIcon ? 'field-size' : ''">
     <input [readonly]="!!isReadOnly" [type]="type" [name]="name" [id]="id" matInput [disabled]="disabled"
+      maxlength={{maxLength}}
       [required]="required" [(ngModel)]="value" numbersOnly autocomplete="off" [decimal]="isCasasDecimais" [decimalSeparator]="separador">
     <mat-icon *ngIf="typeIcon" color="accent" matSuffix>{{typeIcon}}</mat-icon>
   </mat-form-field>
