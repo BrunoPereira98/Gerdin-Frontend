@@ -71,8 +71,8 @@ export class ConsultaInstalacoesComponent implements OnInit {
 
   private ordernaFonte(event: Sort) {
     this.dataSource.data = this.dataSource.data.sort((a, b) => {
-      const lastNameA = a.TipoInstalacao.Nome;
-      const lastNameB = b.TipoInstalacao.Nome;
+      const lastNameA = a.Fonte;
+      const lastNameB = b.Fonte;
 
       if (event.direction === 'asc') {
         return lastNameA < lastNameB ? -1 : 1;
@@ -84,8 +84,8 @@ export class ConsultaInstalacoesComponent implements OnInit {
 
   private ordernaNomeInstalacao(event: Sort) {
     this.dataSource.data = this.dataSource.data.sort((a, b) => {
-      const lastNameA = a.NomeInstalacao;
-      const lastNameB = b.NomeInstalacao;
+      const lastNameA = a.Nome;
+      const lastNameB = b.Nome;
 
       if (event.direction === 'asc') {
         return lastNameA < lastNameB ? -1 : 1;
@@ -123,8 +123,8 @@ export class ConsultaInstalacoesComponent implements OnInit {
 
   private ordernaSigla(event: Sort) {
     this.dataSource.data = this.dataSource.data.sort((a, b) => {
-      const lastNameA = a.SiglaConexao;
-      const lastNameB = b.SiglaConexao;
+      const lastNameA = a.Sigla;
+      const lastNameB = b.Sigla;
 
       if (event.direction === 'asc') {
         return lastNameA < lastNameB ? -1 : 1;
@@ -137,8 +137,8 @@ export class ConsultaInstalacoesComponent implements OnInit {
 
   private ordernaPontoConexao(event: Sort) {
     this.dataSource.data = this.dataSource.data.sort((a, b) => {
-      const lastNameA = a.PontoConexao;
-      const lastNameB = b.PontoConexao;
+      const lastNameA = a.Conexao;
+      const lastNameB = b.Conexao;
 
       if (event.direction === 'asc') {
         return lastNameA < lastNameB ? -1 : 1;
@@ -163,8 +163,8 @@ export class ConsultaInstalacoesComponent implements OnInit {
 
   private ordernaNomeCondicaoOperacao(event: Sort) {
     this.dataSource.data = this.dataSource.data.sort((a, b) => {
-      const lastNameA = a.NomeCondicaoOperacao;
-      const lastNameB = b.NomeCondicaoOperacao;
+      const lastNameA = a.CondicaoOperacao;
+      const lastNameB = b.CondicaoOperacao;
 
       if (event.direction === 'asc') {
         return lastNameA < lastNameB ? -1 : 1;
