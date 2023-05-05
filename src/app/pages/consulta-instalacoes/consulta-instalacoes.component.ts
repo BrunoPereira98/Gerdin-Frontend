@@ -14,6 +14,10 @@ export class ConsultaInstalacoesComponent implements OnInit {
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   loading: boolean = true;
 
+  atualizaData: boolean = false;
+  finalizado: boolean = false;
+
+
   @ViewChild(MatSort) sort!: MatSort;
 
   displayedColumns: string [] = ['TipoInstalacao.Nome', 'NomeInstalacao', 'Agente',
@@ -26,6 +30,15 @@ export class ConsultaInstalacoesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getInstalacoes();
+  }
+
+  isFinalizado() {
+    return this.finalizado
+      && 'N' !== sessionStorage.getItem('isPesquisou');
+  }
+
+  atualizar(value: boolean) {
+    this.finalizado = value;
   }
 
   private getInstalacoes() {
@@ -42,6 +55,11 @@ export class ConsultaInstalacoesComponent implements OnInit {
       retornoFiltro.condicaoOperacaoFiltro, retornoFiltro.tipoInstalacaoFiltro, retornoFiltro.agenteFiltro,
       retornoFiltro.motivoFiltro, retornoFiltro.geracaoMinimaFiltro, retornoFiltro.fluxoSACIFiltro,
       retornoFiltro.sensibilidadeFiltro, retornoFiltro.operadorMatematicoFiltro).subscribe((item) => {
+
+      if (this.atualizaData == false) {
+        this.atualizaData = true;
+      }
+
       this.dataSource.data = item.content;
       this.dataSource.sort = this.sort;
       this.loading = false;
