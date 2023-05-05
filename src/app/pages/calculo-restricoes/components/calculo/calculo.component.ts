@@ -10,7 +10,9 @@ import { OnsSelectModel } from 'src/app/shared/models/ons-select-model';
 import { MotivoRestricaoDto } from 'src/app/shared/models/motivo-restricao-dto';
 import { GravarEfetivarCorteDto } from '../calculo/models/gravar-efetivar-corte-dto';
 import { GravarEfetivarCorteValoresDto } from '../calculo/models/gravar-efetivar-corte-valores-dto';
-import { ValidationFailure } from 'src/app/shared/models/base-result';
+import { BaseResult, ValidationFailure } from 'src/app/shared/models/base-result';
+import { finalize } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-calculo',
@@ -42,7 +44,8 @@ export class CalculoComponent implements OnInit {
 
   constructor(
     private readonly service: CalculoRestricaoService,
-    private readonly alert: AlertService
+    private readonly alert: AlertService,
+    private router: Router
   ) { 
   }
 
@@ -51,7 +54,7 @@ export class CalculoComponent implements OnInit {
   }
 
   consultarMotivoRestricao() {
-    this.service.consultarMotivoRestricao().subscribe((res: any) => {
+    this.service.consultarMotivoRestricao().subscribe((res: BaseResult<MotivoRestricaoDto[]>) => {
         if (res.content) {
           this.motivos = res.content;
           res.content.forEach((motivo: MotivoRestricaoDto) => {
@@ -138,7 +141,7 @@ export class CalculoComponent implements OnInit {
   liberarGeracao() {
     this.setInLoading(true, ...this.dataSource.data);
     this.motivosSelecao = this.motivosSelecaoLiberacao;
-    const motivo = this.motivos.find((item: any) => !item.Exibir);
+    const motivo = this.motivos.find((item: MotivoRestricaoDto) => !item.Exibir);
 
     if (motivo) {
       this.motivoCorte = motivo;
@@ -164,7 +167,7 @@ export class CalculoComponent implements OnInit {
   }
 
   selecionarFiltroCorte() {
-    const motivo = this.motivos.find((item: any) => item.Id.toString() === this.Motivo);
+    const motivo = this.motivos.find((item: MotivoRestricaoDto) => item.Id.toString() === this.Motivo);
 
     if (motivo?.Exibir) {
       this.motivosSelecao = this.motivosSelecaoPadrao;
@@ -222,15 +225,25 @@ export class CalculoComponent implements OnInit {
 
     this.setInLoading(true, ...registros);
 
-    this.service.efetuarCortes(gravarEfetivarCorteDto).subscribe((res: any) => {
+    this.service.efetuarCortes(gravarEfetivarCorteDto).pipe(
+      finalize(() => {
+        this.setInLoading(false, ...registros);
+      })
+    ).subscribe((res: any) => {
       if (res.message
         && res.message.length > 0) {
         res.message.forEach((alerta: ValidationFailure) => {
           this.alert.warn(alerta.ErrorMessage);
         });
+      } else {
+        this.router.navigateByUrl('/execucao-acompanhamento');
       }
     }, (error: any) => {
-      this.alert.error(error, 'Falha ao efetuar cortes');
+      if (error) {
+        error.error.messages.forEach((item: ValidationFailure) => this.alert.error(error, item.ErrorMessage));
+      } else {
+        this.alert.error(error, 'Falha ao efetuar cortes');
+      }
     });
   }
 
