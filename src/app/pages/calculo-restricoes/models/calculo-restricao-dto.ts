@@ -26,7 +26,7 @@ export class CalculoRestricaoDto {
             this.limparDadosCalculo();
             return;
         }
-        this.ValorCalculado = this.obterValorParaCalculo() - this.NovoLimite;
+        this.ValorCalculado = this.obterValorParaCalculo() - (this.NovoLimite ? this.NovoLimite : 0);
     }
 
     public limitarGeracao() {
@@ -57,6 +57,6 @@ export class CalculoRestricaoDto {
     }
 
     public possuiGeracao(): boolean {
-        return this.ComandoOperacao !== null && this.ComandoOperacao?.LimiteAtual !== null;
+        return this.UsinaConjuntoUsina !== null && this.UsinaConjuntoUsina?.GeracaoAtual?.Geracao !== null;
     }
 }
