@@ -3,8 +3,19 @@
 <div class="d-grid gap-6">
     <div class="p-2">
         <mat-card>
+            <mat-card-content>
+                <app-loading [style.visibility]="!isFinalizado() ? 'visible' : 'hidden'"
+                    filterBy="DadosTelaCalculoRestricao" (atualizar)="atualizar($event)"></app-loading>
+                <app-calculo [style.visibility]="isFinalizado() ? 'visible' : 'hidden'"
+                            [dataSource]="dataSource" [retornoFiltro]="retornoFiltro"></app-calculo>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="p-2">
+        <mat-card>
             <mat-card-content style="min-height: 80px;">
-                <app-loading [style.visibility]="!isFinalizado() ? 'visible' : 'hidden'"  filterBy="DadosTelaCalculoRestricao" (atualizar)="atualizar($event)"></app-loading>
+                <app-loading [style.visibility]="!isFinalizado() ? 'visible' : 'hidden'"
+                    filterBy="DadosTelaCalculoRestricao" (atualizar)="atualizar($event)"></app-loading>
 
                 <div [style.visibility]="isFinalizado() ? 'visible' : 'hidden'" class="resultados">
                     <small>*Todos os valores estão em MW</small>
@@ -19,31 +30,34 @@
                                 </div>
                             </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="UsinaConjuntoUsina.Nome">
                             <th class="instalacao" mat-header-cell *matHeaderCellDef mat-sort-header>Conjunto/Usina</th>
-                            <td class="instalacao" mat-cell *matCellDef="let element">{{element.UsinaConjuntoUsina.Nome}}</td>
+                            <td class="instalacao" mat-cell *matCellDef="let element">
+                                {{element.UsinaConjuntoUsina.Nome}}</td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="UsinaConjuntoUsina.Agente">
                             <th class="agente" mat-header-cell *matHeaderCellDef mat-sort-header>Agente</th>
-                            <td class="agente" mat-cell *matCellDef="let element">{{element.UsinaConjuntoUsina.Agente}}</td>
+                            <td class="agente" mat-cell *matCellDef="let element">{{element.UsinaConjuntoUsina.Agente}}
+                            </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="UsinaConjuntoUsina.Area">
                             <th class="area" mat-header-cell *matHeaderCellDef mat-sort-header>Área</th>
                             <td class="area" mat-cell *matCellDef="let element">{{element.UsinaConjuntoUsina.Area}}</td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="UsinaConjuntoUsina.Conexao.Nome">
-                            <th class="conexao order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Conexão</th>
+                            <th class="conexao order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Conexão
+                            </th>
                             <td class="conexao" mat-cell *matCellDef="let element">
                                 <div matTooltip="{{element.UsinaConjuntoUsina.Conexao.Nome}}">
                                     {{element.UsinaConjuntoUsina.Conexao.Sigla}}
                                 </div>
                             </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="UsinaConjuntoUsina.PotenciaInstalada">
                             <th class="potencia order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <span>
@@ -51,10 +65,11 @@
                                     <span style="color: black;">{{ obterTotalPotencial() }}<br></span>
                                 </span>
                             </th>
-                            <td class="potencia" mat-cell *matCellDef="let element">{{ element.UsinaConjuntoUsina.PotenciaInstalada }}
+                            <td class="potencia" mat-cell *matCellDef="let element">{{
+                                element.UsinaConjuntoUsina.PotenciaInstalada }}
                             </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="UsinaConjuntoUsina.GeracaoAtual.Geracao">
                             <th class="geracao order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <span>
@@ -65,24 +80,25 @@
                                 <button mat-icon-button matTooltip="Atualiza a geração atual." [@rotatedState]='state'
                                     (click)="atualizarManual();$event.stopPropagation();">
                                     <span *ngIf="showSpinner">
-                                         <mat-spinner diameter="20"></mat-spinner>
+                                        <mat-spinner diameter="20"></mat-spinner>
                                     </span>
                                     <span *ngIf="!showSpinner">
                                         <mat-icon>sync</mat-icon>
-                                     </span>
+                                    </span>
                                 </button>
                                 <br>
                             </th>
                             <td class="geracao" mat-cell *matCellDef="let element">
                                 <ons-input-number step="1" [(ngModel)]="element.UsinaConjuntoUsina.GeracaoAtual.Geracao"
-                                        [ngClass]="obterCorBordaEstado(element)"
-                                        [matTooltip]="element.ComandoOperacao?.CondicaoOperacao?.Descricao"
-                                        [matTooltipClass]="obterCorTooltipEstado(element)" (ngModelChange)="element.calcular()"
-                                        non-null-value [value]="element.UsinaConjuntoUsina.GeracaoAtual.Geracao" maxLengthNumber="5"
-                                        [readonly]="inLoadingIndividual(element)"></ons-input-number>
+                                    [ngClass]="obterCorBordaEstado(element)"
+                                    [matTooltip]="element.ComandoOperacao?.CondicaoOperacao?.Descricao"
+                                    [matTooltipClass]="obterCorTooltipEstado(element)"
+                                    (keyup)="element.calcular()" non-null-value
+                                    [value]="element.UsinaConjuntoUsina.GeracaoAtual.Geracao" [maxLength]="5"
+                                    [readonly]="inLoadingIndividual(element)"></ons-input-number>
                             </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="Icones">
                             <th class="icones" mat-header-cell *matHeaderCellDef></th>
                             <td class="icones" mat-cell *matCellDef="let element">
@@ -96,7 +112,7 @@
                                 </div>
                             </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="ComandoOperacao.LimiteAtual">
                             <th class="limite order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <span>
@@ -104,10 +120,11 @@
                                     <span style="color: black;">{{ obterTotalLimiteAtual() }}<br></span>
                                 </span>
                             </th>
-                            <td class="limite" mat-cell *matCellDef="let element">{{ element.ComandoOperacao?.LimiteAtual }}
+                            <td class="limite" mat-cell *matCellDef="let element">{{
+                                element.ComandoOperacao?.LimiteAtual }}
                             </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="NovoLimite">
                             <th class="limite order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <span>
@@ -116,13 +133,12 @@
                                 </span>
                             </th>
                             <td class="limite" mat-cell *matCellDef="let element">
-                                <ons-input-number step="1" [(ngModel)]="element.NovoLimite"
-                                         [value]="element.NovoLimite" maxLengthNumber="5"
-                                         (ngModelChange)="element.calcular()"
-                                        [readonly]="inLoadingIndividual(element)"></ons-input-number>
+                                <ons-input-number step="1" [(ngModel)]="element.NovoLimite" [value]="element.NovoLimite"
+                                    [maxLength]="5" (keyup)="element.calcular()"
+                                    [readonly]="inLoadingIndividual(element)"></ons-input-number>
                             </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="UsinaConjuntoUsina.FluxoSaci.Valor">
                             <th class="sensibilidade order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <span>
@@ -137,19 +153,20 @@
                                 </span>
                             </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="ReducaoVerificada">
                             <th class="reducao-verif order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <span>
                                     <span>Redução Verif.<br></span>
-                                    <span style="color: black;">{{ obterTotalReducaoVerif() | number:'1.0-0' }}<br></span>
+                                    <span style="color: black;">{{ obterTotalReducaoVerif() | number:'1.0-0'
+                                        }}<br></span>
                                 </span>
                             </th>
                             <td class="reducao-verif" mat-cell *matCellDef="let element">
                                 {{element.ReducaoVerificada | number:'1.0-0'}}
                             </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="ValorCalculado">
                             <th class="operacao order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <span>
@@ -160,25 +177,26 @@
                             <td class="operacao" mat-cell-cell *matCellDef="let element">{{ element.ValorCalculado }}
                             </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="UsinaConjuntoUsina.CondicaoOperacao.Nome">
                             <th class="condicao order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Condição
                             </th>
                             <td class="condicao" mat-cell *matCellDef="let element">
-                                <span [matTooltip]="element.UsinaConjuntoUsina.CondicaoOperacao.Nome" matTooltipPosition="below"
-                                    matTooltipClass="alinhamento-tooltip-condicao">
+                                <span [matTooltip]="element.UsinaConjuntoUsina.CondicaoOperacao.Nome"
+                                    matTooltipPosition="below" matTooltipClass="alinhamento-tooltip-condicao">
                                     {{element.UsinaConjuntoUsina.CondicaoOperacao.Sigla}}
                                 </span>
                             </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="ComandoOperacao.MotivoRestricao">
-                            <th class="motivo order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Motivo</th>
+                            <th class="motivo order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Motivo
+                            </th>
                             <td class="motivo" mat-cell *matCellDef="let element">
                                 {{element.ComandoOperacao?.MotivoRestricao}}
                             </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="Opcao">
                             <th class="opcao" mat-header-cell *matHeaderCellDef></th>
                             <td class="opcao" mat-cell *matCellDef="let element" (click)="excluir(element)">
@@ -187,7 +205,7 @@
                                 </a>
                             </td>
                         </ng-container>
-    
+
                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" class="fix-thead"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
