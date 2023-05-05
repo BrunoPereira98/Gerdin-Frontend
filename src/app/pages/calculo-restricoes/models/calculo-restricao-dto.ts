@@ -5,8 +5,8 @@ export class CalculoRestricaoDto {
     UsinaConjuntoUsina?: UsinaConjuntoUsinaCalculoRestricaoDto;
     ComandoOperacao?: ComandoOperacaoCalculoRestricaoDto;
     ValorCalculado: number = 0;
-    NovoLimite: number = 0;
-    ReducaoVerificada: number = 0;
+    NovoLimite!: number;
+    ReducaoVerificada!: number;
 
     constructor(obj: CalculoRestricaoDto) {
         obj && Object.assign(this, obj);

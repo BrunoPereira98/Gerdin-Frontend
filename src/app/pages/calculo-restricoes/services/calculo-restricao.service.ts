@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/internal/Observable';
 import { BaseService } from 'src/app/shared/services/base.service';
 import { BaseResult } from 'src/app/shared/models/base-result';
 import { CalculoRestricaoDto } from '../models/calculo-restricao-dto';
+import { MotivoRestricaoDto } from 'src/app/shared/models/motivo-restricao-dto';
+import { GravarEfetivarCorteDto } from '../components/calculo/models/gravar-efetivar-corte-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -128,6 +130,15 @@ export class CalculoRestricaoService {
             operadorMatematico, orderBy);
         return this.http.get<BaseResult<CalculoRestricaoDto[]>>(`${this.baseService.urlApi}CalculoRestricao/DadosTelaCalculoRestricao`,
             { params: params });
+    }
+
+    public consultarMotivoRestricao() : Observable<BaseResult<MotivoRestricaoDto[]>> {
+        return this.http.get<BaseResult<MotivoRestricaoDto[]>>(`${this.baseService.urlApi}Filtro/ObterMotivosDeRestricao`);
+    }
+
+    public efetuarCortes(gravarEfetivarCorteDto: GravarEfetivarCorteDto): Observable<BaseResult<any>> {
+        return this.http.post<BaseResult<any>>(`${this.baseService.urlApi}CalculoRestricao/GravarEfetivarCorte`,
+            gravarEfetivarCorteDto, this.httpOptions);
     }
 
 }

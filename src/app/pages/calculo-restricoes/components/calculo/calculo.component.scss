@@ -1,0 +1,56 @@
+
+.botoes {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 1%;
+
+    button {
+        margin-right: 1%;
+        display: block;
+        white-space: normal;
+        line-height: normal;
+    }
+
+    div {
+        margin-right: 1%;
+    }
+}
+
+::ng-deep button.button-loading {
+    mat-spinner {
+        margin: 3px 5px;
+
+        circle {
+            stroke: white;
+        }
+    }
+}
+
+button.button-loading {
+    &.in-loading {
+        cursor: wait;
+    }
+
+    &.button-loading-with-text {
+        ::ng-deep mat-spinner {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 3px;
+
+            circle {
+                stroke: white;
+            }
+        }
+    }
+
+    &.mat-raised-button:disabled {
+        $disabled-color: rgba(0, 0, 0, .3);
+        color: $disabled-color;
+        cursor: not-allowed;
+
+        :hover {
+            color: $disabled-color;
+        }
+    }
+}
