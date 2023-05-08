@@ -1,4 +1,4 @@
-import { CondicaoOperacaoDto } from './condicao-operacao-dto';
+import { CondicaoOperacaoDto } from '../../../shared/models/condicao-operacao-dto';
 
 export interface ComandoOperacaoCalculoRestricaoDto {
     IdAcaoOperacao: number;
