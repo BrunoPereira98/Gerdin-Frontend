@@ -32,6 +32,7 @@ export class OnsInputNumberComponent implements OnInit, ControlValueAccessor {
   @Input() separador = ',';
   @Input() maxLength!: number;
   @Input() campoSalvar!: string;
+  @Input() permiteNegativos!: boolean;
 
   @Output() inputModelChange = new EventEmitter<string>();
 
