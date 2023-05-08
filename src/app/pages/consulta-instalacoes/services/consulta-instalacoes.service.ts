@@ -5,14 +5,15 @@ import { Observable } from "rxjs";
 import { BaseResult } from "../../../shared/models/base-result";
 import { FilterUtils } from "../../../shared/utils/filter-utils";
 import { ConsultaInstalacaoDto } from "../models/consulta-instalacao-dto";
+import { BaseService } from 'src/app/shared/services/base.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsultaInstalacoesService {
-  apiUrl = environment.apiUrl;
 
-  constructor(private readonly httpClient: HttpClient) {
+  constructor(private readonly httpClient: HttpClient,
+    private baseService: BaseService) {
   }
 
   public obterInstalacoes(instalacao?: any[], instalacaoExcecao?: any[], area?: any[], pontoConexao?: any[],
@@ -22,6 +23,6 @@ export class ConsultaInstalacoesService {
 
     let filter = new FilterUtils()
     let params = filter.updateParametros(instalacao, instalacaoExcecao, area, pontoConexao, pontoConexaoExceto, condicaoOperacao, tipoInstalacao, agente, motivo, geracaoMinima, fluxos, sensibilidade, operadorMatematico, orderBy);
-    return this.httpClient.get<BaseResult<ConsultaInstalacaoDto[]>>(this.apiUrl + 'ConsultaInstalacao/ObterInstalacoes', { params: params });
+    return this.httpClient.get<BaseResult<ConsultaInstalacaoDto[]>>(this.baseService.urlApi + 'ConsultaInstalacao/ObterInstalacoes', { params: params });
   }
 }
