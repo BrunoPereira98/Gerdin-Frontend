@@ -1,4 +1,33 @@
-//th.mat-header-cell {
-//  background-color: #8d8f9a;
-//  color: white;
-//}
+$width-icon-order: 18px;
+
+.order-center .mat-sort-header-container {
+    display: flex;
+    justify-content: center;
+}
+
+[mat-sort-header].order-center {
+    padding-left: $width-icon-order;
+    padding-right: 0px;
+}
+
+@mixin order-center-column($width) {
+    @if (is-percentage($width)) {
+        &.order-center {
+            width: calc($width - $width-icon-order);
+            min-width: calc($width - $width-icon-order);
+            max-width: calc($width - $width-icon-order);
+        }
+    }
+
+    @else {
+        &.order-center {
+            width: $width - $width-icon-order;
+            min-width: $width - $width-icon-order;
+            max-width: $width - $width-icon-order;
+        }
+    }
+}
+
+.potencia {
+    text-align: center;
+}

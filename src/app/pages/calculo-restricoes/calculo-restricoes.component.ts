@@ -8,12 +8,11 @@ import { RetornoFiltro } from 'src/app/shared/components/filtro/models/retorno-f
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { EstadoDaUsinaEnum } from 'src/app/shared/components/enums/estado-da-usina-enum';
 import { SelectionModel } from '@angular/cdk/collections';
-import { DatePipe, DecimalPipe, formatDate, registerLocaleData } from '@angular/common';
+import { formatDate } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
 import { CalculoRestricaoDto } from './models/calculo-restricao-dto';
 import { BaseResult } from 'src/app/shared/models/base-result';
 import { DateAdapter } from '@angular/material/core';
-import { PerfilEnum } from 'src/app/shared/components/enums/perfil-enum';
 
 @Component({
   selector: 'app-calculo-restricoes',
