@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12 col-md-3 col-lg-1">
                 <ons-input-number label="Restrição Total" name="ValorDaRestricao" id="ValorDaRestricao" [maxLength]="6"
-                    [readonly]="isAnyInLoadingIndividual()" [(ngModel)]="ValorDaRestricao"></ons-input-number>
+                    [readonly]="isAnyInLoadingIndividual()" [(ngModel)]="ValorDaRestricao" [permiteNegativos]="true"></ons-input-number>
             </div>
             <div class="col-12 col-md-3 col-lg-5 botoes">
                 <button class="button-loading" mat-raised-button (click)="calcularRestricao()"

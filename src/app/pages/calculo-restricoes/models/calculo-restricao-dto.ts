@@ -53,10 +53,20 @@ export class CalculoRestricaoDto {
     }
 
     public estaLimitada(): boolean {
-        return this.ComandoOperacao !== null && this.ComandoOperacao?.LimiteAtual !== null;
+        return this.ComandoOperacao !== null
+                && this.ComandoOperacao?.LimiteAtual !== null
+                && this.ComandoOperacao?.LimiteAtual !== 0;
     }
 
     public possuiGeracao(): boolean {
         return this.UsinaConjuntoUsina !== null && this.UsinaConjuntoUsina?.GeracaoAtual?.Geracao !== null;
+    }
+
+    public obterValorPraCalcular(): number  {
+        return this.obterValorPraCalcularCond(this.ComandoOperacao?.LimiteAtual, this.UsinaConjuntoUsina?.GeracaoAtual?.Geracao);
+    }
+
+    private obterValorPraCalcularCond(limite?: number, geracao?: number) {
+        return limite ?? geracao ?? 0;
     }
 }

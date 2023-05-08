@@ -87,50 +87,84 @@ export class CalculoComponent implements OnInit {
         return;
     }
 
-    const usinaValores: any[] = [];
-    this.dataSource.data.map(d => {
-        const input = {
-            IdUsinaConjuntoUsina: d.UsinaConjuntoUsina?.Id,
-            GeracaoAtual: d.UsinaConjuntoUsina?.GeracaoAtual.Geracao,
-            LimiteAtual: d.ComandoOperacao ? d.ComandoOperacao.LimiteAtual : null,
-            PotenciaInstalada: d.UsinaConjuntoUsina?.PotenciaInstalada
-        };
-        usinaValores.push(input);
-    });
+    this.setInLoading(true, ...this.dataSource.data);
 
-    const body = {
-        UsinasValores: usinaValores,
-        ValorDaRestricao: this.ValorDaRestricao
-    };
+    if (this.ValorDaRestricao < 0) {
+      this.calcularUmValorNegativo();
+    } else {
+      this.calcularUmValorPositivo();
+    }
 
-    const registros = this.dataSource.data;
-
-    this.setInLoading(true, ...registros);
-
-    // this.service.calcularRestricao(body)
-    //     .pipe(
-    //         finalize(() => {
-    //             this.setInLoading(false, ...registros);
-    //         })
-    //     )
-    //     .subscribe(res => {
-    //         if (res.warnings.length > 0) {
-    //             res.warnings.forEach(alerta => {
-    //                 this._toast.alert(alerta.ErrorMessage);
-    //             });
-    //         }
-    //         registros
-    //             .forEach(reg => {
-    //                 const ret = res.content.Resultados.find(item => item.IdUsinaConjuntoUsina === reg.IdUsinaConjuntoUsina);
-    //                 reg.NovoLimite = ret.NovoLimite;
-    //                 reg.ValorCalculado = ret.ValorCalculado;
-    //             });
-
-    //         this.popularDataSource(registros);
-    //     }, error => this.tratarErrosResult(error));
+    this.setInLoading(false, ...this.dataSource.data);
   }
 
-  
+  calcularUmValorNegativo() {
+    let valorRestricao = this.ValorDaRestricao * -1;
+
+    let somaTodosLimites = 0;
+
+    this.dataSource.data.forEach(item => {
+      somaTodosLimites += item.obterValorPraCalcular();
+      item.ValorCalculado = 0;
+    });
+
+    var somaPotenciaInstalada = 0;
+
+    this.dataSource.data.forEach(item => {
+      somaPotenciaInstalada += item.UsinaConjuntoUsina ? item.UsinaConjuntoUsina.PotenciaInstalada : 0;
+    });
+
+    this.dataSource.data.forEach(item => {
+      let valor = item.obterValorPraCalcular();
+      let potenciaInstalada = item.UsinaConjuntoUsina ? item.UsinaConjuntoUsina.PotenciaInstalada : 0;
+
+      let valorCalculado = Math.round(valorRestricao * 
+        ((potenciaInstalada - valor) / (somaPotenciaInstalada - somaTodosLimites)));
+
+      // valor do corte não pode ultrapassar a potencia instalada
+      valorCalculado = valorCalculado > potenciaInstalada ? potenciaInstalada : valorCalculado;
+      item.ValorCalculado = valorCalculado;
+
+      let novoLimite = valor + (valorCalculado);
+
+      // valor do novo limite não pode ser menor q zero
+      novoLimite = novoLimite < 0 ? 0 : novoLimite;
+
+      // valor do novo limite não pode ultrapassar a potencia instalada
+      novoLimite = novoLimite > potenciaInstalada ? potenciaInstalada : novoLimite;
+      item.ValorCalculado = valorCalculado * -1;
+      item.NovoLimite = novoLimite;
+    });
+  }
+
+  calcularUmValorPositivo() {
+    let somaTodosLimites = 0;
+
+    this.dataSource.data.forEach(item => {
+      somaTodosLimites += item.obterValorPraCalcular();
+      item.ValorCalculado = 0;
+    });
+
+    this.dataSource.data.forEach(item => {
+      let valorParaCalculo = item.obterValorPraCalcular();
+
+      if (valorParaCalculo !== 0) {
+        let valorCalculado = Math.round(valorParaCalculo / somaTodosLimites * this.ValorDaRestricao);
+
+        valorCalculado = valorCalculado > valorParaCalculo ? valorParaCalculo : valorCalculado;
+
+        item.ValorCalculado = valorCalculado;
+
+        let novoLimite = valorParaCalculo - valorCalculado;
+
+        // valor do novo limite não pode ser menor q zero
+        novoLimite = novoLimite < 0 ? 0 : novoLimite;
+        item.NovoLimite = novoLimite;
+      } else {
+        item.NovoLimite = 0;
+      }
+    });
+  }
 
   disableCalcularFluxo() {
     return !(this.retornoFiltro
