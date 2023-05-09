@@ -109,7 +109,6 @@ export class FiltroComponent implements OnInit {
     }
 
     sessionStorage.setItem('isPesquisou', tipoPesquisa);
-    console.log(this.retornoFiltro);
     this.pesquisa.emit(this.retornoFiltro);
   }
 
