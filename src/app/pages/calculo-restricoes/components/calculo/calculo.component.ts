@@ -290,67 +290,31 @@ export class CalculoComponent implements OnInit {
       return this.dataSource.data.some(x => !x.possuiGeracao());
   }
 
-  calcularFluxo() {
-    // if (this.ValorDaRestricao.value === '') {
-    //   this._toast.alert('O campo restrição total deve ser preenchido!');
-    //   return;
-    // }
-    // if (this.ValorDaRestricao.value === 0) {
-    //   this._toast.alert('O campo restrição total deve ser maior que zero!');
-    //   return;
-    // }
+  calcularRestricaoFluxo() {
+    if (!this.ValorDaRestricao) {
+      this.alert.warn('O campo restrição total deve ser preenchido!');
+      return;
+    }
+    if (this.ValorDaRestricao === 0) {
+        this.alert.warn('O campo restrição total deve ser maior que zero!');
+        return;
+    }
 
-    // const usinaValores = this.dataSource.data.map(d => {
-    //   return {
-    //     IdUsinaConjuntoUsina: d.IdUsinaConjuntoUsina,
-    //     GeracaoAtual: d.GeracaoInstalacao.GeracaoAtual,
-    //     LimiteAtual: d.ComandoOperacao ? d.ComandoOperacao.LimiteAtual : void 0,
-    //     PotenciaInstalada: d.PotenciaInstalada,
-    //     FluxoValor: d.Fluxo ? d.Fluxo.Valor : void 0
-    //   };
-    // });
+    this.setInLoading(true, ...this.dataSource.data);
 
-    // const body = {
-    //   UsinasValores: usinaValores,
-    //   ValorDaRestricao: this.ValorDaRestricao.value,
-    //   Fluxo: this.filtro.fluxoSACIFiltro.map(x => x.value)/* Equivalente FirstOrDefault */.find(_ => true)
-    // };
+    if (this.ValorDaRestricao < 0) {
+      this.calcularUmValorNegativoFluxo();
+    } else {
+      this.calcularUmValorPositivoFluxo();
+    }
 
-    // const registros = this.dataSource.data;
-
-    // this.setInLoading(true, ...registros);
-
-    // this.calculoFluxoService.calcular(body).pipe(
-    //   finalize(() => {
-    //     /**
-    //      * Aqui é necessario limpar todos os itens do Loading, pois no calculo, pode não retornar todos os itens, 
-    //      * então removendo pelos itens atuais pode restar alguns que não estão mais na tela em estado de loading
-    //      */
-    //     this.clearLoading();
-    //   })
-    // ).subscribe(res => {
-    //   if (res.warnings.length > 0) {
-    //     res.warnings.forEach(alerta => {
-    //       this._toast.alert(alerta.ErrorMessage);
-    //     });
-    //   }
-    //   for (const item of registros) {
-    //     const retornado = res.content.Resultados.find(x => this.isEqualItemId(x, item));
-    //     if (retornado) {
-    //       item.NovoLimite = retornado.NovoLimite;
-    //       item.ValorCalculado = retornado.ValorCalculado;
-    //     } else {
-    //       item.NovoLimite = void 0;
-    //     }
-    //   }
-    //   const toDeleteItems = registros.filter(x => x.NovoLimite === void 0);
-    //   for (const itemDelete of toDeleteItems) {
-    //     const index = registros.findIndex(x => this.isEqualItemId(x, itemDelete));
-    //     registros.splice(index, 1);
-    //   }
-
-    //   this.popularDataSource(registros);
-    // }, error => this.tratarErrosResult(error));
+    this.setInLoading(false, ...this.dataSource.data);
+  }
+  calcularUmValorPositivoFluxo() {
+    throw new Error('Method not implemented.');
+  }
+  calcularUmValorNegativoFluxo() {
+    throw new Error('Method not implemented.');
   }
 
   private setInLoading(loading: boolean, ...items: CalculoRestricaoDto[]) {

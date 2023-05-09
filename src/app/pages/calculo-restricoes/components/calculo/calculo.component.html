@@ -15,7 +15,7 @@
                 <div matTooltip="Necessário selecionar um fluxo e pesquisar para habilitar o botão."
                     [matTooltipDisabled]="!disableCalcularFluxo()">
                     <button class="button-loading" mat-raised-button color="primary"
-                        [disabled]="disableCalcularFluxo() || isAnyInLoadingIndividual()" (click)="calcularFluxo()"
+                        [disabled]="disableCalcularFluxo() || isAnyInLoadingIndividual()" (click)="calcularRestricaoFluxo()"
                         [ngClass]="{'in-loading': isAnyInLoadingIndividual()}">
                         <mat-spinner *ngIf="isAnyInLoadingIndividual()" diameter="40"></mat-spinner>
                         <span *ngIf="!isAnyInLoadingIndividual()">Calcular Fluxo</span>
