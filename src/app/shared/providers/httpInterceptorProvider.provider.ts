@@ -46,30 +46,30 @@ export class HttpInterceptorProvider implements HttpInterceptor {
 
     return next.handle(req).pipe(
       catchError((err) => {
-        // if ([401, 403].includes(err.status) && token.refresh_token) {
-        //   return this.authenticationService.refreshToken().pipe(
-        //     switchMap((data) => {
-        //       if (this.tokenStoreService.getToken()) {
-        //         this.tokenStoreService.deletoToken();
-        //       }
-        //       this.tokenStoreService.addStore(data);
-        //       req = req.clone({
-        //         setHeaders: {
-        //           Authorization: `Bearer ${data.access_token}`,
-        //         },
-        //       });
-        //       return next.handle(req);
-        //     }),
-        //     catchError((error) => {
-        //       return throwError(error);
-        //     })
-        //   );
-        // }
-        // return next.handle(req);
-        if ([401].includes(err.status) && token) {
-          console.log('Usuário não autenticado.');
+        if ([401, 403].includes(err.status) && token.refresh_token) {
+          return this.authenticationService.refreshToken().pipe(
+            switchMap((data) => {
+              if (this.tokenStoreService.getToken()) {
+                this.tokenStoreService.deletoToken();
+              }
+              this.tokenStoreService.addStore(data);
+              req = req.clone({
+                setHeaders: {
+                  Authorization: `Bearer ${data.access_token}`,
+                },
+              });
+              return next.handle(req);
+            }),
+            catchError((error) => {
+              return throwError(error);
+            })
+          );
         }
-        return throwError(err);
+        return next.handle(req);
+        // if ([401].includes(err.status) && token) {
+        //   console.log('Usuário não autenticado.');
+        // }
+        // return throwError(err);
       }),
       map((response) => this.handleResponse(response))
     );
