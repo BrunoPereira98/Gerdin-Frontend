@@ -19,7 +19,7 @@
       <input type="text" #matInput [formControl]="matControl"
         [matAutocomplete]="matAutoComplete" [matChipInputFor]="matChipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (focusout)="limparCampo()" />
+        />
     </mat-chip-list>
     <mat-autocomplete #matAutoComplete="matAutocomplete" (closed)="fecharAutocomplete()"
       (optionSelected)="selecionarItem($event.option.value)">
