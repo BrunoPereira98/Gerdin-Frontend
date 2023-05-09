@@ -104,7 +104,7 @@ export class CalculoRestricoesComponent {
         case 'ComandoOperacao.MotivoRestricao':
           return item.ComandoOperacao ? item.ComandoOperacao.MotivoRestricao : null;
         case 'UsinaConjuntoUsina.FluxoSaci.Valor':
-          return item.Fluxo ? item.UsinaConjuntoUsina.FluxoSaci.Valor : null;
+          return item.UsinaConjuntoUsina.FluxoSaci ? item.UsinaConjuntoUsina.FluxoSaci.Valor : null;
         default:
           return item[property];
       }
