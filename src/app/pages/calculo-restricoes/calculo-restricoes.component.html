@@ -7,7 +7,8 @@
                 <app-loading [style.visibility]="!isFinalizado() ? 'visible' : 'hidden'"
                     filterBy="DadosTelaCalculoRestricao" (atualizar)="atualizar($event)"></app-loading>
                 <app-calculo [style.visibility]="isFinalizado() ? 'visible' : 'hidden'"
-                            [dataSource]="dataSource" [retornoFiltro]="retornoFiltro"></app-calculo>
+                            [dataSource]="dataSource" [retornoFiltro]="retornoFiltro"
+                            [nmFluxo]="nmFluxo"></app-calculo>
             </mat-card-content>
         </mat-card>
     </div>

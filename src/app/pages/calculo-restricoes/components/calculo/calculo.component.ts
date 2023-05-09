@@ -13,6 +13,8 @@ import { GravarEfetivarCorteValoresDto } from '../calculo/models/gravar-efetivar
 import { BaseResult, ValidationFailure } from 'src/app/shared/models/base-result';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { CalculoRestricao } from './services/calculo-restricao';
+import { CalculoRestricaoFluxo } from './services/calculo-restricao-fluxo';
 
 @Component({
   selector: 'app-calculo',
@@ -23,6 +25,7 @@ export class CalculoComponent implements OnInit {
 
   @Input() dataSource: MatTableDataSource<CalculoRestricaoDto> = new MatTableDataSource<CalculoRestricaoDto>([]);
   @Input() retornoFiltro!: RetornoFiltro;
+  @Input() nmFluxo!: string;
 
   ValorDaRestricao!: number;
 
@@ -45,7 +48,9 @@ export class CalculoComponent implements OnInit {
   constructor(
     private readonly service: CalculoRestricaoService,
     private readonly alert: AlertService,
-    private router: Router
+    private router: Router,
+    private calculoRestricaoService: CalculoRestricao,
+    private calculoRestricaoFluxoService: CalculoRestricaoFluxo
   ) { 
   }
 
@@ -78,92 +83,11 @@ export class CalculoComponent implements OnInit {
 
 
   calcularRestricao() {
-    if (!this.ValorDaRestricao) {
-        this.alert.warn('O campo restrição total deve ser preenchido!');
-        return;
-    }
-    if (this.ValorDaRestricao === 0) {
-        this.alert.warn('O campo restrição total deve ser maior que zero!');
-        return;
-    }
-
     this.setInLoading(true, ...this.dataSource.data);
 
-    if (this.ValorDaRestricao < 0) {
-      this.calcularUmValorNegativo();
-    } else {
-      this.calcularUmValorPositivo();
-    }
+    this.calculoRestricaoService.calcular(this.ValorDaRestricao, this.dataSource);
 
     this.setInLoading(false, ...this.dataSource.data);
-  }
-
-  calcularUmValorNegativo() {
-    let valorRestricao = this.ValorDaRestricao * -1;
-
-    let somaTodosLimites = 0;
-
-    this.dataSource.data.forEach(item => {
-      somaTodosLimites += item.obterValorPraCalcular();
-      item.ValorCalculado = 0;
-    });
-
-    var somaPotenciaInstalada = 0;
-
-    this.dataSource.data.forEach(item => {
-      somaPotenciaInstalada += item.UsinaConjuntoUsina ? item.UsinaConjuntoUsina.PotenciaInstalada : 0;
-    });
-
-    this.dataSource.data.forEach(item => {
-      let valor = item.obterValorPraCalcular();
-      let potenciaInstalada = item.UsinaConjuntoUsina ? item.UsinaConjuntoUsina.PotenciaInstalada : 0;
-
-      let valorCalculado = Math.round(valorRestricao * 
-        ((potenciaInstalada - valor) / (somaPotenciaInstalada - somaTodosLimites)));
-
-      // valor do corte não pode ultrapassar a potencia instalada
-      valorCalculado = valorCalculado > potenciaInstalada ? potenciaInstalada : valorCalculado;
-      item.ValorCalculado = valorCalculado;
-
-      let novoLimite = valor + (valorCalculado);
-
-      // valor do novo limite não pode ser menor q zero
-      novoLimite = novoLimite < 0 ? 0 : novoLimite;
-
-      // valor do novo limite não pode ultrapassar a potencia instalada
-      novoLimite = novoLimite > potenciaInstalada ? potenciaInstalada : novoLimite;
-      item.ValorCalculado = valorCalculado * -1;
-      item.NovoLimite = novoLimite;
-    });
-  }
-
-  calcularUmValorPositivo() {
-    let somaTodosLimites = 0;
-
-    this.dataSource.data.forEach(item => {
-      somaTodosLimites += item.obterValorPraCalcular();
-      item.ValorCalculado = 0;
-    });
-
-    this.dataSource.data.forEach(item => {
-      let valorParaCalculo = item.obterValorPraCalcular();
-
-      if (valorParaCalculo !== 0) {
-        let valorCalculado = Math.round(valorParaCalculo / somaTodosLimites * this.ValorDaRestricao);
-
-        valorCalculado = valorCalculado > valorParaCalculo ? valorParaCalculo : valorCalculado;
-
-        item.ValorCalculado = valorCalculado;
-
-        let novoLimite = valorParaCalculo - valorCalculado;
-
-        // valor do novo limite não pode ser menor q zero
-        novoLimite = novoLimite < 0 ? 0 : novoLimite;
-        item.NovoLimite = novoLimite;
-      } else {
-        item.NovoLimite = 0;
-      }
-    });
   }
 
   disableCalcularFluxo() {
@@ -291,30 +215,11 @@ export class CalculoComponent implements OnInit {
   }
 
   calcularRestricaoFluxo() {
-    if (!this.ValorDaRestricao) {
-      this.alert.warn('O campo restrição total deve ser preenchido!');
-      return;
-    }
-    if (this.ValorDaRestricao === 0) {
-        this.alert.warn('O campo restrição total deve ser maior que zero!');
-        return;
-    }
-
     this.setInLoading(true, ...this.dataSource.data);
 
-    if (this.ValorDaRestricao < 0) {
-      this.calcularUmValorNegativoFluxo();
-    } else {
-      this.calcularUmValorPositivoFluxo();
-    }
+    this.calculoRestricaoFluxoService.calcular(this.ValorDaRestricao, this.dataSource, this.nmFluxo);
 
     this.setInLoading(false, ...this.dataSource.data);
-  }
-  calcularUmValorPositivoFluxo() {
-    throw new Error('Method not implemented.');
-  }
-  calcularUmValorNegativoFluxo() {
-    throw new Error('Method not implemented.');
   }
 
   private setInLoading(loading: boolean, ...items: CalculoRestricaoDto[]) {
