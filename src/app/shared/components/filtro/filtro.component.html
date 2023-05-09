@@ -97,19 +97,19 @@
             </mat-card-content>
 
             <div [style.visibility]="isFinalizado() ? 'visible' : 'hidden'">
-                <app-loading [style.display]=" 'none'"filterBy="ConsultarDadosCalculoRestricao,ConsultarInstalacoes,ResumoExecucao,GraficoExecucao"
+                <app-loading [style.display]=" 'none'"filterBy="DadosTelaCalculoRestricao,ObterInstalacoes,ResumoExecucao,GraficoExecucao"
                  (atualizar)="atualizarPesquisa($event)"></app-loading>
 
                 <button class="button-loading" mat-raised-button (click)="pesquisar()" color="primary"
                     [ngClass]="{'in-loading': !isFinalizadoPesquisa()}" [disabled]="!isFinalizadoPesquisa()">
-                    <mat-spinner *ngIf="!isFinalizadoPesquisa()" diameter="40"></mat-spinner>
+                    <mat-spinner *ngIf="!isFinalizadoPesquisa()" diameter="30"></mat-spinner>
                     <span *ngIf="isFinalizadoPesquisa()">Pesquisar</span>
                 </button>
 
                 <button class="button-loading" mat-raised-button (click)="limpar()" color="primary"
                     [ngClass]="{'in-loading': !isFinalizadoPesquisa()}" [disabled]="!isFinalizadoPesquisa()"
                     style=" margin-left: 10px;">
-                    <mat-spinner *ngIf="!isFinalizadoPesquisa()" diameter="40"></mat-spinner>
+                    <mat-spinner *ngIf="!isFinalizadoPesquisa()" diameter="30"></mat-spinner>
                     <span *ngIf="isFinalizadoPesquisa()">Limpar</span>
                 </button>
             </div>
