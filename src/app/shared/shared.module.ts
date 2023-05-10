@@ -30,10 +30,13 @@ import { MaterialModule } from './material-module/material.module';
 import { OnsInputAutocompleteChipListModule } from './components/ons-input-autocomplete-chip-list/ons-input-autocomplete-chip-list.module';
 import { LoadingModule } from './components/loading/loading.module';
 import { AlertModule } from './components/alert/alert.module';
+import { MaxLengthNumberDirective } from './directive/max-length-number.directive/max-length-number.directive';
+import { NonNullNumbersDirective } from './directive/non-null-number.directive';
 
 @NgModule({
   declarations: [
     // NumberDirective, AlertComponent, PermissaoPipe
+    MaxLengthNumberDirective, NonNullNumbersDirective
   ],
   providers: [
     AngularSettingsService,

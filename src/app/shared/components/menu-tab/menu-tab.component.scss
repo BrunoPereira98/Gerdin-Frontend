@@ -2,5 +2,27 @@
     top: 0 !important;
     z-index: 1000 !important;
     position: sticky !important;
-    background-color: #F5F5F5;
+    background-color: var(--corPagina);
+}
+
+::ng-deep .mat-tab-labels .mat-tab-label {
+    background-color: var(--fundoAbaNaoSelecionada) !important;
+    border-color: var(--corBordaAbaNaoSelecionada) !important;
+    border-style: var(--estiloBordaAbaNaoSelecionada) !important;
+    border-top-left-radius: var(--arredorndamentoTopoBorda);
+    border-top-right-radius: var(--arredorndamentoTopoBorda);
+    border-bottom-left-radius: var(--arredorndamentoSuperficieBorda);
+    border-bottom-right-radius: var(--arredorndamentoSuperficieBorda);
+    color: var(--corFonteAbaNaoSelecionada);
+}
+
+::ng-deep .mat-tab-labels .mat-tab-label.mat-tab-label-active {
+    background-color: var(--fundoAbaSelecionada) !important;
+    border-color: var(--corBordaAbaSelecionada) !important;
+    border-style: var(--estiloBordaAbaSelecionada) !important;
+    border-top-left-radius: var(--arredorndamentoTopoBorda);
+    border-top-right-radius: var(--arredorndamentoTopoBorda);
+    border-bottom-left-radius: var(--arredorndamentoSuperficieBorda);
+    border-bottom-right-radius: var(--arredorndamentoSuperficieBorda);
+    color: var(--corFonteAbaSelecionada);
 }
