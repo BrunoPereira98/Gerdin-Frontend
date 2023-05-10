@@ -25,11 +25,19 @@ $width-icon-order: 18px;
 }
 
 ::ng-deep .TEstadoRuim {
-    background-color: #D10429;
+    background-color: #D10429 !important;
+
+    .mdc-tooltip__surface {
+        background-color: #D10429 !important;
+    }
 }
 
 ::ng-deep .TEstadoAtencao {
-    background-color: #FBC90B;
+    background-color: #FBC90B !important;
+
+    .mdc-tooltip__surface {
+        background-color: #FBC90B !important;
+    }
 }
 
 .order-center .mat-sort-header-container {
@@ -181,8 +189,8 @@ ons-input-number {
     width: 70%;   
 }
 
-::ng-deep .mat-tooltip.alinhamento-tooltip-condicao {
-    margin-left: 100px;
+::ng-deep .alinhamento-tooltip-condicao {
+    margin-left: 150px;
 }
 
 input {

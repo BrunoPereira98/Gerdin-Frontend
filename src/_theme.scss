@@ -3790,3 +3790,9 @@ input[type=number] {
  appearance: textfield;
 
 }
+
+.mdc-tooltip__surface {
+  color: white !important;
+  background-color:rgba(97,97,97,.9) !important;
+  font-size: 14px !important;
+}
