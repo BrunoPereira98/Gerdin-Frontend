@@ -20,7 +20,7 @@ export class NonNullNumbersDirective {
   @HostListener('blur') onBlur() {
     if (this.nonNullValue === null) {
       this.element.nativeElement.value = 0;
-      this.ctrl.setValue(0);
+      this.ctrl?.setValue(0);
     }
   }
 }

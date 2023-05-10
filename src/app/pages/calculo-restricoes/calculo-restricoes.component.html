@@ -90,13 +90,20 @@
                                 <br>
                             </th>
                             <td class="geracao" mat-cell *matCellDef="let element">
-                                <ons-input-number step="1" [(ngModel)]="element.UsinaConjuntoUsina.GeracaoAtual.Geracao"
-                                    [ngClass]="obterCorBordaEstado(element)"
-                                    [matTooltip]="element.ComandoOperacao?.CondicaoOperacao?.Descricao"
-                                    [matTooltipClass]="obterCorTooltipEstado(element)"
-                                    (keyup)="element.calcular()" non-null-value
-                                    [value]="element.UsinaConjuntoUsina.GeracaoAtual.Geracao" [maxLength]="5"
-                                    [readonly]="inLoadingIndividual(element)"></ons-input-number>
+                                <input type="number" step="1" [(ngModel)]="element.UsinaConjuntoUsina.GeracaoAtual.Geracao"
+                                    [ngClass]="obterCorBordaEstado(element)" [matTooltip]="element.ComandoOperacao?.CondicaoOperacao?.Descricao"
+                                    [matTooltipClass]="obterCorTooltipEstado(element)" (keyup)="element.calcular()" non-null-value non-null-value
+                                    [value]="element.UsinaConjuntoUsina.GeracaoAtual.Geracao" maxLength="5"
+                                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                    [readonly]="inLoadingIndividual(element)" numbersOnly>
+                            
+                                <!-- <ons-input-number step="1" [(ngModel)]="element.UsinaConjuntoUsina.GeracaoAtual.Geracao"
+                                                                [ngClass]="obterCorBordaEstado(element)"
+                                                                [matTooltip]="element.ComandoOperacao?.CondicaoOperacao?.Descricao"
+                                                                [matTooltipClass]="obterCorTooltipEstado(element)"
+                                                                (keyup)="element.calcular()" non-null-value
+                                                                [value]="element.UsinaConjuntoUsina.GeracaoAtual.Geracao" [maxLength]="5"
+                                                                [readonly]="inLoadingIndividual(element)"></ons-input-number> -->
                             </td>
                         </ng-container>
 
@@ -134,9 +141,14 @@
                                 </span>
                             </th>
                             <td class="limite" mat-cell *matCellDef="let element">
-                                <ons-input-number step="1" [(ngModel)]="element.NovoLimite" [value]="element.NovoLimite"
-                                    [maxLength]="5" (keyup)="element.calcular()"
-                                    [readonly]="inLoadingIndividual(element)"></ons-input-number>
+                                <input type="number" step="1" [(ngModel)]="element.NovoLimite" (keyup)="element.calcular();"
+                                    [value]="element.NovoLimite" maxlength="5" numbersOnly
+                                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                    [readonly]="inLoadingIndividual(element)">
+                            
+                                <!-- <ons-input-number step="1" [(ngModel)]="element.NovoLimite" [value]="element.NovoLimite"
+                                                                                            [maxLength]="5" (keyup)="element.calcular()"
+                                                                                            [readonly]="inLoadingIndividual(element)"></ons-input-number> -->
                             </td>
                         </ng-container>
 
