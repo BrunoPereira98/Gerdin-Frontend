@@ -157,24 +157,6 @@ $width-icon-order: 18px;
     text-align: center;
 }
 
-@mixin order-center-column($width) {
-    @if (is-percentage($width)) {
-        &.order-center {
-            width: calc($width - $width-icon-order);
-            min-width: calc($width - $width-icon-order);
-            max-width: calc($width - $width-icon-order);
-        }
-    }
-
-    @else {
-        &.order-center {
-            width: $width - $width-icon-order;
-            min-width: $width - $width-icon-order;
-            max-width: $width - $width-icon-order;
-        }
-    }
-}
-
 .icones {
     @include column-size-fixed(14px, right);
 
