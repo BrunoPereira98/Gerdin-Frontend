@@ -57,7 +57,7 @@ export class CalculoRestricaoFluxo {
 
         if (!this.ehLiberacao) return this.valorDaRestricaoMsg <= this.reducaoVerificada;
 
-        this.reducaoVerificada -= this.dataSource.data.reduce((a, b) => a + (b.UsinaConjuntoUsina ? b.UsinaConjuntoUsina.PotenciaInstalada : 0), 0);;
+        this.reducaoVerificada -= this.dataSource.data.reduce((a, b) => a + (b.UsinaConjuntoUsina ? b.UsinaConjuntoUsina.PotenciaInstalada : 0), 0);
 
         if (this.reducaoVerificada < 0)
         this.reducaoVerificada *= -1;

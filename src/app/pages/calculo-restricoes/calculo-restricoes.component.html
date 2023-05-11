@@ -144,7 +144,8 @@
                             <th class="sensibilidade order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <span>
                                     <span>Sensib. (%)<br></span>
-                                    <span>{{ formatarData(this.dataAtualizacaoFluxo, 'dd/MM/yyyy HH:mm:ss')}}<br></span>
+                                    <span [style.display]="obterFluxoFiltro() ? 'block'  : 'none'">{{ this.dataAtualizacaoFluxo | date : 'dd/MM/yyyy HH:mm:ss'}}<br></span>
+                                    <!-- <span>{{ formatarData(this.dataAtualizacaoFluxo, 'dd/MM/yyyy HH:mm:ss')}}<br></span> -->
                                     <span>{{ obterFluxoFiltro() }}</span>
                                 </span>
                             </th>
@@ -188,10 +189,6 @@
                                         matTooltipPosition="below">
                                     {{element.UsinaConjuntoUsina.CondicaoOperacao.Sigla}}
                                 </div>
-                                <!-- <div [matTooltip]="element.UsinaConjuntoUsina.CondicaoOperacao.Nome"
-                                        matTooltipClass="alinhamento-tooltip-condicao">
-                                        {{element.UsinaConjuntoUsina.CondicaoOperacao.Sigla}}
-                                </div> -->
                             </td>
                         </ng-container>
 

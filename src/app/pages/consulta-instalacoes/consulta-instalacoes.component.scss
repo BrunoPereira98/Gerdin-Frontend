@@ -1,5 +1,7 @@
 $width-icon-order: 18px;
 
+
+
 .order-center .mat-sort-header-container {
     display: flex;
     justify-content: center;
@@ -28,6 +30,46 @@ $width-icon-order: 18px;
     }
 }
 
-.potencia {
+.fonte {
+    width: 7%;
+    text-align: left;
+}
+
+.instalacao {
+    width: 11%;
+    text-align: left;
+}
+
+.agente {
+    width: 10%;
+    text-align: left;
+}
+
+.area {
+    width: 15%;
+    text-align: left;
+}
+
+.conexao {
+    width: 10%;
+    text-align: left;
+}
+
+.sigla {
+    width: 5%;
+    text-align: left;
+}
+
+::ng-deep .potencia {
+    width: 7%;
     text-align: center;
+
+    .mat-sort-header-container {
+        padding-left: 30%;
+    }
+}
+
+.condicao {
+    width: 6%;
+    text-align: left;
 }
