@@ -13,43 +13,43 @@
             <table matSort mat-table class="table-card" [dataSource]="dataSource">
 
               <ng-container matColumnDef="Fonte">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Fonte</th>
-                <td mat-cell *matCellDef="let element">{{element.Fonte}}</td>
+                <th class="fonte" mat-header-cell *matHeaderCellDef mat-sort-header>Fonte</th>
+                <td class="fonte" mat-cell *matCellDef="let element">{{element.Fonte}}</td>
               </ng-container>
 
               <ng-container matColumnDef="Nome">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Conjunto/Usina</th>
-                <td mat-cell *matCellDef="let element">{{element.Nome}}</td>
+                <th class="instalacao" mat-header-cell *matHeaderCellDef mat-sort-header>Conjunto/Usina</th>
+                <td class="instalacao" mat-cell *matCellDef="let element">{{element.Nome}}</td>
               </ng-container>
 
               <ng-container matColumnDef="Agente">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Agente</th>
-                <td mat-cell *matCellDef="let element">{{element.Agente}}</td>
+                <th class="agente" mat-header-cell *matHeaderCellDef mat-sort-header>Agente</th>
+                <td class="agente" mat-cell *matCellDef="let element">{{element.Agente}}</td>
               </ng-container>
 
               <ng-container matColumnDef="Area">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Área</th>
-                <td mat-cell *matCellDef="let element">{{element.Area}}</td>
+                <th class="area" mat-header-cell *matHeaderCellDef mat-sort-header>Área</th>
+                <td class="area" mat-cell *matCellDef="let element">{{element.Area}}</td>
               </ng-container>
 
               <ng-container matColumnDef="Sigla">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Sigla</th>
-                <td mat-cell *matCellDef="let element">{{element.Sigla}}</td>
+                <th class="sigla" mat-header-cell *matHeaderCellDef mat-sort-header>Sigla</th>
+                <td class="sigla" mat-cell *matCellDef="let element">{{element.Sigla}}</td>
               </ng-container>
 
               <ng-container matColumnDef="Conexao">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Conexão</th>
-                <td mat-cell *matCellDef="let element">{{element.Conexao}}</td>
+                <th class="conexao" mat-header-cell *matHeaderCellDef mat-sort-header>Conexão</th>
+                <td class="conexao" mat-cell *matCellDef="let element">{{element.Conexao}}</td>
               </ng-container>
 
               <ng-container matColumnDef="PotenciaInstalada">
-                <th class="potencia order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Potência</th>
+                <th class="potencia colunaCentro" mat-header-cell *matHeaderCellDef mat-sort-header>Potência</th>
                 <td class="potencia" mat-cell *matCellDef="let element">{{element.PotenciaInstalada}}</td>
               </ng-container>
 
               <ng-container matColumnDef="CondicaoOperacao">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Condição</th>
-                <td mat-cell *matCellDef="let element">{{element.CondicaoOperacao}}</td>
+                <th class="condicao" mat-header-cell *matHeaderCellDef mat-sort-header>Condição</th>
+                <td class="condicao" mat-cell *matCellDef="let element">{{element.CondicaoOperacao}}</td>
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="fix-thead"></tr>

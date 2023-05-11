@@ -163,7 +163,8 @@ export class CalculoRestricoesComponent {
         if (reg.UsinaConjuntoUsina?.FluxoSaci) {
           dataFluxo = new Date(reg.UsinaConjuntoUsina?.FluxoSaci.UltimaCaptura);
 
-          if (dataFluxo > this.dataAtualizacaoFluxo) {
+          if (dataFluxo > this.dataAtualizacaoFluxo
+            || !this.dataAtualizacaoFluxo) {
             this.dataAtualizacaoFluxo = dataFluxo;
           }
         }
