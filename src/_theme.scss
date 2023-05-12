@@ -20,6 +20,11 @@
   --corFonteAbaNaoSelecionada: rgba(0,0,0,.87);
   --corFundoCard: #ebebeb;
   --bordaItemFiltro: #A9A9A9;
+  --corFonte: rgba(0,0,0,.87);
+}
+
+.mat-mdc-dialog-container {
+  background-color: var(--corFundoCard)
 }
 
 html {
@@ -116,12 +121,16 @@ mat-divider {
 }
 
 h1 {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  margin: 0 0 10px !important;
+  color: #1182c5 !important;
 }
 h2 {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  margin: 0 0 10px !important;
+  color: #1182c5 !important;
 }
 h3 {
   font-size: 18px;
@@ -225,10 +234,7 @@ mat-stepper {
 mat-expansion-panel-header {
   height: 100px !important;
   padding: 0px 16px 1px 0px !important;
-  background: mat.get-color-from-palette(
-    $ons-processador-regras-frontend-grey,
-    100
-  ) !important;
+  background-color: var(--corFundoCard);
 }
 
 .mat-expansion-panel-header-title,
@@ -310,10 +316,7 @@ mat-expansion-panel-header {
 
 .font-color-label {
   /* color: #797A86; */
-  color: mat.get-color-from-palette(
-    $ons-processador-regras-frontend-grey,
-    "darker"
-  );
+  color: var(--corFonte);
 }
 
 .mat-badge-content {
@@ -2256,7 +2259,8 @@ td.mat-footer-cell {
   border-right-color: rgba(0, 0, 0, 0.12);
 }
 .mat-expansion-panel {
-  background: #fff;
+  // background: #fff;
+  background-color: var(--corFundoCard);
   color: rgba(0, 0, 0, 0.87);
 }
 .mat-expansion-panel:not([class*="mat-elevation-z"]) {

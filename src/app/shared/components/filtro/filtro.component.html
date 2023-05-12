@@ -105,13 +105,13 @@
                 <app-loading [style.display]=" 'none'"filterBy="DadosTelaCalculoRestricao,ObterInstalacoes,ResumoExecucao,GraficoExecucao"
                  (atualizar)="atualizarPesquisa($event)"></app-loading>
 
-                <button class="button-loading" mat-raised-button (click)="pesquisar()" color="primary"
+                <button class="button-loading" class="btn btn-secondary" (click)="pesquisar()" 
                     [ngClass]="{'in-loading': !isFinalizadoPesquisa()}" [disabled]="!isFinalizadoPesquisa()">
                     <mat-spinner *ngIf="!isFinalizadoPesquisa()" diameter="30"></mat-spinner>
                     <span *ngIf="isFinalizadoPesquisa()">Pesquisar</span>
                 </button>
 
-                <button class="button-loading" mat-raised-button (click)="limpar()" color="primary"
+                <button class="button-loading" class="btn btn-secondary" (click)="limpar()" 
                     [ngClass]="{'in-loading': !isFinalizadoPesquisa()}" [disabled]="!isFinalizadoPesquisa()"
                     style=" margin-left: 10px;">
                     <mat-spinner *ngIf="!isFinalizadoPesquisa()" diameter="30"></mat-spinner>
