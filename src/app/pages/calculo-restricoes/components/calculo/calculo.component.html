@@ -6,35 +6,35 @@
                     [readonly]="isAnyInLoadingIndividual()" [(ngModel)]="ValorDaRestricao" [permiteNegativos]="true"></ons-input-number>
             </div>
             <div class="col-12 col-md-3 col-lg-5 botoes">
-                <button class="button-loading" mat-raised-button (click)="calcularRestricao()"
-                    [ngClass]="{'in-loading': isAnyInLoadingIndividual()}" color="primary"
+                <button class="button-loading" (click)="calcularRestricao()"
+                    [ngClass]="{'in-loading': isAnyInLoadingIndividual()}" class="btn btn-secondary"
                     [disabled]="isAnyInLoadingIndividual()">
                     <mat-spinner *ngIf="isAnyInLoadingIndividual()" diameter="30"></mat-spinner>
                     <span *ngIf="!isAnyInLoadingIndividual()">Calcular Restrições</span>
                 </button>
                 <div matTooltip="Necessário selecionar um fluxo e pesquisar para habilitar o botão."
                     [matTooltipDisabled]="!disableCalcularFluxo()">
-                    <button class="button-loading" mat-raised-button color="primary"
+                    <button class="button-loading"  class="btn btn-secondary"
                         [disabled]="disableCalcularFluxo() || isAnyInLoadingIndividual()" (click)="calcularRestricaoFluxo()"
                         [ngClass]="{'in-loading': isAnyInLoadingIndividual()}">
                         <mat-spinner *ngIf="isAnyInLoadingIndividual()" diameter="30"></mat-spinner>
                         <span *ngIf="!isAnyInLoadingIndividual()">Calcular Fluxo</span>
                     </button>
                 </div>
-                <button class="button-loading" mat-raised-button (click)="limitarGeracao()"
-                    [ngClass]="{'in-loading': isAnyInLoadingIndividual()}" color="primary"
+                <button class="button-loading" class="btn btn-secondary" (click)="limitarGeracao()"
+                    [ngClass]="{'in-loading': isAnyInLoadingIndividual()}"
                     [disabled]="isAnyInLoadingIndividual()">
                     <mat-spinner *ngIf="isAnyInLoadingIndividual()" diameter="30"></mat-spinner>
                     <span *ngIf="!isAnyInLoadingIndividual()">Limitar Geração</span>
                 </button>
-                <button class="button-loading" mat-raised-button (click)="retirarGeracaoTotal()"
-                    [ngClass]="{'in-loading': isAnyInLoadingIndividual()}" color="primary"
+                <button class="button-loading" class="btn btn-secondary" (click)="retirarGeracaoTotal()"
+                    [ngClass]="{'in-loading': isAnyInLoadingIndividual()}"
                     [disabled]="isAnyInLoadingIndividual()">
                     <mat-spinner *ngIf="isAnyInLoadingIndividual()" diameter="30"></mat-spinner>
                     <span *ngIf="!isAnyInLoadingIndividual()">Retirar Geração Total</span>
                 </button>
-                <button class="button-loading" mat-raised-button (click)="liberarGeracao()"
-                    [ngClass]="{'in-loading': isAnyInLoadingIndividual()}" color="primary"
+                <button class="button-loading" class="btn btn-secondary" (click)="liberarGeracao()"
+                    [ngClass]="{'in-loading': isAnyInLoadingIndividual()}"
                     [disabled]="isAnyInLoadingIndividual()">
                     <mat-spinner *ngIf="isAnyInLoadingIndividual()" diameter="30"></mat-spinner>
                     <span *ngIf="!isAnyInLoadingIndividual()">Liberar Geração</span>
@@ -53,8 +53,8 @@
             </div>
             <div class="col-12 col-md-3 col-lg-2 botoes">
                 <button class="button-loading" [ngClass]="{'in-loading': isAnyInLoadingIndividual()}"
-                    [disabled]="isConsulta() || isAnyInLoadingIndividual()" mat-raised-button (click)="efetuarCorte()"
-                    color="primary">
+                    [disabled]="isConsulta() || isAnyInLoadingIndividual()" class="btn btn-secondary" (click)="efetuarCorte()"
+                   >
                     <mat-spinner *ngIf="isAnyInLoadingIndividual()" diameter="30"></mat-spinner>
                     <span *ngIf="!isAnyInLoadingIndividual()">Gravar/Efetuar Corte</span>
                 </button>

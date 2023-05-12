@@ -95,6 +95,8 @@ export class FiltroComponent implements OnInit {
   }
 
   pesquisar(tipoPesquisa: string = 'S') {
+    this.finalizadoPesquisa = true;
+    
     if (this.tipoFiltro === 'R') {
       if (!this.retornoFiltro.dataInicialFiltro
         || !this.retornoFiltro.dataFinalFiltro) {
