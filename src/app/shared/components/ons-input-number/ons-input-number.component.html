@@ -6,6 +6,6 @@
     <input [readonly]="!!isReadOnly" [type]="type" [name]="name" [id]="id" matInput [disabled]="disabled"
       maxlength={{maxLength}} [allowNegatives]="permiteNegativos" [formControl]="myControl" [value]="value"
       [required]="required" [(ngModel)]="value" numbersOnly autocomplete="off" [decimal]="isCasasDecimais" [decimalSeparator]="separador">
-    <mat-icon *ngIf="typeIcon" color="accent" matSuffix>{{typeIcon}}</mat-icon>
+    <mat-icon *ngIf="typeIcon" style="font-size: 14px;" matSuffix>{{typeIcon}}</mat-icon>
   </mat-form-field>
 </div>
