@@ -6,6 +6,8 @@ import { angularSettingApi } from './shared/store/angular-setting.action';
 import { angularSettingSelector } from './shared/store/angular-setting.selector';
 import { StatusBarComponent } from './shared/components/status-bar/status-bar.component';
 import { TokenStoreService } from './shared/storage/token-store.service';
+import { registerLocaleData } from '@angular/common';
+import localeBr from '@angular/common/locales/pt';
 
 @Component({
   selector: "app-root",
@@ -22,7 +24,9 @@ export class AppComponent implements OnInit {
     private readonly angularSettingsStoreService: AngularSettingsStoreService,
     private readonly authenticationService: AuthenticationService,
     private readonly tokenStoreService: TokenStoreService
-  ) {}
+  ) {
+    registerLocaleData(localeBr);
+  }
 
   angularSetting$ = this.store.select(angularSettingSelector);
 

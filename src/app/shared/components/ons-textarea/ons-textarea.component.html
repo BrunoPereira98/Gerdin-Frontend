@@ -1,0 +1,10 @@
+<div class="d-flex flex-column">
+  <mat-label class="font-color-label">
+    <strong>{{label}}</strong>
+  </mat-label>
+  <mat-form-field appearance="outline" [ngClass]="typeIcon ? 'field-size' : ''">
+    <textarea matInput rows="{{rows}}" [name]="name" [id]="id" matInput [disabled]="disabled" [required]="required"
+      [formControl]="myControl"
+      placeholder="{{placeholder}}" [(ngModel)]="value"></textarea>
+  </mat-form-field>
+</div>

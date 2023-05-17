@@ -6,7 +6,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { OperadorMatematico } from '../filtro/models/pperador-matematico';
 
 const SELECT_VALUER_ACCESSOR: any = {
@@ -43,6 +43,7 @@ export class OnsSelectComponent implements OnInit, ControlValueAccessor {
   @Input() inputModel!: any;
   @Input() isReadOnly = false;
   @Input() disabled = false;
+  @Input() myControl: FormControl = new FormControl();
 
   @Output() selecionarItem = new EventEmitter();
 
