@@ -3,7 +3,6 @@ import { FiltroService } from './services/filtro.service';
 import { RetornoFiltro } from './models/retorno-filtro';
 import { OperadorMatematico } from './models/pperador-matematico';
 import { OnsSelectModel } from '../../models/ons-select-model';
-import { DateAdapter } from '@angular/material/core';
 import { OnsInputAutocompleteChipListComponent } from '../ons-input-autocomplete-chip-list/ons-input-autocomplete-chip-list.component';
 import { OnsSelectComponent } from '../ons-select/ons-select.component';
 import { OnsInputNumberComponent } from '../ons-input-number/ons-input-number.component';
@@ -32,9 +31,7 @@ export class FiltroComponent implements OnInit {
   @ViewChildren(OnsSelectComponent) filtrosSelectList: QueryList<OnsSelectComponent> | undefined;
   @ViewChildren(OnsInputNumberComponent) filtrosInputNumberList: QueryList<OnsInputNumberComponent> | undefined;
 
-  constructor(private readonly filtroService: FiltroService,
-    private dateAdapter: DateAdapter<Date>,) {
-    this.dateAdapter.setLocale('pt-br');
+  constructor(private readonly filtroService: FiltroService) {
     this.finalizado = false;
     this.finalizadoPesquisa = true;
   }
@@ -65,7 +62,7 @@ export class FiltroComponent implements OnInit {
       data.setHours(0, 0, 0, 0);
       this.retornoFiltro.dataInicialFiltro = data;
       const dataFinal = new Date();
-      dataFinal.setHours(23, 59, 0, 0);
+      dataFinal.setHours(23, 59, 59, 0);
       this.retornoFiltro.dataFinalFiltro = dataFinal;
     }
   }
@@ -118,9 +115,9 @@ export class FiltroComponent implements OnInit {
     const dataFinal = this.retornoFiltro.dataInicialFiltro;
 
     if (dataFinal) {
-      // dataFinal.setHours(23);
-      // dataFinal.setMinutes(59);
-      // dataFinal.setSeconds(59);
+      dataFinal.setHours(23);
+      dataFinal.setMinutes(59);
+      dataFinal.setSeconds(59);
       this.retornoFiltro.dataFinalFiltro = dataFinal;
     }
   }

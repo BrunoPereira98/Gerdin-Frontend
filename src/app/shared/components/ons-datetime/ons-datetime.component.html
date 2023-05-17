@@ -4,8 +4,8 @@
   </mat-label>
   <mat-form-field>
     <input [ngxMatDatetimePicker]="picker" [min]="minDate" [max]="maxDate" #input matInput placeholder="ex: 12/11/2011" readonly
-     (dateChange)="onDateChange($event)" [formControl]="myControl">
-    <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+     (dateChange)="onDateChange($event)" [formControl]="myControl"  [name]="name" [(ngModel)]="value" [value]="value" [id]="id">
+    <mat-datepicker-toggle matSuffix class="altura" [for]="$any(picker)"></mat-datepicker-toggle>
     <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
       [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
       [color]="color" [enableMeridian]="enableMeridian" 

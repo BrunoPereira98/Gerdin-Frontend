@@ -91,12 +91,18 @@
                                         [(ngModel)]="retornoFiltro.geracaoMinimaFiltro"></ons-input-number>
                                 </div>
                             </div>
-                            <!-- <div class="col-12 col-md-3 col-lg-3" [ngClass]="getOculta('R')">
-                                <ons-calendar label="Data inicial:" [(ngModel)]="retornoFiltro.dataInicialFiltro"
-                                    (dateChange)="onDataInicialChange()"></ons-calendar>
-                                <ons-calendar label="Data final:" [(ngModel)]="retornoFiltro.dataFinalFiltro"></ons-calendar>
-                            </div> -->
-                        </div>
+                            <div class="col-12 col-md-3 col-lg-3" [ngClass]="getOculta('R')">
+                                <div class="borda">
+                                    <ons-datetime label="Data inicial:"
+                                        [(ngModel)]="retornoFiltro.dataInicialFiltro" (dateChange)="onDataInicialChange()">
+                                    </ons-datetime>
+                                </div>
+                                <div class="borda">
+                                    <ons-datetime label="Data final:"
+                                        [(ngModel)]="retornoFiltro.dataFinalFiltro"></ons-datetime>
+                                </div>
+                            </div>
+                            </div>
                     </div>
                 </div>
             </mat-card-content>
