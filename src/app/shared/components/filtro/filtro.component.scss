@@ -49,13 +49,4 @@ button.button-loading {
         }
     }
 
-    &.mat-raised-button:disabled {
-        $disabled-color: rgba(0, 0, 0, .3);
-        color: $disabled-color;
-        cursor: not-allowed;
-
-        :hover {
-            color: $disabled-color;
-        }
-    }
 }

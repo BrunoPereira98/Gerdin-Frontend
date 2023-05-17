@@ -7,6 +7,7 @@
       [placeholder]="placeholder"
       (selectionChange)="inputModelChanges()"
       [(ngModel)]="value"
+      [formControl]="myControl"
       [disabled]="disabled">
       <mat-option *ngIf="placeholder">{{placeholder}}</mat-option>
       <mat-option *ngFor="let item of selectItens" [value]="labelObject && valueObject ? item[valueObject] : item.value">{{labelObject ? item[labelObject] : item.label}}</mat-option>

@@ -7,7 +7,7 @@
       <mat-chip *ngFor="let item of retornosFiltro" (removed)="removerItem(item)">
         <span *ngIf="item.fonte">
           <img style="width: 15px;"
-            src="../../../assets/{{item?.fonte?.Gif}}" />
+            src="assets/{{item?.fonte?.Gif}}" />
         </span>
         <span>
           {{item.Descricao}}
@@ -30,7 +30,7 @@
             (click)="$event.stopPropagation()">
             <span *ngIf="item.fonte">
               <img style="width: 15px;"
-                src="../../../assets/{{item?.fonte?.Gif}}" />
+                src="assets/{{item?.fonte?.Gif}}" />
             </span>
             <span>
               {{item.Descricao}}

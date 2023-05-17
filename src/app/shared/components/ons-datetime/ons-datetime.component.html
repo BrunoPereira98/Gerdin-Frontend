@@ -1,0 +1,15 @@
+<div class="d-flex flex-column">
+  <mat-label class="font-color-label">
+    <strong>{{label}}</strong>
+  </mat-label>
+  <mat-form-field>
+    <input [ngxMatDatetimePicker]="picker" [min]="minDate" [max]="maxDate" #input matInput placeholder="ex: 12/11/2011" readonly
+     (dateChange)="onDateChange($event)" [formControl]="myControl">
+    <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+    <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+      [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+      [color]="color" [enableMeridian]="enableMeridian" 
+      [disableMinute]="disableMinute" [hideTime]="hideTime">
+    </ngx-mat-datetime-picker>
+  </mat-form-field>
+</div>

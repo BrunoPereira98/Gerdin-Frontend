@@ -8,18 +8,28 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-const INPUT_NUMBER_FIEL_VALUER_ACCESSOR: any = {
+const INPUT_FIEL_VALUER_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => OnsInputNumberComponent),
+  useExisting: forwardRef(() => OnsTextareaComponent),
   multi: true,
 };
+
+/**
+ * ONS-input
+ * Atributos:
+ *  required
+ *  disabled
+ *  label
+ *  type
+ *  typeIcon
+ */
 @Component({
-  selector: 'ons-input-number',
-  templateUrl: './ons-input-number.component.html',
-  styleUrls: ['./ons-input-number.component.scss'],
-  providers: [INPUT_NUMBER_FIEL_VALUER_ACCESSOR],
+  selector: 'ons-textarea',
+  templateUrl: './ons-textarea.component.html',
+  styleUrls: ['./ons-textarea.component.scss'],
+  providers: [INPUT_FIEL_VALUER_ACCESSOR],
 })
-export class OnsInputNumberComponent implements OnInit, ControlValueAccessor {
+export class OnsTextareaComponent implements OnInit, ControlValueAccessor {
   @Input() required: boolean = false;
   @Input() disabled: boolean = false;
   @Input() label: string = '';
@@ -28,13 +38,9 @@ export class OnsInputNumberComponent implements OnInit, ControlValueAccessor {
   @Input() name: string = '';
   @Input() id: string = '';
   @Input() isReadOnly = false;
-  @Input() isCasasDecimais = false;
-  @Input() separador = ',';
-  @Input() maxLength!: number;
-  @Input() campoSalvar!: string;
-  @Input() permiteNegativos!: boolean;
+  @Input() placeholder: string = '';
+  @Input() rows!: number;
   @Input() myControl: FormControl = new FormControl();
-  @Input() valor!: any;
 
   @Output() inputModelChange = new EventEmitter<string>();
 
@@ -70,17 +76,4 @@ export class OnsInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit(): void {}
-
-  ngOnDestroy() {
-    if (this.campoSalvar) {
-      sessionStorage.setItem(this.campoSalvar, this.value ? this.value : '');
-    }
-  }
-
-  carregarSalvos() {
-    if (this.campoSalvar) {
-      const salvo = sessionStorage.getItem(this.campoSalvar) ? sessionStorage.getItem(this.campoSalvar) : '';
-      this.value = salvo;
-    }
-  }
 }

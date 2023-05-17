@@ -1,24 +1,23 @@
 import { forwardRef, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OnsInputNumberComponent } from './ons-input-number.component';
+import { OnsTextareaComponent } from './ons-textarea.component';
 import { MaterialModule } from '../../material-module/material.module';
 import {
   FormsModule,
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { IsNumberOnlyDirective } from './directive/is-number-only.directive';
 
 @NgModule({
-  declarations: [OnsInputNumberComponent, IsNumberOnlyDirective],
+  declarations: [OnsTextareaComponent],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
-  exports: [OnsInputNumberComponent],
+  exports: [OnsTextareaComponent],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => OnsInputNumberModule),
+      useExisting: forwardRef(() => OnsTextareaModule),
       multi: true,
     },
   ],
 })
-export class OnsInputNumberModule {}
+export class OnsTextareaModule {}
