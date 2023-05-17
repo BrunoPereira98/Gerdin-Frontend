@@ -4,13 +4,6 @@
     flex-direction: row;
     align-items: center;
     padding-top: 1%;
-
-    button {
-        margin-right: 1px;
-        display: block;
-        white-space: nowrap;
-        width: auto;
-    }
 }
 
 ::ng-deep button.button-loading {
