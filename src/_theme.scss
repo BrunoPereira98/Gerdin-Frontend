@@ -2462,6 +2462,12 @@ td.mat-footer-cell {
 }
 .mat-form-field-appearance-outline .mat-form-field-outline {
   color: rgba(0, 0, 0, 0.12);
+  // &.error {
+  //   color: mat.get-color-from-palette(
+  //   $ons-processador-regras-frontend-warn,
+  //   "darker"
+  // );
+  // }
 }
 .mat-form-field-appearance-outline .mat-form-field-outline-thick {
   color: rgba(0, 0, 0, 0.87);
@@ -3771,6 +3777,7 @@ td.mat-footer-cell {
 .fix-thead {
   position: sticky;
   top: 30px !important;
+  z-index: 1;
 }
 
 tr:nth-child(even) {
@@ -3799,4 +3806,29 @@ input[type=number] {
   color: white !important;
   background-color:rgba(97,97,97,.9) !important;
   font-size: 14px !important;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
+  color: rgba(0,0,0,.5);
+  background-color: rgba(0,0,0,.12);
+  border-color: rgba(0,0,0,.12);
+
+  :hover {
+      color: rgba(0,0,0,.5) !important;
+  }
+}
+
+.btn {
+  // white-space: nowrap;
+  font-size: 14px;
+}
+
+form {
+  background-color: var(--corFundoCard)
+}
+
+.mat-icon {
+  color: var(--corFonte);
 }
