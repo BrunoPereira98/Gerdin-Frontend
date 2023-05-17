@@ -12,6 +12,7 @@ import { OnsInputNumberModule } from '../ons-input-number/ons-input-number.modul
 import { OnsSelectModule } from '../ons-select/ons-select.module';
 import { OnsCalendarModule } from '../ons-calendar/ons-calendar.module';
 import { LoadingModule } from '../loading/loading.module';
+import { OnsDatetimeModule } from '../ons-datetime/ons-datetime.module';
 
 @NgModule({
   declarations: [FiltroComponent],
@@ -19,6 +20,7 @@ import { LoadingModule } from '../loading/loading.module';
     OnsInputNumberModule,
     OnsSelectModule,
     OnsCalendarModule,
+    OnsDatetimeModule,
     LoadingModule],
   exports: [FiltroComponent],
   providers: [

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter, forwardRef } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import {  ThemePalette } from '@angular/material/core';
+import { ThemePalette } from '@angular/material/core';
 
 const DATETIME_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -29,13 +29,11 @@ export class OnsDatetimeComponent implements OnInit, ControlValueAccessor {
   @Input() disableMinute!: boolean;
   @Input() hideTime!: boolean;
   @Input() myControl: FormControl = new FormControl();
-
-
+  @Input() name: string = '';
+  @Input() id: string = '';
+  
   @Output() readonly dateChange = new EventEmitter();
   
-  constructor() {
-  }
-
   private innerValue: any;
 
   get value() {
@@ -48,6 +46,8 @@ export class OnsDatetimeComponent implements OnInit, ControlValueAccessor {
       this.onChangeCb(v);
     }
   }
+
+  constructor() {}
 
   onChangeCb: (_: any) => void = () => {};
   onTouchedCb: (_: any) => void = () => {};
