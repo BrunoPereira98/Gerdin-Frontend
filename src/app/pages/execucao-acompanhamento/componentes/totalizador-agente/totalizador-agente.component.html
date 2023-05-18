@@ -1,0 +1,19 @@
+<app-loading [style.display]="!isFinalizado() ? 'block'  : 'none'" #loadingAgentes filterBy="TotalizadoresPorAgente"
+    (atualizar)="atualizar($event)"></app-loading>
+
+<mat-expansion-panel [style.display]="isFinalizado() ? 'block'  : 'none'" [expanded]="step === 1">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <h2>TOTALIZADORES POR AGENTE</h2>
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-card class="card-agente" fxFlex="32" *ngFor="let ag of agentes">
+        <mat-card-content class="mat-card-content-agente">
+            <p>Nome do Agente: <strong>{{ ag.NomeDoAgente }}</strong></p>
+            <p>Geração Total: <strong>{{ this.arredondar(ag.GeracaoTotal)}}</strong> MW</p>
+            <p>Limite Total: <strong>{{ this.arredondar(ag.LimiteTotal) }}</strong> MW</p>
+            <p>Corte Acumulado: <strong>{{ this.arredondar(ag.Corte) }}</strong> MW</p>
+        </mat-card-content>
+    </mat-card>
+</mat-expansion-panel>

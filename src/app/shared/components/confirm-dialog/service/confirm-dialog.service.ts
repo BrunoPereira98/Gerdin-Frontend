@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  MatLegacyDialog as MatDialog,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, map, take } from 'rxjs';
 import { ConfirmDialogComponent } from '../confirm-dialog.component';
 

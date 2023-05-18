@@ -1,0 +1,32 @@
+::ng-deep button.button-loading {
+    mat-spinner {
+        margin: 3px 5px;
+
+        circle {
+            stroke: white;
+        }
+    }
+}
+
+button.button-loading {
+    &.in-loading {
+        cursor: wait;
+    }
+
+    &.button-loading-with-text {
+        ::ng-deep mat-spinner {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 3px;
+
+            circle {
+                stroke: white;
+            }
+        }
+    }
+}
+
+.input-message-error {
+    color: red;
+    font-size: 0.8em;
+}

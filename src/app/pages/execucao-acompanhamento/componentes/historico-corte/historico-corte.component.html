@@ -1,0 +1,145 @@
+<app-loading filterBy="ObterHistoricosDeCortesCadastrados" (atualizar)="atualizar($event)"></app-loading>
+<form [formGroup]="formHistoricoCorte" [style.visibility]="isFinalizado() ? 'visible' : 'hidden'">
+    <div class="d-flex justify-content-between">
+        <h1 mat-dialog-title>Históricos</h1>
+        <button mat-icon-button aria-label="fechar" (click)="fechar()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-12">
+                    <div class="d-flex flex-column">
+                        <mat-label class="font-color-label">
+                            <strong>Fonte: {{dataParams.element.Fonte.Nome}}</strong>
+                        </mat-label>
+                        <mat-label class="font-color-label">
+                            <strong>Instalação: {{dataParams.element.NomeUsinaConjuntoUsina}}</strong>
+                        </mat-label>
+                        <mat-label class="font-color-label">
+                            <strong>Agente: {{dataParams.element.Agente}}</strong>
+                        </mat-label>
+                        <mat-label class="font-color-label">
+                            <strong>Conexão: {{dataParams.element.Conexao.Nome}}</strong>
+                        </mat-label>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-12">
+                    <div class="d-flex flex-column">
+                        <br/>
+                        <table mat-table [dataSource]="historicos" class="table-card"
+                            multiTemplateDataRows matSort>
+
+                            <ng-container matColumnDef="PotenciaInstalada">
+                                <th class="potencia order-center" mat-header-cell *matHeaderCellDef >
+                                    Potência
+                                </th>
+                                <td class="potencia" mat-cell *matCellDef="let element">{{ element.PotenciaInstalada }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="GeracaoAtual.Geracao">
+                                <th class="geracao order-center" mat-header-cell *matHeaderCellDef>Geração Atual
+                                <td class="geracao" mat-cell *matCellDef="let element">{{
+                                    element.GeracaoAtual.Geracao }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="LimiteAtual">
+                                <th class="limite order-center" mat-header-cell *matHeaderCellDef >Limite
+                                    Atual
+                                </th>
+                                <td class="limite" mat-cell *matCellDef="let element">
+                                    {{ element.LimiteAtual }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Operacao">
+                                <th class="operacao order-center" mat-header-cell *matHeaderCellDef >
+                                    Operação
+                                </th>
+                                <td class="operacao" mat-cell *matCellDef="let element">
+                                    <div>
+                                        <img style="top: 5px; width: 20px; right: 10px;"
+                                            src="{{element.obterIconeCorteElevacao()}}" />
+                                        {{ element.obterValorCorte() }}
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="MotivoRestricao">
+                                <th class="motivo order-center" mat-header-cell *matHeaderCellDef >Motivo
+                                </th>
+                                <td class="motivo" mat-cell *matCellDef="let element">
+                                    {{ element.MotivoRestricao }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="StatusGerdin">
+                                <th class="statusGerdin" mat-header-cell *matHeaderCellDef>Status GERDIN</th>
+                                <td class="statusGerdin" mat-cell *matCellDef="let element">
+                                    <span *ngIf="element.isExibirStatusGERDIN()">
+                                        {{ element.obterStatusGERDIN() }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="StatusSinapse">
+                                <th class="statusSinapse order-center" mat-header-cell *matHeaderCellDef
+                                    >Status
+                                    SINapse</th>
+                                <td class="statusSinapse" mat-cell *matCellDef="let element">
+                                    <div>
+                                        <span [ngClass]="element.obterStatusSINAPSE()"
+                                            [matTooltip]="element.IntegracaoSinapse?.Justificativa">
+                                            {{ element.obterStatusSINAPSE() }}
+                                        </span>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="HorarioStatus">
+                                <th class="horarioStatus order-center" mat-header-cell *matHeaderCellDef
+                                    >Horário
+                                    Status
+                                </th>
+                                <td class="horarioStatus" mat-cell *matCellDef="let element">
+                                    <span [matTooltip]="element.obterTooltipHorarioStatus()"
+                                        matTooltipClass="tooltip-linhas">
+                                        {{ element.getUltimoHorarioStatus() }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Acao">
+                                <th class="acao" mat-header-cell *matHeaderCellDef>Ação</th>
+                                <td class="acao" mat-cell *matCellDef="let element">
+                                    <button [disabled]="isConsulta()" mat-icon-button
+                                        class="icones-salvar-cancelar button-loading"
+                                        [ngClass]="{'in-loading': inLoadingIndividual(element)}"
+                                        [disabled]="inLoadingIndividual(element)" *ngIf="element.isVisualizarAcao()"
+                                        (click)="editarItem(element)" [matTooltip]="element.Observacao"
+                                        matTooltipClass="tooltip-multiline">
+                                        <mat-spinner *ngIf="inLoadingIndividual(element)" diameter="20"></mat-spinner>
+                                        <mat-icon
+                                            *ngIf="element.isVisualizarAcaoEditarLaranja() && !inLoadingIndividual(element)"
+                                            style="color: orange">edit
+                                        </mat-icon>
+                                        <mat-icon
+                                            *ngIf="!element.isVisualizarAcaoEditarLaranja() && !inLoadingIndividual(element)">edit
+                                        </mat-icon>
+
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="fix-thead"></tr>
+                            <tr mat-row *matRowDef="let row; let i = dataIndex; columns: displayedColumns;">
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

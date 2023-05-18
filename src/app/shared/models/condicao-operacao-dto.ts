@@ -1,5 +1,5 @@
 export interface CondicaoOperacaoDto {
     Id: number;
-    descricao: string;
-    direcaoDoCorte: number;
+    Descricao: string;
+    DirecaoDoCorte: number;
 }

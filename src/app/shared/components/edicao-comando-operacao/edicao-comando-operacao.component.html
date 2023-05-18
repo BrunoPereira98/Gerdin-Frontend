@@ -1,0 +1,115 @@
+<app-loading filterBy="ObterMotivosDeRestricao" (atualizar)="atualizar($event)"></app-loading>
+<form [formGroup]="formEdicaComandoOperacao" [style.visibility]="isFinalizado() ? 'visible' : 'hidden'"
+    (ngSubmit)="onSave()">
+    <div class="d-flex justify-content-between">
+        <h1 mat-dialog-title>Edição de Registro</h1>
+        <button mat-icon-button aria-label="fechar" (click)="fechar()" [disabled]="!isFinalizadoSalvar()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div class="d-flex justify-content-between">
+        <h2 mat-dialog-title>{{dataParams.NomeUsinaConjuntoUsina}} - {{dataParams.Agente}}</h2>
+    </div>
+    <div mat-dialog-content>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-2">
+                    <div class="d-flex flex-column">
+                        <ons-input-number label="Potência" name="PotenciaInstalada" id="PotenciaInstalada"
+                            readonly="true" formControlName="PotenciaInstalada"
+                            [myControl]="fc('PotenciaInstalada')"></ons-input-number>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-2">
+                    <div class="d-flex flex-column">
+                        <ons-input-number label="Ponto de partida" name="PontoPartida" id="PontoPartida"
+                            formControlName="PontoPartida" [myControl]="fc('PontoPartida')"></ons-input-number>
+                        <div *ngIf="isCampoNaoInformado(f['PontoPartida'])" class="input-message-error">
+                            Campo obrigatório.</div>
+                        <div *ngIf="isCampoExcedenteMaximoCaracter(f['PontoPartida'])" class="input-message-error">
+                            Campo não pode ser maior que {{obterMaximoCaracterCampo(f['PontoPartida'])}} números.
+                            Atualmente: {{ obterCaracterAtualCampo(f['PontoPartida']) }}.</div>
+                        <div *ngIf="isCampoExedenteLimiteMin(f['PontoPartida'])" class="input-message-error">
+                            Valor minimo permitido: {{ obterLimiteMinCampo(f['PontoPartida']) }}, atual:
+                            {{ obterLimiteMinAtualCampo(f['PontoPartida']) }}.
+                        </div>
+                        <div *ngIf="isCampoExedenteLimiteMax(f['PontoPartida'])" class="input-message-error">
+                            Valor {{ false ? "do ponto de partida" : "da geração atual" }} não pode ser
+                            maior que o valor da potência.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-2">
+                    <div class="d-flex flex-column">
+                        <ons-input-number label="Limite" name="LimiteAtual" id="LimiteAtual"
+                            formControlName="LimiteAtual" [myControl]="fc('LimiteAtual')"></ons-input-number>
+                        <div *ngIf="isCampoNaoInformado(f['LimiteAtual'])" class="input-message-error">
+                            Campo obrigatório.</div>
+                        <div *ngIf="isCampoExcedenteMaximoCaracter(f['LimiteAtual'])" class="input-message-error">
+                            Campo não pode ser maior que {{obterMaximoCaracterCampo(f['LimiteAtual'])}} números.
+                            Atualmente: {{ obterCaracterAtualCampo(f['LimiteAtual']) }}.</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-2">
+                    <div class="d-flex flex-column">
+                        <ons-input-number label="Operação" name="Operacao" id="Operacao" readonly="true"
+                            formControlName="Operacao" [myControl]="fc('Operacao')" [valor]="valorCorte"></ons-input-number>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-2">
+                    <div class="d-flex flex-column">
+                        <ons-select [selectItens]="motivosSelecao" label="Motivo" id="Motivo"
+                            formControlName="IdMotivo"></ons-select>
+                        <div *ngIf="isCampoNaoInformado(f['Motivo'])" class="input-message-error">
+                            Campo obrigatório.</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-2">
+                    <div class="d-flex flex-column">
+                        <ons-datetime label="Status confirmação" name="DataConfirmacao" id="DataConfirmacao"
+                            formControlName="DataConfirmacao"></ons-datetime>
+                        <div *ngIf="isCampoNaoInformado(f['DataConfirmacao'])" class="input-message-error">
+                            Campo obrigatório.</div>
+                        <div *ngIf="isCampoExedenteMaiorQue(f['DataConfirmacao'])" class="input-message-error">
+                            Valor deve ser maior que: {{ obterValorCampoMaiorQue(f['DataConfirmacao']) |
+                            date:'dd/MM/yyyy HH:mm'}}
+                            .
+                            Valor atual: {{obterValorAtualCampoMaiorQue(f['DataConfirmacao']) | date:'dd/MM/yyyy
+                            HH:mm'}}.
+                        </div>
+                        <div *ngIf="isCampoExedenteMenorQue(f['DataConfirmacao'])" class="input-message-error">
+                            Valor deve ser menor que: {{obterValorCampoMenorQue(f['DataConfirmacao']) | date:'dd/MM/yyyy
+                            HH:mm'}}.
+                            Valor atual: {{obterValorAtualCampoMenorQue(f['DataConfirmacao']) | date:'dd/MM/yyyy
+                            HH:mm'}}.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-12">
+                    <div class="d-flex flex-column">
+                        <ons-textarea label="Observação" formControlName="Observacao" id="Observacao" [rows]="5">
+                        </ons-textarea>
+                        <div *ngIf="isCampoExcedenteMaximoCaracter(f['Observacao'])" class="input-message-error">
+                            Campo não pode ser maior que {{obterMaximoCaracterCampo(f['Observacao'])}} caracteres.
+                            Atualmente: {{obterCaracterAtualCampo(f['Observacao'])}}.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions class="d-flex justify-content-center">
+        <app-loading [style.display]="'hdden'" filterBy="AtualizarDadosDeCorte"
+            (atualizar)="atualizarSalvar($event)"></app-loading>
+        <button class="btn btn-secondary button-loading" type="submit" cdkFocusInitial
+            [disabled]="!isSalvar()">
+            <mat-spinner *ngIf="!isFinalizadoSalvar()" diameter="20"></mat-spinner>
+            <span *ngIf="isFinalizadoSalvar()">Salvar</span>
+        </button>
+        <!-- <button class="btn btn-secondary button-loading" (click)="fechar()">
+            <mat-spinner *ngIf="!isFinalizadoSalvar()" diameter="20"></mat-spinner>
+            <span *ngIf="isFinalizadoSalvar()">Cancelar</span>
+        </button> -->
+    </div>
+</form>

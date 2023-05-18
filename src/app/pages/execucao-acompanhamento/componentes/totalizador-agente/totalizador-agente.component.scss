@@ -1,0 +1,18 @@
+mat-card {
+    height: auto !important;
+    min-height: 65px;
+}
+
+.card-agente {
+    display: inline-flex;
+    flex-direction: column;
+    width: 20%;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.mat-card-content-agente {
+    height: 100%;
+    width: 100%;
+    margin-bottom: 5px !important;
+}

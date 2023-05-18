@@ -1,0 +1,253 @@
+$width-icon-order: 18px;
+
+.order-center .mat-sort-header-container {
+    display: flex;
+    justify-content: center;
+}
+
+[mat-sort-header].order-center {
+    padding-left: $width-icon-order;
+    padding-right: 0px;
+}
+
+@mixin order-center-column($width) {
+    @if (is-percentage($width)) {
+        &.order-center {
+            width: calc($width - $width-icon-order);
+            min-width: calc($width - $width-icon-order);
+            max-width: calc($width - $width-icon-order);
+        }
+    }
+
+    @else {
+        &.order-center {
+            width: $width - $width-icon-order;
+            min-width: $width - $width-icon-order;
+            max-width: $width - $width-icon-order;
+        }
+    }
+}
+
+@mixin column-size-fixed($width, $text-align: left) {
+    width: $width;
+    min-width: $width;
+    max-width: $width;
+    text-align: $text-align;
+    @include order-center-column($width);
+}
+
+.panel-acoes-container {
+    padding-bottom: 16px;
+    padding-right: 20px;
+    padding-left: 20px;
+
+    >.panel-acoes-container-esquerda {
+        width: 50%;
+        display: inline-block;
+        text-align: left;
+    }
+
+    >.panel-acoes-container-direita {
+        width: 50%;
+        display: inline-block;
+        text-align: right;
+
+        >button {
+            margin-left: 12px;
+        }
+    }
+}
+
+.CEstadoRuim {
+    background-color: #D10429;
+    border-radius: 0.3em;
+    color: white;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.CEstadoAtencao {
+    background-color: #FBC90B;
+    border-radius: 0.3em;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.CEstadoPadrao {
+    border-radius: 0.3em;
+}
+
+::ng-deep .TEstadoRuim {
+    background-color: #D10429 !important;
+
+    .mdc-tooltip__surface {
+        background-color: #D10429 !important;
+    }
+}
+
+::ng-deep .TEstadoAtencao {
+    background-color: #FBC90B !important;
+
+    .mdc-tooltip__surface {
+        background-color: #FBC90B !important;
+    }
+}
+
+.expansao {
+    width: 1%;
+    padding-left: 0px !important;
+}
+
+.select {
+    width: 1%;
+    text-align: left;
+}
+
+.fonte {
+    width: 4.5%;
+    text-align: center;
+}
+
+.instalacao {
+    width: 9%;
+    text-align: left;
+}
+
+.agente {
+    width: 8%;
+    text-align: left;
+}
+
+.conexao {
+    width: 5%;
+    text-align: center;
+}
+
+.potencia {
+    width: 5%;
+    text-align: center;
+}
+
+.geracao {
+    width: 7%;
+    text-align: center;
+    // @include column-size-fixed(135px, center);
+}
+
+.icones {
+    @include column-size-fixed(14px, right);
+
+    .icones-flag {
+        font-size: 14px;
+        width: 14px;
+        padding-top: 50%;
+    }
+}
+
+.limite {
+    width: 5%;
+    text-align: center;
+}
+
+.operacao {
+    width: 5%;
+    text-align: center;
+}
+
+.motivo {
+    width: 5%;
+    text-align: center;
+}
+
+.statusGerdin {
+    width: 10%;
+    text-align: center;
+}
+
+.statusSinapse {
+    width: 9%;
+    text-align: center;
+}
+
+.acaoSINapse {
+    width: 9%;
+    text-align: center;
+}
+
+.online {
+    $width: 20px;
+    @include column-size-fixed($width, center);
+
+    span.circulo {
+        vertical-align: middle;
+        height: $width;
+        width: $width;
+        background-color: #212121;
+        border-radius: 50%;
+        display: inline-block;
+
+        &.online {
+            background-color: #57b545;
+        }
+
+        &.offline {
+            background-color: #c3c4c7;
+        }
+    }
+}
+
+.horarioStatus {
+    width: 8%;
+    text-align: center;
+}
+
+::ng-deep .tooltip-linhas {
+    .mdc-tooltip__surface {
+        white-space: pre;
+        max-width: unset;
+    }
+}
+
+.acao {
+    width: 50px !important;
+    min-width: 50px;
+    text-align: center;
+}
+
+.icones-salvar-cancelar {
+    width: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+::ng-deep button.button-loading {
+    mat-spinner {
+        margin: 3px 5px;
+
+        circle {
+            stroke: white;
+        }
+    }
+}
+
+button.button-loading {
+    &.in-loading {
+        cursor: wait;
+    }
+
+    &.button-loading-with-text {
+        ::ng-deep mat-spinner {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 3px;
+
+            circle {
+                stroke: white;
+            }
+        }
+    }
+}
+
+.cancelar-button {
+    background-color: #DAB4B4;
+}

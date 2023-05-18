@@ -1,0 +1,85 @@
+.potencia {
+    width: 8%;
+    text-align: center;
+}
+
+.geracao {
+    width: 8%;
+    text-align: center;
+}
+
+.limite {
+    width: 7%;
+    text-align: center;
+}
+
+.operacao {
+    width: 6%;
+    text-align: center;
+}
+
+.motivo {
+    width: 8%;
+    text-align: center;
+}
+
+.statusGerdin {
+    width: 8%;
+    text-align: center;
+}
+
+.statusSinapse {
+    width: 8%;
+    text-align: center;
+}
+
+.horarioStatus {
+    width: 8%;
+    text-align: center;
+}
+
+.acao {
+    width: 5%;
+    text-align: center;
+}
+
+.icones-salvar-cancelar {
+    width: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+::ng-deep button.button-loading {
+    mat-spinner {
+        margin: 3px 5px;
+
+        circle {
+            stroke: white;
+        }
+    }
+}
+
+button.button-loading {
+    &.in-loading {
+        cursor: wait;
+    }
+
+    &.button-loading-with-text {
+        ::ng-deep mat-spinner {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 3px;
+
+            circle {
+                stroke: white;
+            }
+        }
+    }
+}
+
+::ng-deep .tooltip-linhas {
+    .mdc-tooltip__surface {
+        white-space: pre;
+        max-width: unset;
+    }
+}
