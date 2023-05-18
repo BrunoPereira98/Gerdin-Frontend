@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -10,7 +10,7 @@ import { AngularSettingEffect } from './store/angular-setting.effect';
 import { angularSettingReducer } from './store/angular-setting.reducer';
 
 import { MomentDateModule } from '@angular/material-moment-adapter';
-import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_LEGACY_FORM_FIELD_DEFAULT_OPTIONS as MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/legacy-form-field';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
@@ -32,6 +32,10 @@ import { LoadingModule } from './components/loading/loading.module';
 import { AlertModule } from './components/alert/alert.module';
 import { MaxLengthNumberDirective } from './directive/max-length-number.directive/max-length-number.directive';
 import { NonNullNumbersDirective } from './directive/non-null-number.directive';
+import { EdicaoComandoOperacaoModule } from './components/edicao-comando-operacao/edicao-comando-operacao.module';
+import { OnsTextareaModule } from './components/ons-textarea/ons-textarea.module';
+import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.module';
+import { OnsDatetimeModule } from './components/ons-datetime/ons-datetime.module';
 
 @NgModule({
   declarations: [
@@ -43,6 +47,7 @@ import { NonNullNumbersDirective } from './directive/non-null-number.directive';
     AngularSettingsStoreService,
     TokenStoreService,
     AuthenticationService,
+    DatePipe,
     {
       provide: MAT_DATE_FORMATS,
       useValue: {
@@ -50,7 +55,7 @@ import { NonNullNumbersDirective } from './directive/non-null-number.directive';
           dateInput: ['l', 'LL'],
         },
         display: {
-          dateInput: 'L',
+          dateInput: 'DD/MM/YYYY HH:mm:ss',
           monthYearLabel: 'MMM YYYY',
           dateA11yLabel: 'LL',
           monthYearA11yLabel: 'MMMM YYYY',
@@ -68,6 +73,7 @@ import { NonNullNumbersDirective } from './directive/non-null-number.directive';
     { provide: MatPaginatorIntl, 
       // useClass: MyCustonPaginatorIntl 
     },
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -92,7 +98,11 @@ import { NonNullNumbersDirective } from './directive/non-null-number.directive';
     VersaoSistemaModule,
     FiltroModule,
     LoadingModule,
-    AlertModule
+    AlertModule,
+    EdicaoComandoOperacaoModule,
+    OnsTextareaModule,
+    ConfirmDialogModule,
+    OnsDatetimeModule
   ],
   exports: [
     MenuTabModule,
@@ -109,7 +119,11 @@ import { NonNullNumbersDirective } from './directive/non-null-number.directive';
     VersaoSistemaModule,
     FiltroModule,
     LoadingModule,
-    AlertModule
+    AlertModule,
+    EdicaoComandoOperacaoModule,
+    OnsTextareaModule,
+    ConfirmDialogModule,
+    OnsDatetimeModule
   ],
 })
 export class SharedModule {}
