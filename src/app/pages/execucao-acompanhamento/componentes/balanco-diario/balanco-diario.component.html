@@ -1,0 +1,24 @@
+<app-loading #loadingBalancoDiario [style.display]="!finalizadoEntrada ? 'block'  : 'none'" filterBy="CortesCadastrados"
+    (atualizar)="atualizar($event)"></app-loading>
+
+<mat-expansion-panel [style.display]="finalizadoEntrada ? 'block'  : 'none'" [expanded]="expandido">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <h2>BALANÇO DIÁRIO CORTE (MW)</h2>
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-card class="card-agente" fxFlex="32">
+        <mat-card-content class="mat-card-content-agente">
+            <strong>Limite Total
+                <p>{{ obterLimiteTotal() }}</p>
+            </strong>
+            <strong> Geração Verificada
+                <p>{{ obterGeracaoVerificada() }}</p>
+            </strong>
+            <strong> Geração acima do limite
+                <p>{{ obterGeracaoAcimaLimite() }}</p>
+            </strong>
+        </mat-card-content>
+    </mat-card>
+</mat-expansion-panel>

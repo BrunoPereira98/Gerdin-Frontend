@@ -1,1 +1,321 @@
-<p>execucao-acompanhamento works!</p>
+<div class="d-grid gap-6">
+    <div class="p-2">
+        <mat-card>
+            <mat-card-content style="min-height: 80px;">
+                <app-balanco-diario #balancoDiario [cortes]="cortes"></app-balanco-diario>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="p-2">
+        <mat-card>
+            <mat-card-content style="min-height: 80px;">
+                <app-totalizador-agente #totalizadorAgente></app-totalizador-agente>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="p-2">
+        <mat-card>
+            <mat-card-content style="min-height: 80px;">
+                <app-loading [style.display]="finalizadoEntrada ? 'block'  : 'none'" #loadingExecucaoAcompanhamento
+                    filterBy="CortesCadastrados" (atualizar)="atualizar($event)"></app-loading>
+
+                <div [style.visibility]="finalizadoEntrada ? 'visible' : 'hidden'" class="panel-acoes-container">
+                    <div class="panel-acoes-container-esquerda">
+                        <small>*Todos os valores estão em MW</small>
+                    </div>
+                    <div class="panel-acoes-container-direita">
+                        <button class="btn btn-secondary button-loading button-loading-with-text cancelar-button"
+                            (click)="cancelarTodos()" [ngClass]="{'in-loading': isAnyInLoadingIndividual()}"
+                            [disabled]="isAnyInLoadingIndividual() || habilitarCancelarTodos()">
+                            <span *ngIf="isAnyInLoadingIndividual()">
+                                <mat-spinner *ngIf="isAnyInLoadingIndividual()" diameter="20"></mat-spinner>
+                                Cancelando...</span>
+                            <span *ngIf="!isAnyInLoadingIndividual()">Cancelar Todos</span>
+                        </button>
+                        <button class="btn btn-secondary button-loading button-loading-with-text"
+                            [ngClass]="{'in-loading': isAnyInLoadingIndividual()}"
+                            [disabled]="!isOptionEnviarSinapseMulti()" (click)="enviarSinapseSelecionados()">
+                            <span *ngIf="isAnyInLoadingIndividual()">
+                                <mat-spinner *ngIf="isAnyInLoadingIndividual()" diameter="20"></mat-spinner>
+                                Enviando...</span>
+                            <span *ngIf="!isAnyInLoadingIndividual()">Enviar SINapse</span>
+                        </button>
+                        <!-- TODO: #56904 - Reabilitar na demanda de cancelamento massivo sinapse  -->
+                        <!-- <button mat-raised-button class="button-loading button-loading-with-text"
+                            [ngClass]="{'in-loading': isAnyInCancelamentoSinapseLoading()}"
+                            [disabled]="!isEnableOptionCancelarSinapseMulti()" (click)="cancelarSinapseSelecteds()">
+                            <mat-spinner *ngIf="isAnyInCancelamentoSinapseLoading()" diameter="20"></mat-spinner>
+                            <span *ngIf="!isAnyInCancelamentoSinapseLoading()">Cancelar SINapse</span>
+                        </button> -->
+                    </div>
+                </div>
+                <table [style.visibility]="finalizadoEntrada ? 'visible' : 'hidden'" mat-table [dataSource]="dataSource"
+                    class="mat-elevation-z8 linhas ons-theme" multiTemplateDataRows matSort>
+                    <ng-container matColumnDef="Expansao">
+                        <th class="expansao" mat-header-cell *matHeaderCellDef></th>
+                        <td class="expansao" mat-cell *matCellDef="let element">
+                            <button mat-icon-button class=" button-loading"
+                                [ngClass]="{'in-loading': inLoadingIndividual(element)}"
+                                [disabled]="isAnyInLoadingIndividual() || inLoadingIndividual(element)"
+                                (click)="abrirHistorico($event, element)">
+                                <mat-spinner *ngIf="inLoadingIndividual(element)" diameter="20"></mat-spinner>
+                                <span *ngIf="!inLoadingIndividual(element)"><mat-icon>list</mat-icon></span>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="select">
+                        <th class="select" mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox (change)="$event ? marcarTodas() : null"
+                                [checked]="selection.hasValue() && isTodasSelecionadas()"
+                                [indeterminate]="selection.hasValue() && !isTodasSelecionadas()"
+                                [aria-label]="obterDescricaoSelecao()"
+                                [disabled]="!dataSource.data.length || !isAlgumaSelecionada()">
+                            </mat-checkbox>
+                        </th>
+                        <td class="select" mat-cell *matCellDef="let row">
+                            <mat-checkbox *ngIf="isSelecionavel(row)" (click)="$event.stopPropagation()"
+                                (change)="$event ? marcarItem(row) : null" [checked]="isSelecionada(row)"
+                                [aria-label]="obterDescricaoSelecao(row)">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Fonte.Nome">
+                        <th class="fonte order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Fonte</th>
+                        <td class="fonte" [matTooltip]="element.Fonte.Nome" mat-cell *matCellDef="let element">
+                            <img style="width: 15px;" src="assets/{{element.Fonte.Gif}}" />
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="NomeUsinaConjuntoUsina">
+                        <th class="instalacao" mat-header-cell *matHeaderCellDef mat-sort-header>Conjunto/Usina</th>
+                        <td class="instalacao" mat-cell *matCellDef="let element">{{ element.NomeUsinaConjuntoUsina }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Agente">
+                        <th class="agente" mat-header-cell *matHeaderCellDef mat-sort-header>Agente</th>
+                        <td class="agente" mat-cell *matCellDef="let element">{{ element.Agente }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Conexao.Sigla">
+                        <th class="conexao order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Conexão</th>
+                        <td class="conexao" mat-cell *matCellDef="let element">
+                            <div [matTooltip]="element.Conexao.Nome">
+                                {{ element.Conexao.Sigla }}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="PotenciaInstalada">
+                        <th class="potencia order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Potência
+                        </th>
+                        <td class="potencia" mat-cell *matCellDef="let element">{{ element.PotenciaInstalada }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="GeracaoAtual.Geracao">
+                        <th class="geracao order-center" mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <span>
+                                <span>Geração Atual<br></span>
+                                <span>{{ this.dataAtualizacao | date : 'dd/MM/yyyy HH:mm:ss'}}<br></span>
+                            </span>
+
+                            <button mat-icon-button matTooltip="Atualiza a geração atual." [@rotatedState]='state'
+                                (click)="atualizarManual();$event.stopPropagation();">
+                                <span *ngIf="showSpinner">
+                                    <mat-spinner diameter="20"></mat-spinner>
+                                </span>
+                                <span *ngIf="!showSpinner">
+                                    <mat-icon>sync</mat-icon>
+                                </span>
+                            </button>
+                        </th>
+                        <td class="geracao" mat-cell *matCellDef="let element">
+                            <div [ngClass]="obterCorColunaEstado(element)"
+                                [matTooltipDisabled]="!element.CondicaoOperacao"
+                                [matTooltip]="element.CondicaoOperacao.Descricao"
+                                [matTooltipClass]="obterCorTooltipEstado(element)">
+                                {{ element.GeracaoAtual.Geracao }}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Icones">
+                        <th class="icones" mat-header-cell *matHeaderCellDef></th>
+                        <td class="icones" mat-cell *matCellDef="let element">
+                            <div>
+                                <mat-icon
+                                    [matTooltip]="element.GeracaoAtual.Qualidade  + (element.GeracaoAtual.Qualidade ? '. ' : '') + (element.GeracaoAtual?.UltimaCaptura | date : 'dd/MM/yyyy HH:mm:ss')"
+                                    class="icones-flag"
+                                    *ngIf="element.GeracaoAtual.Qualidade && element.GeracaoAtual.Qualidade.length > 0">
+                                    flag
+                                </mat-icon>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="LimiteAtual">
+                        <th class="limite order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Limite Atual
+                        </th>
+                        <td class="limite" mat-cell *matCellDef="let element">
+                            {{ element.LimiteAtual }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Operacao">
+                        <th class="operacao order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Operação
+                        </th>
+                        <td class="operacao" mat-cell *matCellDef="let element">
+                            <div>
+                                <img style="top: 5px; width: 20px; right: 10px;"
+                                    src="{{element.obterIconeCorteElevacao()}}" />
+                                {{ element.obterValorCorte() }}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="MotivoRestricao">
+                        <th class="motivo order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Motivo</th>
+                        <td class="motivo" mat-cell *matCellDef="let element">
+                            {{ element.MotivoRestricao }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="StatusGerdin">
+                        <th class="statusGerdin" mat-header-cell *matHeaderCellDef>Status GERDIN</th>
+                        <td class="statusGerdin" mat-cell *matCellDef="let element">
+                            <div>
+                                <button class="btn btn-secondary btn-sm m-1 button-loading" 
+                                    [ngClass]="{'in-loading': inLoadingIndividual(element)}"
+                                    *ngIf="element.isVisualizarConfirmar()"
+                                    [disabled]="isConsulta() || inLoadingIndividual(element)"
+                                    (click)="confirmar(element)">
+                                    <mat-spinner *ngIf="inLoadingIndividual(element)" diameter="20"></mat-spinner>
+                                    <span *ngIf="!inLoadingIndividual(element)">Confirmar</span>
+                                </button>
+
+                                <button class="btn btn-secondary btn-sm m-1 button-loading cancelar-button"
+                                    [ngClass]="{'in-loading': inLoadingIndividual(element)}"
+                                    *ngIf="element.isVisualizarCancelar()"
+                                    [disabled]="isConsulta() || inLoadingIndividual(element)"
+                                    (click)="cancelar(element)">
+                                    <mat-spinner *ngIf="inLoadingIndividual(element)" diameter="20"></mat-spinner>
+                                    <span *ngIf="!inLoadingIndividual(element)">Cancelar</span>
+                                </button>
+
+                                <span *ngIf="element.isExibirStatusGERDIN()">
+                                    {{element.obterStatusGERDIN()}}
+                                </span>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="StatusSinapse">
+                        <th class="statusSinapse order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Status
+                            SINapse</th>
+                        <td class="statusSinapse" mat-cell *matCellDef="let element">
+                            <div>
+                                <span [ngClass]="element.obterStatusSINAPSE()"
+                                    [matTooltip]="element.IntegracaoSinapse?.Justificativa">
+                                    {{ element.obterStatusSINAPSE() }}
+                                </span>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="AcaoSinapse">
+                        <th class="acaoSINapse order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Ação
+                            SINapse</th>
+                        <td class="acaoSINapse" mat-cell *matCellDef="let element">
+                            <div>
+                                <button class="btn btn-secondary btn-sm m-1 button-loading" color="prymary"
+                                    [ngClass]="{'in-loading': inLoadingIndividual(element)}"
+                                    *ngIf="element.isEnviarSinapse()"
+                                    [disabled]="isConsulta() || inLoadingIndividual(element)"
+                                    (click)="enviarSinapse(element)">
+                                    <mat-spinner *ngIf="inLoadingIndividual(element)" diameter="20"></mat-spinner>
+                                    <span *ngIf="!inLoadingIndividual(element)">Enviar SINapse</span>
+                                </button>
+
+                                <button class="btn btn-secondary btn-sm m-1 button-loading" color="prymary"
+                                    [ngClass]="{'in-loading': inLoadingIndividual(element)}"
+                                    *ngIf="element.isCancelarSinapse()"
+                                    [disabled]="isConsulta() || inLoadingIndividual(element)"
+                                    (click)="cancelarSinapse(element)">
+                                    <mat-spinner *ngIf="inLoadingIndividual(element)" diameter="20"></mat-spinner>
+                                    <span *ngIf="!inLoadingIndividual(element)">Cancelar SINapse</span>
+                                </button>
+
+                                <button class="btn btn-secondary btn-sm m-1 button-loading" color="prymary"
+                                    [ngClass]="{'in-loading': inLoadingIndividual(element)}"
+                                    *ngIf="element.isInformarCiencia()"
+                                    [disabled]="isConsulta() || inLoadingIndividual(element)"
+                                    (click)="informarCiencia(element)">
+                                    <mat-spinner *ngIf="inLoadingIndividual(element)" diameter="20"></mat-spinner>
+                                    <span *ngIf="!inLoadingIndividual(element)">Informar Ciência</span>
+                                </button>
+
+                                <span *ngIf="element.isSemAcaoSINapse()">
+                                    -
+                                </span>
+
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Online">
+                        <th class="online" mat-header-cell *matHeaderCellDef></th>
+                        <td class="online" mat-cell *matCellDef="let element">
+                            <span *ngIf="element.isExibirStatusAgente()">
+                                <span class="circulo online" *ngIf="element.IntegracaoSinapse?.Online"
+                                    matTooltip="Agente on-line"></span>
+                                <span class="circulo offline" *ngIf="!element.IntegracaoSinapse?.Online"
+                                    matTooltip="Agente off-line"></span>
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="HorarioStatus">
+                        <th class="horarioStatus order-center" mat-header-cell *matHeaderCellDef mat-sort-header>Horário
+                            Status
+                        </th>
+                        <td class="horarioStatus" mat-cell *matCellDef="let element">
+                            <span [matTooltip]="element.obterTooltipHorarioStatus()" matTooltipClass="tooltip-linhas">
+                                {{ element.getUltimoHorarioStatus() }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Acao">
+                        <th class="acao" mat-header-cell *matHeaderCellDef>Ação</th>
+                        <td class="acao" mat-cell *matCellDef="let element">
+                            <button [disabled]="isConsulta()"
+                                mat-icon-button class=" button-loading"
+                                [ngClass]="{'in-loading': inLoadingIndividual(element)}"
+                                [disabled]="inLoadingIndividual(element)" *ngIf="element.isVisualizarAcao()"
+                                (click)="editarItem(element)" [matTooltip]="element.Observacao"
+                                matTooltipClass="tooltip-multiline">
+                                <mat-spinner *ngIf="inLoadingIndividual(element)" diameter="20"></mat-spinner>
+                                <mat-icon
+                                    *ngIf="element.isVisualizarAcaoEditarLaranja() && !inLoadingIndividual(element)"
+                                    style="color: orange">edit
+                                </mat-icon>
+                                <mat-icon
+                                    *ngIf="!element.isVisualizarAcaoEditarLaranja() && !inLoadingIndividual(element)">edit
+                                </mat-icon>
+
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" class="fix-thead"></tr>
+                    <tr mat-row *matRowDef="let row; let i = dataIndex; columns: displayedColumns;">
+                        <!-- </tr>
+                    <tr mat-row *matRowDef="let hist; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
+                </table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
