@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom, switchMap } from 'rxjs';
 import { AngularSettings } from '../models/angular-settings';
 import { IJsonConfig } from '../models/json-config';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AngularSettingsService {
@@ -29,7 +30,7 @@ export class AngularSettingsService {
       switchMap((config) => {
         this.apiUrl = config.urlAPI;
         return this.httpClient.get<AngularSettings>(
-          `${this.apiUrl}AngularSettings/Get`
+          `${environment.apiUrl}AngularSettings/Get`
         );
       })
     );
