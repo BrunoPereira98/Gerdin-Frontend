@@ -5,6 +5,7 @@ import { BaseService } from 'src/app/shared/services/base.service';
 import { BaseResult } from 'src/app/shared/models/base-result';
 import { MotivoRestricaoDto } from 'src/app/shared/models/motivo-restricao-dto';
 import { AtualizarDadosCorteCommand } from '../models/atualizar-dados-corte-command';
+import { ModalDeEdicaoDto } from '../models/modal-de-edicao-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -27,6 +28,10 @@ export class EdicaoComandoOperacaoService {
     public atualizarDadosDeCorte(atualizacao: AtualizarDadosCorteCommand): Observable<any> {
         return this.http.post<BaseResult<any>>(`${this.baseService.urlApi}ExecucaoAcompanhamento/AtualizarDadosDeCorte`,
         atualizacao, this.httpOptions);
+    }
+
+    public obterDadosDoModal(IdComandoOperacao: number) : Observable<BaseResult<ModalDeEdicaoDto>> {
+        return this.http.get<BaseResult<ModalDeEdicaoDto>>(`${this.baseService.urlApi}ExecucaoAcompanhamento/ObterDadosDoModal/${IdComandoOperacao}`);
     }
 
 }

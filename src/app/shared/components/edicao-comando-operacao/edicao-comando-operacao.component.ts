@@ -9,9 +9,9 @@ import { MotivoRestricaoDto } from '../../models/motivo-restricao-dto';
 import { OnsSelectModel } from '../../models/ons-select-model';
 import { AtualizarDadosCorteCommand } from './models/atualizar-dados-corte-command';
 import { EdicaoComandoOperacaoForm } from './models/edicao-comando-operacao-form';
-import { DatePipe } from '@angular/common';
-import { DateValidators } from '../../validators/date-validator';
+import { DatePipe, formatDate } from '@angular/common';
 import { ConfirmDialogService } from '../confirm-dialog/service/confirm-dialog.service';
+import { ModalDeEdicaoDto } from './models/modal-de-edicao-dto';
 
 @Component({
   selector: 'app-edicao-comando-operacao',
@@ -32,6 +32,8 @@ export class EdicaoComandoOperacaoComponent implements OnInit {
 
   motivosSelecao: OnsSelectModel[] = [];
 
+  dados!: ModalDeEdicaoDto;
+
   constructor(
     private service: EdicaoComandoOperacaoService,
     private dialogRef: MatDialogRef<EdicaoComandoOperacaoComponent>,
@@ -44,71 +46,12 @@ export class EdicaoComandoOperacaoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initFormGroup();
+    this.inicializarDados();
+    // this.initFormGroup();
   }
 
-  private initFormGroup() {
-    this.formEdicaComandoOperacao = this.fb.group({
-      PotenciaInstalada: [{value: '', disabled: true}, []],
-      PontoPartida: ['', [Validators.required, Validators.maxLength(5), Validators.min(0), Validators.max(this.dataParams.PotenciaInstalada)]],
-      LimiteAtual: ['', [Validators.required, Validators.maxLength(5)]],
-      Operacao: [{value: '', disabled: true}, []],
-      IdMotivo: ['', [Validators.required]],
-      DataConfirmacao: ['', [Validators.required]],
-      Observacao: ['', [Validators.maxLength(250)]],
-    });
-
-    this.consultarMotivoRestricao();
-    
-    if (this.dataParams) {
-      this.formEdicaComandoOperacao.patchValue(this.dataParams);
-
-      this.formEdicaComandoOperacao.patchValue({
-        IdMotivo: this.dataParams.IdMotivo.toString(),
-        DataConfirmacao: new Date(this.dataParams.DataConfirmacao),
-      });
-    }
-
-    this.setupValitations([], []);
-  }
-
-  private setupValitations(historicos: any[], seguintes: any[]) {
-    var convertDateToCompareIgnoreSeconds = (date: Date) =>
-        new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
-    const dataConfirmacaoValidators = [Validators.required];
-    /**
-     * Regra validada com o Rodrigo e é bem simples:
-     * Se tiver anterior, o minimo é a data do anterior, senão não tem minimo
-     * Se tiver seguinte, o maximo é a data do seguinte, senão não tem maximo
-     */
-    if (historicos && historicos.length) {
-        const datasHistoricos = historicos
-            // se não tiver confirmado, usar data de solicitação para não alterar ordem cronologica
-            .map(x => x.ComandoOperacao.DataConfirmacao ? x.ComandoOperacao.DataConfirmacao : x.ComandoOperacao.DataSolicitacao)
-            .map(date => new Date(date));
-        const greaterThan = new Date(
-            Math.max(
-                ...datasHistoricos.map(date => date.getTime())
-            )
-        );
-        dataConfirmacaoValidators.push(DateValidators.greaterThan(greaterThan, convertDateToCompareIgnoreSeconds));
-    }
-    if (seguintes && seguintes.length) {
-        const datasSeguintes = seguintes
-            .map(x => x.DataConfirmacao ? x.DataConfirmacao : x.DataSolicitacao)
-            .map(date => new Date(date));
-        const lessThan = new Date(
-            Math.min(
-                ...datasSeguintes.map(date => date.getTime())
-            )
-        );
-        dataConfirmacaoValidators.push(DateValidators.lessThan(lessThan, convertDateToCompareIgnoreSeconds));
-    }
-
-    // SE utilizar o min e max do componente da calendar ele adiciona uma validação e também bloqueia o ranger de seleção, mas isso acaba gerando efeitos colaterias não desejaveis, então deixei somente a validação normal
-    // TODO: UPDATE12+: https://stackoverflow.com/a/49076116/2290538: use addValidators
-    this.formEdicaComandoOperacao.controls['DataConfirmacao'].setValidators(dataConfirmacaoValidators);
-    this.formEdicaComandoOperacao.controls['DataConfirmacao'].updateValueAndValidity();
+  inicializarDados() {
+    this.obterDadosDoModal();
   }
 
   private consultarMotivoRestricao() {
@@ -118,14 +61,53 @@ export class EdicaoComandoOperacaoComponent implements OnInit {
 
         res.content.forEach((item) => {
           if (item.Exibir
-              || (this.dataParams.IdMotivo
-                  && this.dataParams.IdMotivo === this.idMotivoSemRestricao) ) {
+              || (this.dados.MotivoRestricao.Id
+                  && this.dados.MotivoRestricao.Id === this.idMotivoSemRestricao) ) {
             this.motivosSelecao.push(new OnsSelectModel(item.Id.toString(), item.Descricao));
           }
         });
+
+        this.initFormGroup();
       }
     }, (error: any) => {
       this.alert.error(error, 'Falha ao obter motivos de restrição');
+    });
+  }
+
+  obterDadosDoModal() {
+    this.service.obterDadosDoModal(this.dataParams.IdComandoOperacao).subscribe((res: BaseResult<ModalDeEdicaoDto>) => {
+      if (res.content) {
+        this.dados = res.content;
+        this.consultarMotivoRestricao();
+      }
+    }, (error: any) => {
+      this.alert.error(error, 'Falha ao obter dados');
+    });
+  }
+
+  private initFormGroup() {
+    this.formEdicaComandoOperacao = this.fb.group({
+      PotenciaInstalada: [{ disabled: true}, []],
+      PontoPartida: ['', [Validators.required, Validators.maxLength(5), Validators.min(0), Validators.max(this.dados.PotenciaInstalada)]],
+      LimiteAtual: ['', [Validators.required, Validators.maxLength(5)]],
+      Operacao: [{disabled: true}, []],
+      IdMotivo: ['', [Validators.required]],
+      DataConfirmacao: ['', [Validators.required]],
+      Observacao: ['', [Validators.maxLength(250)]],
+    });
+
+    this.preencherValores(this.dados);
+  }
+
+  private preencherValores(dados: ModalDeEdicaoDto) {
+    this.formEdicaComandoOperacao.patchValue({
+      PotenciaInstalada: dados.PotenciaInstalada,
+      PontoPartida: dados.PontoDePartida,
+      LimiteAtual: dados.ValorDoLimite,
+      Operacao: dados.ValorDoCorte,
+      IdMotivo: dados.MotivoRestricao.Id.toString(),
+      DataConfirmacao: new Date(dados.Confirmacao),
+      Observacao: dados.Observacao
     });
   }
 
@@ -201,11 +183,11 @@ export class EdicaoComandoOperacaoComponent implements OnInit {
       let atualizacao = new AtualizarDadosCorteCommand();
       const dataForm = this.formValue;
   
-      atualizacao.IdComandoOperacao = this.dataParams.IdComandoOperacao;
+      atualizacao.IdComandoOperacao = this.dados.IdComandoOperacao;
       atualizacao.NovoLimite = dataForm.LimiteAtual;
-      const dataConfirmacao =(dataForm.DataConfirmacao !==  null && dataForm.DataConfirmacao !==  undefined ? this.datePipe.transform(dataForm.DataConfirmacao, 'dd/MM/yyyy HH:mm') : '');
+      const dataConfirmacao =(dataForm.DataConfirmacao !==  null && dataForm.DataConfirmacao !==  undefined ? this.formatarDataRetorno(dataForm.DataConfirmacao) : '');
       atualizacao.DataConfirmacao = dataConfirmacao ? dataConfirmacao : '';
-      atualizacao.IdTipoMotivoRestricao = dataForm.IdMotivo;
+      atualizacao.IdTipoMotivoRestricao = Number(dataForm.IdMotivo);
       atualizacao.GeracaoAtual = dataForm.PontoPartida;
       atualizacao.Observacao = dataForm.Observacao,
       atualizacao.PontoPartida = dataForm.PontoPartida;
@@ -297,6 +279,10 @@ export class EdicaoComandoOperacaoComponent implements OnInit {
 
   obterValorAtualCampoMenorQue(campo: AbstractControl) {
     return campo.errors?.['lessThan']['actual'];
+  }
+
+  private formatarDataRetorno(data: Date): string {
+    return formatDate(data, 'yyyy/MM/dd HH:mm:ss', 'en-US');
   }
 
 }
