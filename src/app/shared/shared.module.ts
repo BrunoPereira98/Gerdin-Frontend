@@ -55,7 +55,7 @@ import { OnsDatetimeModule } from './components/ons-datetime/ons-datetime.module
           dateInput: ['l', 'LL'],
         },
         display: {
-          dateInput: 'DD/MM/YYYY HH:mm:ss',
+          dateInput: 'DD/MM/YYYY HH:mm',
           monthYearLabel: 'MMM YYYY',
           dateA11yLabel: 'LL',
           monthYearA11yLabel: 'MMMM YYYY',

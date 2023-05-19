@@ -618,24 +618,7 @@ cancelar(item: CorteCadastradoDto) {
 
     const dialogRef = this.dialog.open(EdicaoComandoOperacaoComponent, {
         data: {
-            NomeUsinaConjuntoUsina: item.NomeUsinaConjuntoUsina,
-            Agente: item.Agente,
-            PotenciaInstalada: item.PotenciaInstalada,
-            PontoPartida: (item.GeracaoAtual ? item.GeracaoAtual.Geracao : 0),
-            LimiteAtual: item.LimiteAtual,
-            Operacao: item.Operacao,
-            IdMotivo: item.IdMotivoRestricao,
-            Observacao: item.Observacao,
-            DataConfirmacao: item.getDataUltimoHorarioStatus(),
             IdComandoOperacao: item.IdComandoOperacao,
-            // DataSolicitacao: item.ComandoOperacao.DataSolicitacao,
-            // isFilho: isFilho,
-            // itemPai: isFilho ? this.expandedElement : void 0,
-            // idAcaoOperacao: item.IdAcaoOperacao,
-            // 
-            // idUsinaConjuntoUsina: item.IdUsinaConjuntoUsina,
-            // potencia: item.PotenciaInstalada,
-            // nomeMotivo: item.Motivo,  
         } as EdicaoComandoOperacaoParams,
         width: '90%',
         minWidth: '1400px',

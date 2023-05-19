@@ -112,13 +112,15 @@ export class FiltroComponent implements OnInit {
   }
 
   onDataInicialChange() {
-    const dataFinal = this.retornoFiltro.dataInicialFiltro;
+    if (this.retornoFiltro.dataInicialFiltro) {
+      const dataFinal = new Date(this.retornoFiltro.dataInicialFiltro.getTime());
 
-    if (dataFinal) {
-      dataFinal.setHours(23);
-      dataFinal.setMinutes(59);
-      dataFinal.setSeconds(59);
-      this.retornoFiltro.dataFinalFiltro = dataFinal;
+      if (dataFinal) {
+        dataFinal.setHours(23);
+        dataFinal.setMinutes(59);
+        dataFinal.setSeconds(59);
+        this.retornoFiltro.dataFinalFiltro = dataFinal;
+      }
     }
   }
 
