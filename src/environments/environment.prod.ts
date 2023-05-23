@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://' + window.location.hostname + '/ONS.Gerdin.Api/api',
+  apiUrl: 'http://' + window.location.hostname + '/ONS.Gerdin.Api/api/',
   federationUrl: 'https://[ambiente].ons.org.br/ons.pop.federation/oauth2/token',
   logLevel: 'Error',
   applicationName: 'Gerdin',
