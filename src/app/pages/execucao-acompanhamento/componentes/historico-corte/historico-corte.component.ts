@@ -1,11 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { ExecucaoAcompanhamentoService } from '../../services/execucao-acompanhamento.service';
 import { CorteCadastradoDto } from '../../models/corte-cadastrado-dto';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PerfilEnum } from 'src/app/shared/components/enums/perfil-enum';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertService } from 'src/app/shared/components/alert/service/alert.service';
+import { EdicaoComandoOperacaoComponent } from 'src/app/shared/components/edicao-comando-operacao/edicao-comando-operacao.component';
+import { EdicaoComandoOperacaoParams } from 'src/app/shared/components/edicao-comando-operacao/models/edicao-comando-operacao-params';
 
 @Component({
   selector: 'app-historico-corte',
@@ -39,6 +41,7 @@ export class HistoricoCorteComponent {
     private dialogRef: MatDialogRef<HistoricoCorteComponent>,
     public fb: FormBuilder,
     private readonly alert: AlertService,
+    private readonly dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public dataParams: any) {
   }
 
@@ -93,52 +96,19 @@ export class HistoricoCorteComponent {
   }
 
   editarItem(item: CorteCadastradoDto, isFilho: boolean = false): void {
-    // this.pausarAtualizacao();
+    const dialogRef = this.dialog.open(EdicaoComandoOperacaoComponent, {
+      data: {
+        IdComandoOperacao: item.IdComandoOperacao,
+      } as EdicaoComandoOperacaoParams,
+      width: '90%',
+      minWidth: '1400px',
+      /**
+       * Fechamento pelo usuario foi habilitado para evitar que o usuario saia do modal sem querer durante o salvamento
+       * Se necessario, para contornar isso pode ser implementado:
+       * https://github.com/angular/components/issues/14292#issuecomment-767597837
+       */
+      disableClose: true
+    });
 
-    // const dialogRef = this._dialog.open(EdicaoComandoOperacaoModalComponent, {
-    //   data: {
-    //     isFilho: isFilho,
-    //     itemPai: undefined,
-    //     idAcaoOperacao: item.IdAcaoOperacao,
-    //     idComandoOperacao: item.ComandoOperacao.Id,
-    //     idUsinaConjuntoUsina: item.IdUsinaConjuntoUsina,
-    //     potencia: item.PotenciaInstalada,
-    //     dataSolicitacao: item.ComandoOperacao.DataSolicitacao,
-
-    //     usina: item.NomeInstalacao,
-    //     agente: item.Agente,
-    //     pontoPartida: item.ComandoOperacao.PontoPartida,
-    //     limiteAtual: item.ComandoOperacao.LimiteAtual,
-    //     idMotivo: void 0,
-    //     nomeMotivo: item.Motivo,
-    //     dataConfirmacao: item.ComandoOperacao.DataConfirmacao,
-    //     observacao: item.ComandoOperacao.Observacao,
-    //     potenciaInstalada: item.PotenciaInstalada,
-    //   } as EdicaoComandoOperacaoParams,
-    //   width: '75%',
-    //   minWidth: '1000px',
-    //   /**
-    //    * Fechamento pelo usuario foi habilitado para evitar que o usuario saia do modal sem querer durante o salvamento
-    //    * Se necessario, para contornar isso pode ser implementado:
-    //    * https://github.com/angular/components/issues/14292#issuecomment-767597837
-    //    */
-    //   disableClose: true
-    // });
-
-    // dialogRef.afterClosed()
-    //   .pipe(
-    //     finalize(() => {
-    //       // this.iniciarAtualizacao();
-    //     })
-    //   )
-    //   .subscribe((result: any) => {
-    //     // if (result) {
-    //     //   this.setDados(result.dados);
-    //     //   if (isFilho) {
-    //     //     this.setHistoricos(result.historicos, this.expandedElement);
-    //     //   }
-    //     // }
-    //     // this.totalizadorAgente.init();
-    //   }, this._toast.error);
   }
 }

@@ -1,4 +1,4 @@
-<app-loading #loadingBalancoDiario [style.display]="!finalizadoEntrada ? 'block'  : 'none'" filterBy="CortesCadastrados"
+<app-loading #loadingBalancoDiario [style.display]="!finalizadoEntrada ? 'block'  : 'none'" filterBy="TotalizadoresPorAgente,CortesCadastrados"
     (atualizar)="atualizar($event)"></app-loading>
 
 <mat-expansion-panel [style.display]="finalizadoEntrada ? 'block'  : 'none'" [expanded]="expandido">

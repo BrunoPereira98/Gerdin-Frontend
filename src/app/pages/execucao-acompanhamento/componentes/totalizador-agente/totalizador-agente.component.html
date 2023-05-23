@@ -1,4 +1,4 @@
-<app-loading [style.display]="!isFinalizado() ? 'block'  : 'none'" #loadingAgentes filterBy="TotalizadoresPorAgente"
+<app-loading [style.display]="!isFinalizado() ? 'block'  : 'none'" #loadingAgentes filterBy="TotalizadoresPorAgente,CortesCadastrados"
     (atualizar)="atualizar($event)"></app-loading>
 
 <mat-expansion-panel [style.display]="isFinalizado() ? 'block'  : 'none'" [expanded]="step === 1">

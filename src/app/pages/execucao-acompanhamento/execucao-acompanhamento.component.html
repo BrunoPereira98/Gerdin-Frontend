@@ -16,8 +16,8 @@
     <div class="p-2">
         <mat-card>
             <mat-card-content style="min-height: 80px;">
-                <app-loading [style.display]="finalizadoEntrada ? 'block'  : 'none'" #loadingExecucaoAcompanhamento
-                    filterBy="CortesCadastrados" (atualizar)="atualizar($event)"></app-loading>
+                <app-loading [style.display]="!finalizadoEntrada ? 'block'  : 'none'" #loadingExecucaoAcompanhamento
+                    filterBy="TotalizadoresPorAgente,CortesCadastrados" (atualizar)="atualizar($event)"></app-loading>
 
                 <div [style.visibility]="finalizadoEntrada ? 'visible' : 'hidden'" class="panel-acoes-container">
                     <div class="panel-acoes-container-esquerda">
