@@ -20,9 +20,9 @@ export class OnsDatetimeComponent implements OnInit, ControlValueAccessor {
   @Input() maxDate: any;
   @Input() showSpinners: boolean = true;
   @Input() showSeconds: boolean = true;
-  @Input() stepHour!: number;
-  @Input() stepMinute!: number;
-  @Input() stepSecond!: number;
+  @Input() stepHour: number = 1;
+  @Input() stepMinute: number = 1;
+  @Input() stepSecond: number = 1;
   @Input() touchUi!: number;
   @Input() color!: ThemePalette;
   @Input() enableMeridian!: boolean;
