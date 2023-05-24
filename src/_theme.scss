@@ -3832,3 +3832,10 @@ form {
 .mat-icon {
   color: var(--corFonte);
 }
+
+.mat-expansion-panel-header-title {
+  padding-top: 0px; 
+  padding-right: 24px;
+  padding-bottom: 0px;
+  padding-left: 24px;
+}
