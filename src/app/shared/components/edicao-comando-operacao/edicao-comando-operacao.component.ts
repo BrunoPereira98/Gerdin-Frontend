@@ -135,8 +135,8 @@ export class EdicaoComandoOperacaoComponent implements OnInit {
         subMessage: `Há alterações não salvas que serão perdidas. Deseja realmente fechar o modal?`,
         cancelText: 'Não',
         confirmText: 'Sim',
-        height: '347px',
-        width: '500px'
+        height: '250px',
+        width: '600px'
       };
   
       this.confirmDialog.open(options);
