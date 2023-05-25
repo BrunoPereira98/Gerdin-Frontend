@@ -1,15 +1,15 @@
 <div class="modal-confirmacao">
   <div class="close">
+    <h1 mat-dialog-title>{{data.message}}</h1>
     <mat-icon (click)="cancel()">close</mat-icon>
   </div>
   <mat-icon [ngClass]="'icone-' + data.icon">{{data.icon}}</mat-icon>
   <div class="texto-info">
-    <label>{{data.message}}</label>
     <strong *ngIf="data.subMessage">{{data.subMessage}}</strong>
   </div>
 
   <div class="btns-actions">
-    <button mat-raised-button class="bg-balck" (click)="cancel()">{{data.cancelText}}</button>
-    <button mat-raised-button (click)="confirm()" color="primary">{{data.confirmText}}</button>
+    <button class="btn btn-secondary" (click)="cancel()">{{data.cancelText}}</button>
+    <button class="btn btn-secondary" (click)="confirm()">{{data.confirmText}}</button>
   </div>
 </div>

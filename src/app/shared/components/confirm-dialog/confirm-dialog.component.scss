@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 463px;
-  height: 330px;
+  // width: 463px;
+  // height: 330px;
   button {
-    width: 158px;
+    // width: 158px;
     &[disabled] {
       &:hover {
         cursor: not-allowed;
@@ -43,7 +43,7 @@
     align-items: center;
     justify-content: center;
     p {
-      width: 300px;
+      // width: 300px;
       text-align: center;
       font-weight: 400;
       font-size: 18px;
